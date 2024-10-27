@@ -6,7 +6,7 @@
 
 Wallos: Open-Source Personal Subscription Tracker
 
-## Table of Contentss
+## Table of Contents
 
 - [Introduction](#introduction)
 - [Features](#features)
