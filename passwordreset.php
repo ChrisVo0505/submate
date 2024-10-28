@@ -148,7 +148,8 @@ if (isset($_POST['password']) && $_POST['password'] != "" && isset($_POST['confi
         <section class="container">
             <header>
                 <div class="logo-image" title="Submate - Manage Subscriptions">
-                    <?php include "images/siteicons/svg/logo.php"; ?>
+                    <!-- <?php include "images/siteicons/svg/logo.php"; ?> -->
+                    <img src="images/icon/logo-submate.png" style="width:100px;height:100px;margin-top:-15px">
                 </div>
                 <p>
                     <?= translate('reset_password', $i18n) ?>

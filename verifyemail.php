@@ -100,7 +100,8 @@ if (isset($_GET['email']) && isset($_GET['token'])) {
         <section class="container">
             <header>
                 <div class="logo-image" title="Submate - Manage Subscriptions">
-                    <?php include "images/siteicons/svg/logo.php"; ?>
+                    <!-- <?php include "images/siteicons/svg/logo.php"; ?> -->
+                    <img src="images/icon/logo-submate.png" style="width:100px;height:100px;margin-top:-15px">
                 </div>
             </header>
             <div class="message">
