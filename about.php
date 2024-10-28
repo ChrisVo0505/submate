@@ -11,7 +11,7 @@ require_once 'includes/header.php';
         <div class="credits-list">
             <h3><?= translate('about', $i18n) ?></h3>
             <p>Wallos <?= $version ?> <?= $demoMode ? "Demo" : "" ?></p>
-            <p><?= translate('license', $i18n) ?>:
+            <!-- <p><?= translate('license', $i18n) ?>:
                 <span>
                     GPLv3
                     <a href="https://www.gnu.org/licenses/gpl-3.0.en.html" target="_blank"
@@ -35,6 +35,16 @@ require_once 'includes/header.php';
                 <span>
                     https://henrique.pt
                     <a href="https://henrique.pt/" target="_blank" title="<?= translate('external_url', $i18n) ?>">
+                        <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                    </a>
+                </span>
+            </p> -->
+            <p>
+                <?= translate('issues_and_requests', $i18n) ?>:
+                <span>
+                    contact@submate.xyz
+                    <a href= "mailto: contact@submate.xyz" target="_blank"
+                        title="<?= translate('external_url', $i18n) ?>">
                         <i class="fa-solid fa-arrow-up-right-from-square"></i>
                     </a>
                 </span>
