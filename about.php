@@ -49,6 +49,14 @@ require_once 'includes/header.php';
                     </a>
                 </span>
             </p>
+            <p>
+                <span>
+                    KUBO LABS @ 2024
+                    <a href="https://kubolabs.com.au/" target="_blank" title="<?= translate('external_url', $i18n) ?>">
+                        <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                    </a>
+                </span>
+            </p>
             <h3><?= translate('credits', $i18n) ?></h3>
             <p>
                 <?= translate('icons', $i18n) ?>:
