@@ -380,7 +380,8 @@ $headerClass = count($subscriptions) > 0 ? "main-actions" : "main-actions hidden
     if (count($subscriptions) == 0) {
       ?>
       <div class="empty-page">
-        <img src="images/siteimages/empty.png" alt="<?= translate('empty_page', $i18n) ?>" />
+        <!-- <img src="images/siteimages/empty.png" alt="<?= translate('empty_page', $i18n) ?>" /> -->
+        <img src="images/siteimages/empty.gif" alt="<?= translate('empty_page', $i18n) ?>" />
         <p>
           <?= translate('no_subscriptions_yet', $i18n) ?>
         </p>

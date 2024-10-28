@@ -205,7 +205,8 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
         <span clasS="fa-solid fa-minus-circle"></span>
         <?= translate('clear_filters', $i18n) ?>
       </button>
-      <img src="images/siteimages/empty.png" alt="<?= translate('empty_page', $i18n) ?>" />
+      <!-- <img src="images/siteimages/empty.png" alt="<?= translate('empty_page', $i18n) ?>" /> -->
+      <img src="images/siteimages/empty.gif" alt="<?= translate('empty_page', $i18n) ?>" />
     </div>
     <?php
   }
