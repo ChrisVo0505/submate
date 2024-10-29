@@ -1090,7 +1090,7 @@ $userData['currency_symbol'] = "€";
                         onClick="saveCustomColors()" class="buton thin mobile-grow" id="save-colors">
                 </div>
             </div>
-            <?php
+            <!-- <?php
             if (!$demoMode) {
                 ?>
                 <div>
@@ -1108,10 +1108,10 @@ $userData['currency_symbol'] = "€";
                 </div>
                 <?php
             }
-            ?>
+            ?> -->
     </section>
 
-    <section class="account-section">
+    <!-- <section class="account-section">
         <header>
             <h2><?= translate('display_settings', $i18n) ?></h2>
         </header>
@@ -1162,9 +1162,9 @@ $userData['currency_symbol'] = "€";
                 </div>
             </div>
         </div>
-    </section>
+    </section> -->
 
-    <section class="account-section">
+    <!-- <section class="account-section">
         <header>
             <h2><?= translate('experimental_settings', $i18n) ?></h2>
         </header>
@@ -1192,7 +1192,7 @@ $userData['currency_symbol'] = "€";
                 <?= translate('experimental_info', $i18n) ?>
             </p>
         </div>
-    </section>
+    </section> -->
 
 </section>
 <script src="scripts/settings.js?<?= $version ?>"></script>
