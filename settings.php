@@ -307,7 +307,7 @@ $userData['currency_symbol'] = "€";
 
     ?>
 
-    <section class="account-section">
+    <!-- <section class="account-section">
         <header>
             <h2><?= translate('notifications', $i18n) ?></h2>
         </header>
@@ -626,7 +626,7 @@ $userData['currency_symbol'] = "€";
                 </div>
             </section>
         </div>
-    </section>
+    </section> -->
 
     <?php
     $sql = "SELECT * FROM categories WHERE user_id = :userId ORDER BY `order` ASC";
@@ -832,7 +832,7 @@ $userData['currency_symbol'] = "€";
     }
     ?>
 
-    <section class="account-section">
+    <!-- <section class="account-section">
         <header>
             <h2>Fixer API Key</h2>
         </header>
@@ -875,7 +875,7 @@ $userData['currency_symbol'] = "€";
                 </p>
             </div>
         </div>
-    </section>
+    </section> -->
 
     <?php
     $sql = "SELECT * FROM payment_methods WHERE user_id = :userId ORDER BY `order` ASC";
