@@ -307,7 +307,10 @@ $userData['currency_symbol'] = "€";
 
     ?>
 
-    <!-- <section class="account-section">
+<?php
+if ($isAdmin == 1) {
+    ?>
+    <section class="account-section">
         <header>
             <h2><?= translate('notifications', $i18n) ?></h2>
         </header>
@@ -626,7 +629,10 @@ $userData['currency_symbol'] = "€";
                 </div>
             </section>
         </div>
-    </section> -->
+    </section>
+    <?php
+    }
+?>
 
     <?php
     $sql = "SELECT * FROM categories WHERE user_id = :userId ORDER BY `order` ASC";
@@ -832,7 +838,10 @@ $userData['currency_symbol'] = "€";
     }
     ?>
 
-    <!-- <section class="account-section">
+<?php
+    if ($isAdmin == 1) {
+    ?>
+    <section class="account-section">
         <header>
             <h2>Fixer API Key</h2>
         </header>
@@ -875,7 +884,10 @@ $userData['currency_symbol'] = "€";
                 </p>
             </div>
         </div>
-    </section> -->
+    </section>
+    <?php
+    }
+?>
 
     <?php
     $sql = "SELECT * FROM payment_methods WHERE user_id = :userId ORDER BY `order` ASC";
@@ -1090,8 +1102,8 @@ $userData['currency_symbol'] = "€";
                         onClick="saveCustomColors()" class="buton thin mobile-grow" id="save-colors">
                 </div>
             </div>
-            <!-- <?php
-            if (!$demoMode) {
+            <?php
+            if (!$demoMode && $isAdmin == 1) {
                 ?>
                 <div>
                     <h3><?= translate('custom_css', $i18n) ?></h3>
@@ -1108,10 +1120,13 @@ $userData['currency_symbol'] = "€";
                 </div>
                 <?php
             }
-            ?> -->
+            ?>
     </section>
 
-    <!-- <section class="account-section">
+<?php
+    if ($isAdmin == 1) {
+    ?>
+    <section class="account-section">
         <header>
             <h2><?= translate('display_settings', $i18n) ?></h2>
         </header>
@@ -1162,9 +1177,15 @@ $userData['currency_symbol'] = "€";
                 </div>
             </div>
         </div>
-    </section> -->
+    </section>
+    <?php
+    }
+?>
 
-    <!-- <section class="account-section">
+<?php
+    if ($isAdmin == 1) {
+    ?>
+    <section class="account-section">
         <header>
             <h2><?= translate('experimental_settings', $i18n) ?></h2>
         </header>
@@ -1192,7 +1213,10 @@ $userData['currency_symbol'] = "€";
                 <?= translate('experimental_info', $i18n) ?>
             </p>
         </div>
-    </section> -->
+    </section>
+    <?php
+    }
+?>
 
 </section>
 <script src="scripts/settings.js?<?= $version ?>"></script>
