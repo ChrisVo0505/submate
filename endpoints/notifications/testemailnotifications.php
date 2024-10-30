@@ -60,7 +60,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $email = $user['email'];
         $name = $user['username'];
 
-        $mail->setFrom($fromEmail, 'Wallos App');
+        $mail->setFrom($fromEmail, 'Submate App');
         $mail->addAddress($email, $name);
 
         $mail->Subject = translate('wallos_notification', $i18n);

@@ -165,7 +165,7 @@ $userData['currency_symbol'] = "€";
         $notificationsEmail['smtp_port'] = 465;
         $notificationsEmail['encryption'] = "ssl";
         $notificationsEmail['smtp_username'] = "contact@submate.com.au";
-        $notificationsEmail['smtp_password'] = "kimthoa1309";
+        $notificationsEmail['smtp_password'] = "Giantturtle95!!";
         $notificationsEmail['from_email'] = "contact@submate.com.au";
         $notificationsEmail['other_emails'] = "";
     }
