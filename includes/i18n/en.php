@@ -293,7 +293,7 @@ $i18n = [
     "member_removed" => "Member removed",
     // Notifications
     "error_saving_notifications" => "Error saving notifications data.",
-    "wallos_notification" => "Wallos Notification",
+    "wallos_notification" => "Submate Notification",
     "test_notification" => "This is a test notification. If you're seeing this, the configuration is correct.",
     "email_error" => "Error sending email",
     "notification_sent_successfuly" => "Notification sent successfully",

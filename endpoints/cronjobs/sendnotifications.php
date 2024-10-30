@@ -284,7 +284,7 @@ while ($userToNotify = $usersToNotify->fetchArray(SQLITE3_ASSOC)) {
                         }
                     }
 
-                    $mail->Subject = 'Wallos Notification';
+                    $mail->Subject = 'Submate Notification';
                     $mail->Body = $message;
 
                     if ($mail->send()) {
