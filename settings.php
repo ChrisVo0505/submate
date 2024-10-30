@@ -148,14 +148,25 @@ $userData['currency_symbol'] = "€";
         $rowCount++;
     }
 
+    // if ($rowCount == 0) {
+    //     $notificationsEmail['enabled'] = 0;
+    //     $notificationsEmail['smtp_address'] = "";
+    //     $notificationsEmail['smtp_port'] = 587;
+    //     $notificationsEmail['encryption'] = "tls";
+    //     $notificationsEmail['smtp_username'] = "";
+    //     $notificationsEmail['smtp_password'] = "";
+    //     $notificationsEmail['from_email'] = "";
+    //     $notificationsEmail['other_emails'] = "";
+    // }
+
     if ($rowCount == 0) {
-        $notificationsEmail['enabled'] = 0;
-        $notificationsEmail['smtp_address'] = "";
-        $notificationsEmail['smtp_port'] = 587;
-        $notificationsEmail['encryption'] = "tls";
-        $notificationsEmail['smtp_username'] = "";
-        $notificationsEmail['smtp_password'] = "";
-        $notificationsEmail['from_email'] = "";
+        $notificationsEmail['enabled'] = 1;
+        $notificationsEmail['smtp_address'] = "mail.submate.com.au";
+        $notificationsEmail['smtp_port'] = 465;
+        $notificationsEmail['encryption'] = "ssl";
+        $notificationsEmail['smtp_username'] = "contact@submate.com.au";
+        $notificationsEmail['smtp_password'] = "kimthoa1309";
+        $notificationsEmail['from_email'] = "contact@submate.com.au";
         $notificationsEmail['other_emails'] = "";
     }
 
@@ -307,9 +318,9 @@ $userData['currency_symbol'] = "€";
 
     ?>
 
-<?php
+<!-- <?php
 if ($isAdmin == 1) {
-    ?>
+    ?> -->
     <section class="account-section">
         <header>
             <h2><?= translate('notifications', $i18n) ?></h2>
@@ -630,9 +641,9 @@ if ($isAdmin == 1) {
             </section>
         </div>
     </section>
-    <?php
+    <!-- <?php
     }
-?>
+?> -->
 
     <?php
     $sql = "SELECT * FROM categories WHERE user_id = :userId ORDER BY `order` ASC";
