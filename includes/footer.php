@@ -24,8 +24,6 @@
   <div class="progress success"></div>
 </div>
 
-<script data-name="BMC-Widget" data-cfasync="false" src="https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js" data-id="submate" data-description="Support me on Buy me a coffee!" data-message="Hi, I'm Chris. If you like Submate, you can now buy me a coffee ❤️" data-color="#5F7FFF" data-position="Right" data-x_margin="18" data-y_margin="18"></script>
-
 <?php
 if (isset($db)) {
   $db->close();

@@ -244,6 +244,7 @@ $userData['currency_symbol'] = "€";
         $notificationsNtfy['host'] = $row['host'];
         $notificationsNtfy['topic'] = $row['topic'];
         $notificationsNtfy['headers'] = $row['headers'];
+        $notificationsNtfy['ignore_ssl'] = $row['ignore_ssl'];
         $rowCount++;
     }
 
@@ -252,6 +253,7 @@ $userData['currency_symbol'] = "€";
         $notificationsNtfy['host'] = "";
         $notificationsNtfy['topic'] = "";
         $notificationsNtfy['headers'] = "";
+        $notificationsNtfy['ignore_ssl'] = 0;
     }
 
     // Webhook notifications
@@ -267,6 +269,7 @@ $userData['currency_symbol'] = "€";
         $notificationsWebhook['headers'] = $row['headers'];
         $notificationsWebhook['payload'] = $row['payload'];
         $notificationsWebhook['iterator'] = $row['iterator'];
+        $notificationsWebhook['ignore_ssl'] = $row['ignore_ssl'];
         $rowCount++;
     }
 
@@ -294,6 +297,7 @@ $userData['currency_symbol'] = "€";
     ]
 
 }';
+        $notificationsWebhook['ignore_ssl'] = 0;
     }
 
     // Gotify notifications
@@ -307,6 +311,7 @@ $userData['currency_symbol'] = "€";
         $notificationsGotify['enabled'] = $row['enabled'];
         $notificationsGotify['url'] = $row['url'];
         $notificationsGotify['token'] = $row['token'];
+        $notificationsGotify['ignore_ssl'] = $row['ignore_ssl'];
         $rowCount++;
     }
 
@@ -314,6 +319,7 @@ $userData['currency_symbol'] = "€";
         $notificationsGotify['enabled'] = 0;
         $notificationsGotify['url'] = "";
         $notificationsGotify['token'] = "";
+        $notificationsGotify['ignore_ssl'] = 0;
     }
 
     ?>
@@ -474,6 +480,11 @@ if ($isAdmin == 1) {
                             placeholder="<?= translate('token', $i18n) ?>"
                             value="<?= $notificationsGotify['token'] ?>" />
                     </div>
+                    <div class="form-group-inline">
+                        <input type="checkbox" id="gotifyignoressl" name="gotifyignoressl"
+                            <?= $notificationsGotify['ignore_ssl'] ? "checked" : "" ?>>
+                        <label for="gotifyignoressl"><?= translate('ignore_ssl_errors', $i18n) ?></label>
+                    </div>
                     <div class="buttons">
                         <input type="button" class="secondary-button thin mobile-grow"
                             value="<?= translate('test', $i18n) ?>" id="testNotificationsGotify"
@@ -571,6 +582,11 @@ if ($isAdmin == 1) {
                         <textarea class="thin" name="ntfyheaders" id="ntfyheaders"
                             placeholder="<?= translate('custom_headers', $i18n) ?>"><?= $notificationsNtfy['headers'] ?></textarea>
                     </div>
+                    <div class="form-grpup-inline">
+                        <input type="checkbox" id="ntfyignoressl" name="ntfyignoressl"
+                            <?= $notificationsNtfy['ignore_ssl'] ? "checked" : "" ?>>
+                        <label for="ntfyignoressl"><?= translate('ignore_ssl_errors', $i18n) ?></label>
+                    </div>
                     <div class="buttons">
                         <input type="button" class="secondary-button thin mobile-grow"
                             value="<?= translate('test', $i18n) ?>" id="testNotificationsNtfy"
@@ -620,6 +636,11 @@ if ($isAdmin == 1) {
                         <input type="text" name="webhookiteratorkey" id="webhookiteratorkey"
                             placeholder="<?= translate('webhook_iterator_key', $i18n) ?>"
                             value="<?= $notificationsWebhook['iterator'] ?>" />
+                    </div>
+                    <div class="form-group-inline">
+                        <input type="checkbox" id="webhookignoressl" name="webhookignoressl"
+                            <?= $notificationsWebhook['ignore_ssl'] ? "checked" : "" ?>>
+                        <label for="webhookignoressl"><?= translate('ignore_ssl_errors', $i18n) ?></label>
                     </div>
                     <div class="buttons">
                         <input type="button" class="secondary-button thin mobile-grow"
