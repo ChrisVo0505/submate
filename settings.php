@@ -318,6 +318,9 @@ $userData['currency_symbol'] = "€";
 
     ?>
 
+<?php
+if ($isAdmin == 1) {
+    ?>
     <section class="account-section">
         <header>
             <h2><?= translate('notifications', $i18n) ?></h2>
@@ -638,6 +641,9 @@ $userData['currency_symbol'] = "€";
             </section>
         </div>
     </section>
+    <?php
+    }
+?>
 
     <?php
     $sql = "SELECT * FROM categories WHERE user_id = :userId ORDER BY `order` ASC";
