@@ -50,11 +50,11 @@ if ($rows) {
                 $mail->addAddress($user['email']);
                 $mail->isHTML(true);
                 $mail->Subject = 'Wallos - Reset Password';
-                $mail->Body = '<img src="' . $server_url . '/images/siteicons/wallos.png" alt="Logo" />
+                $mail->Body = '<img src="' . $server_url . '/app/images/siteicons/wallos.png" alt="Logo" />
                     <br>
                     A password reset was requested for your account.
                     <br>
-                    Please click the following link to reset your password: <a href="' . $server_url . 'app/passwordreset.php?email=' . $user['email'] . '&token=' . $user['token'] . '">Reset Password</a>';
+                    Please click the following link to reset your password: <a href="' . $server_url . '/app/passwordreset.php?email=' . $user['email'] . '&token=' . $user['token'] . '">Reset Password</a>';
 
                 $mail->send();
 

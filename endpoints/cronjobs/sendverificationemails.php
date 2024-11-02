@@ -57,11 +57,11 @@ if ($rows) {
                 $mail->addAddress($user['email']);
                 $mail->isHTML(true);
                 $mail->Subject = 'Submate - Email Verification';
-                $mail->Body = '<img src="' . $server_url . '/images/icon/logo.png" alt="Logo" />
+                $mail->Body = '<img src="' . $server_url . '/app/images/icon/logo.png" alt="Logo" />
                     <br>
                     Registration on Submate was successful.
                     <br>
-                    Please click the following link to verify your email: <a href="' . $server_url . 'app/verifyemail.php?email=' . $user['email'] . '&token=' . $user['token'] . '">Verify Email</a>';
+                    Please click the following link to verify your email: <a href="' . $server_url . '/app/verifyemail.php?email=' . $user['email'] . '&token=' . $user['token'] . '">Verify Email</a>';
 
                 $mail->send();
 
