@@ -54,7 +54,7 @@ if ($rows) {
                     <br>
                     A password reset was requested for your account.
                     <br>
-                    Please click the following link to reset your password: <a href="' . $server_url . '/passwordreset.php?email=' . $user['email'] . '&token=' . $user['token'] . '">Reset Password</a>';
+                    Please click the following link to reset your password: <a href="' . $server_url . 'app/passwordreset.php?email=' . $user['email'] . '&token=' . $user['token'] . '">Reset Password</a>';
 
                 $mail->send();
 

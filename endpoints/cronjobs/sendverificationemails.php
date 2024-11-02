@@ -61,7 +61,7 @@ if ($rows) {
                     <br>
                     Registration on Submate was successful.
                     <br>
-                    Please click the following link to verify your email: <a href="' . $server_url . '/verifyemail.php?email=' . $user['email'] . '&token=' . $user['token'] . '">Verify Email</a>';
+                    Please click the following link to verify your email: <a href="' . $server_url . 'app/verifyemail.php?email=' . $user['email'] . '&token=' . $user['token'] . '">Verify Email</a>';
 
                 $mail->send();
 
