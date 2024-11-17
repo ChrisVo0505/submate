@@ -332,7 +332,7 @@ $i18n = [
     "smtp_settings" => "Настройки SMTP",
     "smtp_usage_info" => "Будет использоваться для восстановления пароля и других системных писем.",
     "maintenance_tasks" => "Задачи обслуживания",
-    "orphaned_logos" => "Одинокие логотипы",
+    "orphaned_logos" => "Потерянные логотипы",
     "update" => "Обновить",
     "new_version_available" => "Доступна новая версия Wallos",
     "current_version" => "Текущая версия",
@@ -364,6 +364,7 @@ $i18n = [
     "month-10" => "Октябрь",
     "month-11" => "Ноябрь",
     "month-12" => "Декабрь",
+    "total_cost" => "Общая стоимость",
     // TOTP Page
     "insert_totp_code" => "Введите код TOTP",
 

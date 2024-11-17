@@ -194,7 +194,7 @@ function deleteSubscription(event, id) {
       .then(response => {
         if (response.ok) {
           showSuccessMessage(translate('subscription_deleted'));
-          fetchSubscriptions();
+          fetchSubscriptions(null, null, "delete");
           closeAddSubscription();
         } else {
           showErrorMessage(translate('error_deleting_subscription'));
@@ -222,7 +222,7 @@ function cloneSubscription(event, id) {
     .then(data => {
       if (data.success) {
         const id = data.id;
-        fetchSubscriptions(id, event);
+        fetchSubscriptions(id, event, "clone");
         showSuccessMessage(decodeURI(data.message));
       } else {
         showErrorMessage(data.message || translate('error'));
@@ -303,7 +303,7 @@ function closeLogoSearch() {
   logoResults.innerHTML = "";
 }
 
-function fetchSubscriptions(id, event) {
+function fetchSubscriptions(id, event, initiator) {
   const subscriptionsContainer = document.querySelector("#subscriptions");
   let getSubscriptions = "endpoints/subscriptions/get.php";
 
@@ -332,9 +332,18 @@ function fetchSubscriptions(id, event) {
           mainActions.classList.remove("hidden");
         }
       }
-      
-      if (id && event) {
+
+      if (initiator == "clone" && id && event) {
         openEditSubscription(event, id);
+      }
+
+      setSwipeElements();
+      if (initiator === "add") {
+        if (document.getElementsByClassName('subscription').length === 1) {
+          setTimeout(() => {
+            swipeHintAnimation();
+          }, 1000);
+        }
       }
     })
     .catch(error => {
@@ -357,7 +366,7 @@ function setSortOption(sortOption) {
   expirationDate.setDate(expirationDate.getDate() + daysToExpire);
   const cookieValue = encodeURIComponent(sortOption) + '; expires=' + expirationDate.toUTCString();
   document.cookie = 'sortOrder=' + cookieValue + '; SameSite=Strict';
-  fetchSubscriptions();
+  fetchSubscriptions(null, null, "sort");
   toggleSortOptions();
 }
 
@@ -405,8 +414,9 @@ function submitFormData(formData, submitButton, endpoint) {
     .then((data) => {
       if (data.status === "Success") {
         showSuccessMessage(data.message);
-        fetchSubscriptions();
+        fetchSubscriptions(null, null, "add");
         closeAddSubscription();
+
       }
     })
     .catch((error) => {
@@ -491,6 +501,61 @@ function closeSubMenus() {
 
 }
 
+function setSwipeElements() {
+  if (window.mobileNavigation) {
+    const swipeElements = document.querySelectorAll('.subscription');
+
+    swipeElements.forEach((element) => {
+      let startX = 0;
+      let startY = 0;
+      let currentX = 0;
+      let currentY = 0;
+      let translateX = 0;
+      const maxTranslateX = -180;
+
+      element.addEventListener('touchstart', (e) => {
+        startX = e.touches[0].clientX;
+        startY = e.touches[0].clientY;
+        element.style.transition = ''; // Remove transition for smooth dragging
+      });
+
+      element.addEventListener('touchmove', (e) => {
+        currentX = e.touches[0].clientX;
+        currentY = e.touches[0].clientY;
+
+        const diffX = currentX - startX;
+        const diffY = currentY - startY;
+
+        // Check if the swipe is more horizontal than vertical
+        if (Math.abs(diffX) > Math.abs(diffY)) {
+          e.preventDefault(); // Prevent vertical scrolling
+
+          // Only update translateX if swiping within allowed range
+          if (!(translateX === maxTranslateX && diffX < 0)) {
+            translateX = Math.min(0, Math.max(maxTranslateX, diffX)); // Clamp translateX between -180 and 0
+            element.style.transform = `translateX(${translateX}px)`;
+          }
+        }
+      });
+
+      element.addEventListener('touchend', () => {
+        // Check the final swipe position to determine snap behavior
+        if (translateX < maxTranslateX / 2) {
+          // If more than halfway to the left, snap fully open
+          translateX = maxTranslateX;
+        } else {
+          // If swiped less than halfway left or swiped right, snap back to closed
+          translateX = 0;
+        }
+        element.style.transition = 'transform 0.2s ease'; // Smooth snap effect
+        element.style.transform = `translateX(${translateX}px)`;
+        element.style.zIndex = '1';
+      });
+    });
+
+  }
+}
+
 const activeFilters = [];
 activeFilters['categories'] = [];
 activeFilters['members'] = [];
@@ -516,6 +581,9 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     }
   });
+
+  setSwipeElements();
+
 });
 
 function toggleSubMenu(subMenu) {
@@ -556,14 +624,14 @@ document.querySelectorAll('.filter-item').forEach(function (item) {
       }
     } else if (this.hasAttribute('data-memberid')) {
       const memberId = this.getAttribute('data-memberid');
-        if (activeFilters['members'].includes(memberId)) {
-            const memberIndex = activeFilters['members'].indexOf(memberId);
-            activeFilters['members'].splice(memberIndex, 1);
-            this.classList.remove('selected');
-        } else {
-            activeFilters['members'].push(memberId);
-            this.classList.add('selected');
-        }
+      if (activeFilters['members'].includes(memberId)) {
+        const memberIndex = activeFilters['members'].indexOf(memberId);
+        activeFilters['members'].splice(memberIndex, 1);
+        this.classList.remove('selected');
+      } else {
+        activeFilters['members'].push(memberId);
+        this.classList.add('selected');
+      }
     } else if (this.hasAttribute('data-paymentid')) {
       const paymentId = this.getAttribute('data-paymentid');
       if (activeFilters['payments'].includes(paymentId)) {
@@ -594,7 +662,7 @@ document.querySelectorAll('.filter-item').forEach(function (item) {
       document.querySelector('#clear-filters').classList.add('hide');
     }
 
-    fetchSubscriptions();
+    fetchSubscriptions(null, null, "filter");
   });
 });
 
@@ -608,7 +676,7 @@ function clearFilters() {
     item.classList.remove('selected');
   });
   document.querySelector('#clear-filters').classList.add('hide');
-  fetchSubscriptions();
+  fetchSubscriptions(null, null, "clearfilters");
 }
 
 let currentActions = null;
@@ -646,3 +714,33 @@ function expandActions(event, subscriptionId) {
     currentActions = null;
   }
 }
+
+function swipeHintAnimation() {
+  if (window.mobileNavigation && window.matchMedia('(max-width: 768px)').matches) {
+    const maxAnimations = 3;
+    const cookieName = 'swipeHintCount';
+
+    let count = parseInt(getCookie(cookieName)) || 0;
+    if (count < maxAnimations) {
+      const firstElement = document.querySelector('.subscription');
+      if (firstElement) {
+        firstElement.style.transition = 'transform 0.3s ease';
+        firstElement.style.transform = 'translateX(-80px)';
+
+        setTimeout(() => {
+          firstElement.style.transform = 'translateX(0px)';
+          firstElement.style.zIndex = '1';
+        }, 600);
+      }
+
+      count++;
+      document.cookie = `${cookieName}=${count}; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/; SameSite=Strict`;
+    }
+  }
+}
+
+window.addEventListener('load', () => {
+  if (document.querySelector('.subscription')) {
+    swipeHintAnimation();
+  }
+});

@@ -293,7 +293,7 @@ $i18n = [
     "member_removed" => "Member removed",
     // Notifications
     "error_saving_notifications" => "Error saving notifications data.",
-    "wallos_notification" => "Submate Notification",
+    "wallos_notification" => "Wallos Notification",
     "test_notification" => "This is a test notification. If you're seeing this, the configuration is correct.",
     "email_error" => "Error sending email",
     "notification_sent_successfuly" => "Notification sent successfully",
@@ -365,6 +365,7 @@ $i18n = [
     "month-10" => "October",
     "month-11" => "November",
     "month-12" => "December",
+    "total_cost" => "Total Cost",
     // TOTP Page
     "insert_totp_code" => "Insert TOTP code",
 

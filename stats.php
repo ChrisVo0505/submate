@@ -45,6 +45,7 @@ $result = $stmt->execute();
 while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
   $memberId = $row['id'];
   $members[$memberId] = $row;
+  $members[$memberId]['count'] = 0;
   $memberCost[$memberId]['cost'] = 0;
   $memberCost[$memberId]['name'] = $row['name'];
 }
@@ -58,21 +59,23 @@ $result = $stmt->execute();
 while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
   $categoryId = $row['id'];
   $categories[$categoryId] = $row;
+  $categories[$categoryId]['count'] = 0;
   $categoryCost[$categoryId]['cost'] = 0;
   $categoryCost[$categoryId]['name'] = $row['name'];
 }
 
 // Get payment methods
-$paymentMethodCount = array();
+$paymentMethods = array();
 $query = "SELECT * FROM payment_methods WHERE user_id = :userId AND enabled = 1";
 $stmt = $db->prepare($query);
 $stmt->bindValue(':userId', $userId, SQLITE3_INTEGER);
 $result = $stmt->execute();
 while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
   $paymentMethodId = $row['id'];
-  $paymentMethodCount[$paymentMethodId] = $row;
-  $paymentMethodCount[$paymentMethodId]['count'] = 0;
-  $paymentMethodCount[$paymentMethodId]['name'] = $row['name'];
+  $paymentMethods[$paymentMethodId] = $row;
+  $paymentMethods[$paymentMethodId]['count'] = 0;
+  $paymentMethodsCount[$paymentMethodId]['count'] = 0;
+  $paymentMethodsCount[$paymentMethodId]['name'] = $row['name'];
 }
 
 // Get code of main currency to display on statistics
@@ -116,7 +119,7 @@ if (isset($_GET['category'])) {
 if (isset($_GET['payment'])) {
   $conditions[] = "payment_method_id = :payment";
   $params[':payment'] = $_GET['payment'];
-  $statsSubtitleParts[] = $paymentMethodCount[$_GET['payment']]['name'];
+  $statsSubtitleParts[] = $paymentMethodsCount[$_GET['payment']]['name'];
 }
 
 $conditions[] = "user_id = :userId";
@@ -155,8 +158,11 @@ if ($result) {
       }
       $next_payment = $subscription['next_payment'];
       $payerId = $subscription['payer_user_id'];
+      $members[$payerId]['count'] += 1;
       $categoryId = $subscription['category_id'];
+      $categories[$categoryId]['count'] += 1;
       $paymentMethodId = $subscription['payment_method_id'];
+      $paymentMethods[$paymentMethodId]['count'] += 1;
       $inactive = $subscription['inactive'];
       $replacementSubscriptionId = $subscription['replacement_subscription_id'];
       $originalSubscriptionPrice = getPriceConverted($price, $currency, $db, $userId);
@@ -167,7 +173,7 @@ if ($result) {
         $totalCostPerMonth += $price;
         $memberCost[$payerId]['cost'] += $price;
         $categoryCost[$categoryId]['cost'] += $price;
-        $paymentMethodCount[$paymentMethodId]['count'] += 1;
+        $paymentMethodsCount[$paymentMethodId]['count'] += 1;
         if ($price > $mostExpensiveSubscription['price']) {
           $mostExpensiveSubscription['price'] = $price;
           $mostExpensiveSubscription['name'] = $name;
@@ -257,7 +263,6 @@ if ($usesMultipleCurrencies) {
   }
 }
 
-$numberOfElements = 6;
 ?>
 <section class="contain">
   <?php
@@ -290,6 +295,9 @@ $numberOfElements = 6;
             <div class="filtermenu-submenu-content" id="filter-member">
               <?php
               foreach ($members as $member) {
+                if ($member['count'] == 0) {
+                  continue;
+                }
                 $selectedClass = '';
                 if (isset($_GET['member']) && $_GET['member'] == $member['id']) {
                   $selectedClass = 'selected';
@@ -307,12 +315,17 @@ $numberOfElements = 6;
         ?>
         <?php
         if (count($categories) > 1) {
+          // sort categories by order
+          usort($categories, function ($a, $b) {
+            return $a['order'] - $b['order'];
+          });
           ?>
           <div class="filtermenu-submenu">
             <div class="filter-title" onClick="toggleSubMenu('category')"><?= translate("category", $i18n) ?></div>
             <div class="filtermenu-submenu-content" id="filter-category">
               <?php
               foreach ($categories as $category) {
+                if ($category['count'] > 0) {
                 if ($category['name'] == "No category") {
                   $category['name'] = translate("no_category", $i18n);
                 }
@@ -325,6 +338,7 @@ $numberOfElements = 6;
                   <?= $category['name'] ?>
                 </div>
                 <?php
+                }
               }
               ?>
             </div>
@@ -333,13 +347,20 @@ $numberOfElements = 6;
         }
         ?>
         <?php
-        if (count($paymentMethodCount) > 1) {
+        if (count($paymentMethods) > 1) {
+
+          usort($paymentMethods, function ($a, $b) {
+            return $a['order'] <=> $b['order'];
+          });
           ?>
           <div class="filtermenu-submenu">
             <div class="filter-title" onClick="toggleSubMenu('payment')"><?= translate("payment_method", $i18n) ?></div>
             <div class="filtermenu-submenu-content" id="filter-payment">
               <?php
-              foreach ($paymentMethodCount as $payment) {
+              foreach ($paymentMethods as $payment) {
+                if ($payment['count'] == 0) {
+                  continue;
+                }
                 $selectedClass = '';
                 if (isset($_GET['payment']) && $_GET['payment'] == $payment['id']) {
                   $selectedClass = 'selected';
@@ -413,7 +434,6 @@ $numberOfElements = 6;
     </div>
     <?php
     if (isset($budgetUsed)) {
-      $numberOfElements += 1;
       ?>
       <div class="statistic">
         <span><?= number_format($budgetUsed, 2) ?>%</span>
@@ -422,7 +442,6 @@ $numberOfElements = 6;
       <?php
     }
     if (isset($budgetLeft)) {
-      $numberOfElements += 1;
       ?>
       <div class="statistic">
         <span><?= CurrencyFormatter::format($budgetLeft, $code) ?></span>
@@ -431,7 +450,6 @@ $numberOfElements = 6;
       <?php
     }
     if (isset($overBudgetAmount)) {
-      $numberOfElements += 1;
       ?>
       <div class="statistic">
         <span><?= CurrencyFormatter::format($overBudgetAmount, $code) ?></span>
@@ -440,7 +458,6 @@ $numberOfElements = 6;
       <?php
     }
     if ($inactiveSubscriptions > 0) {
-      $numberOfElements += 3;
       ?>
       <div class="statistic">
         <span><?= $inactiveSubscriptions ?></span>
@@ -448,7 +465,6 @@ $numberOfElements = 6;
       </div>
       <?php
       if ($totalSavingsPerMonth > 0) {
-        $numberOfElements += 2;
         ?>
         <div class="statistic">
           <span><?= CurrencyFormatter::format($totalSavingsPerMonth, $code) ?></span>
@@ -460,12 +476,6 @@ $numberOfElements = 6;
         </div>
         <?php
       }
-    }
-
-    if (($numberOfElements + 1) % 3 == 0) {
-      ?>
-      <div class="statistic empty"></div>
-      <?php
     }
     ?>
   </div>
@@ -500,7 +510,7 @@ $numberOfElements = 6;
   $showMemberCostGraph = count($memberDataPoints) > 1;
 
   $paymentMethodDataPoints = [];
-  foreach ($paymentMethodCount as $paymentMethod) {
+  foreach ($paymentMethodsCount as $paymentMethod) {
     if ($paymentMethod['count'] != 0) {
       $paymentMethodDataPoints[] = [
         "label" => $paymentMethod['name'],
@@ -509,8 +519,8 @@ $numberOfElements = 6;
     }
   }
 
-  $showPaymentMethodCountGraph = count($paymentMethodDataPoints) > 1;
-  if ($showCategoryCostGraph || $showMemberCostGraph || $showPaymentMethodCountGraph) {
+  $showpaymentMethodsGraph = count($paymentMethodDataPoints) > 1;
+  if ($showCategoryCostGraph || $showMemberCostGraph || $showpaymentMethodsGraph) {
     ?>
     <h2><?= translate('split_views', $i18n) ?></h2>
     <div class="graphs">
@@ -539,7 +549,7 @@ $numberOfElements = 6;
         <?php
       }
 
-      if ($showPaymentMethodCountGraph) {
+      if ($showpaymentMethodsGraph) {
         ?>
         <section class="graph">
           <header>
@@ -558,14 +568,14 @@ $numberOfElements = 6;
 
 </section>
 <?php
-if ($showCategoryCostGraph || $showMemberCostGraph || $showPaymentMethodCountGraph) {
+if ($showCategoryCostGraph || $showMemberCostGraph || $showpaymentMethodsGraph) {
   ?>
   <script src="scripts/libs/chart.js"></script>
   <script type="text/javascript">
     window.onload = function () {
       loadGraph("categorySplitChart", <?php echo json_encode($categoryDataPoints, JSON_NUMERIC_CHECK); ?>, "<?= $code ?>", <?= $showCategoryCostGraph ?>);
       loadGraph("memberSplitChart", <?php echo json_encode($memberDataPoints, JSON_NUMERIC_CHECK); ?>, "<?= $code ?>", <?= $showMemberCostGraph ?>);
-      loadGraph("paymentMethidSplitChart", <?php echo json_encode($paymentMethodDataPoints, JSON_NUMERIC_CHECK); ?>, "", <?= $showPaymentMethodCountGraph ?>);
+      loadGraph("paymentMethidSplitChart", <?php echo json_encode($paymentMethodDataPoints, JSON_NUMERIC_CHECK); ?>, "", <?= $showpaymentMethodsGraph ?>);
     }
   </script>
   <?php

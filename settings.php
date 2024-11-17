@@ -1237,6 +1237,8 @@ if ($isAdmin == 1) {
                             echo 'checked'; ?>>
                     <label for="mobilenavigation"><?= translate('use_mobile_navigation_bar', $i18n) ?></label>
                 </div>
+                <div class="mobile-nav-image">
+                </div>
             </div>
         </div>
         <div class="settings-notes">

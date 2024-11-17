@@ -121,6 +121,15 @@ if ($result) {
   }
 }
 
+foreach ($subscriptions as $subscription) {
+  $memberId = $subscription['payer_user_id'];
+  $members[$memberId]['count']++;
+  $categoryId = $subscription['category_id'];
+  $categories[$categoryId]['count']++;
+  $paymentMethodId = $subscription['payment_method_id'];
+  $payment_methods[$paymentMethodId]['count']++;
+}
+
 $headerClass = count($subscriptions) > 0 ? "main-actions" : "main-actions hidden";
 ?>
 <style>
@@ -180,6 +189,9 @@ $headerClass = count($subscriptions) > 0 ? "main-actions" : "main-actions hidden
               <div class="filtermenu-submenu-content" id="filter-member">
                 <?php
                 foreach ($members as $member) {
+                  if ($member['count'] == 0) {
+                    continue;
+                  }
                   $selectedClass = '';
                   if (isset($_GET['member'])) {
                     $memberIds = explode(',', $_GET['member']);
@@ -206,6 +218,9 @@ $headerClass = count($subscriptions) > 0 ? "main-actions" : "main-actions hidden
               <div class="filtermenu-submenu-content" id="filter-category">
                 <?php
                 foreach ($categories as $category) {
+                  if ($category['count'] == 0) {
+                    continue;
+                  }
                   if ($category['name'] == "No category") {
                     $category['name'] = translate("no_category", $i18n);
                   }
@@ -236,6 +251,9 @@ $headerClass = count($subscriptions) > 0 ? "main-actions" : "main-actions hidden
               <div class="filtermenu-submenu-content" id="filter-payment">
                 <?php
                 foreach ($payment_methods as $payment) {
+                  if ($payment['count'] == 0) {
+                    continue;
+                  }
                   $selectedClass = '';
                   if (isset($_GET['payment'])) {
                     $paymentIds = explode(',', $_GET['payment']);
@@ -374,7 +392,7 @@ $headerClass = count($subscriptions) > 0 ? "main-actions" : "main-actions hidden
     }
 
     if (isset($print)) {
-      printSubscriptions($print, $sort, $categories, $members, $i18n, $colorTheme, "", $settings['disabledToBottom']);
+      printSubscriptions($print, $sort, $categories, $members, $i18n, $colorTheme, "", $settings['disabledToBottom'], $settings['mobileNavigation']);
     }
     $db->close();
 
@@ -564,12 +582,19 @@ $headerClass = count($subscriptions) > 0 ? "main-actions" : "main-actions hidden
       </div>
     </div>
 
+    <?php
+    $orderedSubscriptions = $subscriptions;
+    usort($orderedSubscriptions, function ($a, $b) {
+      return strnatcmp(strtolower($a['name']), strtolower($b['name']));
+    });
+    ?>
+
     <div class="form-group hide" id="replacement_subscritpion">
       <label for="replacement_subscription_id"><?= translate('replaced_with', $i18n) ?>:</label>
       <select id="replacement_subscription_id" name="replacement_subscription_id">
         <option value="0"><?= translate('none', $i18n) ?></option>
         <?php
-        foreach ($subscriptions as $sub) {
+        foreach ($orderedSubscriptions as $sub) {
           if ($sub['inactive'] == 0) {
             ?>
             <option value="<?= htmlspecialchars($sub['id']) ?>"><?= htmlspecialchars($sub['name']) ?>
