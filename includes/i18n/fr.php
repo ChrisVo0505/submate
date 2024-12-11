@@ -48,6 +48,10 @@ $i18n = [
     "last_added" => "Dernier ajouté",
     "price" => "Prix",
     "next_payment" => "Prochain paiement",
+    "auto_renewal" => "Renouvellement automatique",
+    "automatically_renews" => "Renouvellement automatique",
+    "manual_renewal" => "Renouvellement manuel",
+    "start_date" => "Date de début",
     "inactive" => "Désactiver l'abonnement",
     "replaced_with" => "Remplacé par",
     "none" => "Aucun",
@@ -71,6 +75,7 @@ $i18n = [
     "clear_filters" => "Effacer les filtres",
     "no_matching_subscriptions" => "Aucun abonnement ne correspond à vos critères de recherche",
     "clone" => "Cloner",
+    "renew" => "Renouveler",
     // Formulaire d'abonnement
     "add_subscription" => "Ajouter un abonnement",
     "edit_subscription" => "Modifier l'abonnement",
@@ -365,6 +370,7 @@ $i18n = [
     "month-11" => "Novembre",
     "month-12" => "Décembre",
     "total_cost" => "Coût total",
+    "export_icalendar" => "Exporter en iCalendar",
     // TOTP Page
     "insert_totp_code" => "Veuillez insérer le code TOTP",
 

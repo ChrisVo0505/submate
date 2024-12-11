@@ -48,6 +48,10 @@ $i18n = [
     "last_added" => "Дата создания",
     "price" => "Стоимость",
     "next_payment" => "Следующий платеж",
+    "auto_renewal" => "Автоматическое продление",
+    "automatically_renews" => "Автоматическое продление",
+    "manual_renewal" => "Ручное продление",
+    "start_date" => "Дата начала",
     "inactive" => "Отключить подписку",
     "replaced_with" => "Заменена на",
     "none" => "Нет",
@@ -71,6 +75,7 @@ $i18n = [
     "clear_filters" => "Очистить фильтры",
     "no_matching_subscriptions" => "Нет подходящих подписок",
     "clone" => "Клонировать",
+    "renew" => "Продлить",
     // Subscription form
     "add_subscription" => "Добавить подписку",
     "edit_subscription" => "Изменить подписку",
@@ -365,6 +370,7 @@ $i18n = [
     "month-11" => "Ноябрь",
     "month-12" => "Декабрь",
     "total_cost" => "Общая стоимость",
+    "export_icalendar" => "Экспорт в iCalendar",
     // TOTP Page
     "insert_totp_code" => "Введите код TOTP",
 

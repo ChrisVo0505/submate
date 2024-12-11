@@ -48,6 +48,10 @@ $i18n = [
     "last_added" => "建立時間",
     "price" => "價格",
     "next_payment" => "下次付款時間",
+    "auto_renewal" => "自動續訂",
+    "automatically_renews" => "自動續訂",
+    "manual_renewal" => "手動續訂",
+    "start_date" => "開始日期",
     "inactive" => "停用訂閱",
     "replaced_with" => "替換為",
     "none" => "無",
@@ -71,6 +75,7 @@ $i18n = [
     "clear_filters" => "清除篩選",
     "no_matching_subscriptions" => "沒有符合的訂閱",
     "clone" => "複製",
+    "renew" => "續訂",
     // 訂閱表單
     "add_subscription" => "新增訂閱",
     "edit_subscription" => "編輯訂閱",
@@ -365,6 +370,7 @@ $i18n = [
     "month-11" => "十一月",
     "month-12" => "十二月",
     "total_cost" => "總費用",
+    "export_icalendar" => "匯出 iCalendar",
 
     // TOTP Page
     "insert_totp_code" => "請輸入 TOTP 驗證碼",

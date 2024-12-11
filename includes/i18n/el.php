@@ -48,6 +48,10 @@ $i18n = [
     "last_added" => "Τελευταία προσθήκη",
     "price" => "Τιμή",
     "next_payment" => "Επόμενη πληρωμή",
+    "auto_renewal" => "Αυτόματη ανανέωση",
+    "automatically_renews" => "Ανανεώνεται αυτόματα",
+    "manual_renewal" => "Χειροκίνητη ανανέωση",
+    "start_date" => "Ημερομηνία έναρξης",
     "inactive" => "Απενεργοποίηση συνδρομής",
     "replaced_with" => "Αντικαταστάθηκε με",
     "none" =>  "Κανένα",
@@ -71,6 +75,7 @@ $i18n = [
     "clear_filters" => "Καθαρισμός φίλτρων",
     "no_matching_subscriptions" => "Δεν υπάρχουν συνδρομές που ταιριάζουν με τα φίλτρα σου",
     "clone" => "Κλώνος",
+    "renew" => "Ανανέωση",
     // Subscription form
     "add_subscription" => "Προσθήκη συνδρομής",
     "edit_subscription" => "Επεξεργασία συνδρομής",
@@ -365,6 +370,7 @@ $i18n = [
     "month-11" => "Νοέμβριος",
     "month-12" => "Δεκέμβριος",
     "total_cost" => "Συνολικό κόστος",
+    "export_icalendar" => "Εξαγωγή iCalendar",
     // TOTP Page
     "insert_totp_code" => "Εισάγετε τον κωδικό TOTP",
 

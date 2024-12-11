@@ -48,6 +48,10 @@ $i18n = [
     "last_added" => "Zadnje dodano",
     "price" => "Cena",
     "next_payment" => "Naslednje plačilo",
+    "auto_renewal" => "Samodejno obnavljanje",
+    "automatically_renews" => "Se samodejno obnavlja",
+    "manual_renewal" => "Ročno obnavljanje",
+    "start_date" => "Datum začetka",
     "inactive" => "Onemogoči naročnino",
     "replaced_with" => "Zamenjano z",
     "none" => "brez",
@@ -71,6 +75,7 @@ $i18n = [
     "clear_filters" => "Počisti filter",
     "no_matching_subscriptions" => "Ni ustreznih naročnin",
     "clone" => "Klon",
+    "renew" => "Obnovi",
     // Subscription form
     "add_subscription" => "Dodaj naročnino",
     "edit_subscription" => "Uredi naročnino",
@@ -358,6 +363,7 @@ $i18n = [
     "month-11" => "November",
     "month-12" => "December",
     "total_cost" => "Skupni stroški",
+    "export_icalendar" => "Izvozi iCalendar",
     // TOTP Page
     "insert_totp_code" => "Vnesite kodo TOTP",
 

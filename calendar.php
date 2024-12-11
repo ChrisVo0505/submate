@@ -104,7 +104,24 @@ $yearsToLoad = $calendarYear - $currentYear + 1;
   }
   ?>
   <div class="split-header">
-    <h2>Calendar</h2>
+    <h2>
+      Calendar
+      <button class="button export-ical" onClick="showExportPopup()" title="<?= translate('export_icalendar', $i18n) ?>">
+        <?php require_once 'images/siteicons/svg/export_ical.php'; ?>
+      </button>
+    </h2>
+    <div id="subscriptions_calendar" class="subscription-modal">
+        <div class="modal-header">
+            <h3><?= translate('export_icalendar', $i18n) ?></h3>
+            <span class="fa-solid fa-xmark close-modal" onclick="closePopup()"></span>
+        </div>
+        <div class="form-group-inline">
+            <input id="iCalendarUrl" type="text" value="" readonly>
+            <input type="hidden" id="apiKey" value="<?= $userData['api_key'] ?>">
+            <button onclick="copyToClipboard()" class="button tiny"> <?= translate('copy_to_clipboard', $i18n) ?> </button>
+        </div>
+    </div>
+
     <div class="calendar-nav">
       <?php
       if (!$sameAsCurrent) {
