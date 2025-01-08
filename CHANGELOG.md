@@ -1,5 +1,104 @@
 # Changelog
 
+## [2.42.2](https://github.com/ellite/Wallos/compare/v2.42.1...v2.42.2) (2024-12-21)
+
+
+### Bug Fixes
+
+* version number ([#668](https://github.com/ellite/Wallos/issues/668)) ([683a366](https://github.com/ellite/Wallos/commit/683a3662ff998066f5d8de3be88e4d40d766442a))
+
+## [2.42.1](https://github.com/ellite/Wallos/compare/v2.42.0...v2.42.1) (2024-12-21)
+
+
+### Bug Fixes
+
+* remove debug echo on stats page ([#666](https://github.com/ellite/Wallos/issues/666)) ([d9a2488](https://github.com/ellite/Wallos/commit/d9a24885ffbbdb3c08d9015804eea8cb0fea6cea))
+
+## [2.42.0](https://github.com/ellite/Wallos/compare/v2.41.0...v2.42.0) (2024-12-21)
+
+
+### Features
+
+* add total monthly cost trend graph to the statistics page ([e7185f9](https://github.com/ellite/Wallos/commit/e7185f92578b3103d097b12b8c4313635f263d9f))
+* allow email notifications without authentication ([e7185f9](https://github.com/ellite/Wallos/commit/e7185f92578b3103d097b12b8c4313635f263d9f))
+
+
+### Bug Fixes
+
+* don't update next payment date for disabled subscriptions ([e7185f9](https://github.com/ellite/Wallos/commit/e7185f92578b3103d097b12b8c4313635f263d9f))
+* xss security vulnerability with the avatar selection ([e7185f9](https://github.com/ellite/Wallos/commit/e7185f92578b3103d097b12b8c4313635f263d9f))
+
+## [2.41.0](https://github.com/ellite/Wallos/compare/v2.40.0...v2.41.0) (2024-12-11)
+
+
+### Features
+
+* add payment cycle to csv/json export ([5e6bc90](https://github.com/ellite/Wallos/commit/5e6bc903bcd95580ed58f744977d92c6330b3d9f))
+* run db migration after importing db ([5e6bc90](https://github.com/ellite/Wallos/commit/5e6bc903bcd95580ed58f744977d92c6330b3d9f))
+* run db migration after restoring database ([5e6bc90](https://github.com/ellite/Wallos/commit/5e6bc903bcd95580ed58f744977d92c6330b3d9f))
+* store weekly the total yearly cost of subscriptions ([5e6bc90](https://github.com/ellite/Wallos/commit/5e6bc903bcd95580ed58f744977d92c6330b3d9f))
+
+
+### Bug Fixes
+
+* double encoding in statistics labels ([5e6bc90](https://github.com/ellite/Wallos/commit/5e6bc903bcd95580ed58f744977d92c6330b3d9f))
+
+## [2.40.0](https://github.com/ellite/Wallos/compare/v2.39.1...v2.40.0) (2024-12-10)
+
+
+### Features
+
+* add dutch translation ([#655](https://github.com/ellite/Wallos/issues/655)) ([b5a9880](https://github.com/ellite/Wallos/commit/b5a98806d1f453180ce15724fa198d248177e488))
+
+## [2.39.1](https://github.com/ellite/Wallos/compare/v2.39.0...v2.39.1) (2024-12-06)
+
+
+### Bug Fixes
+
+* svg error on calendar page ([#650](https://github.com/ellite/Wallos/issues/650)) ([8ba79c0](https://github.com/ellite/Wallos/commit/8ba79c0725815c6de8458c74961bbdf23a7d3e9d))
+
+## [2.39.0](https://github.com/ellite/Wallos/compare/v2.38.3...v2.39.0) (2024-12-06)
+
+
+### Features
+
+* add icalendar subscription ([f5ddbff](https://github.com/ellite/Wallos/commit/f5ddbff0c1e0be676604390101c56c04c778f56a))
+
+## [2.38.3](https://github.com/ellite/Wallos/compare/v2.38.2...v2.38.3) (2024-12-06)
+
+
+### Bug Fixes
+
+* vulnerability on the restore database endpoints ([3b2de8b](https://github.com/ellite/Wallos/commit/3b2de8b7c22090afdf7115c25fd8b497a5626ea3))
+
+## [2.38.2](https://github.com/ellite/Wallos/compare/v2.38.1...v2.38.2) (2024-11-19)
+
+
+### Bug Fixes
+
+* logo search positioned below other elements ([#637](https://github.com/ellite/Wallos/issues/637)) ([72f7e57](https://github.com/ellite/Wallos/commit/72f7e5791423c45f910a791b20aafba301d0172f))
+
+## [2.38.1](https://github.com/ellite/Wallos/compare/v2.38.0...v2.38.1) (2024-11-17)
+
+
+### Bug Fixes
+
+* bug introduced on 2.38.0 on the subscriptions dashboard ([#634](https://github.com/ellite/Wallos/issues/634)) ([f63c543](https://github.com/ellite/Wallos/commit/f63c543cdd7512b216004db3b279884dbda87ce4))
+
+## [2.38.0](https://github.com/ellite/Wallos/compare/v2.37.1...v2.38.0) (2024-11-17)
+
+
+### Features
+
+* add option for manual/automatic renewals ([6e44a26](https://github.com/ellite/Wallos/commit/6e44a26703486d0ba30ee6ae8d3c46bfc3c6630a))
+* add some leeway for totp codes ([6e44a26](https://github.com/ellite/Wallos/commit/6e44a26703486d0ba30ee6ae8d3c46bfc3c6630a))
+* add start date to subscriptions ([6e44a26](https://github.com/ellite/Wallos/commit/6e44a26703486d0ba30ee6ae8d3c46bfc3c6630a))
+
+
+### Bug Fixes
+
+* layout issue with subscriptions list during search ([6e44a26](https://github.com/ellite/Wallos/commit/6e44a26703486d0ba30ee6ae8d3c46bfc3c6630a))
+
 ## [2.37.1](https://github.com/ellite/Wallos/compare/v2.37.0...v2.37.1) (2024-11-15)
 
 

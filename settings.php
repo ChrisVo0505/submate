@@ -22,7 +22,7 @@ $userData['currency_symbol'] = "€";
     }
 </style>
 <section class="contain settings">
-    
+
     <section class="account-section">
         <header>
             <h2><?= translate('monthly_budget', $i18n) ?></h2>
@@ -372,6 +372,11 @@ if ($isAdmin == 1) {
                             class="one-third" value="<?= $notificationsEmail['smtp_port'] ?>" />
                     </div>
                     <div class="form-group-inline">
+                        <div>
+                            <input type="radio" name="encryption" id="encryptionnone" value="none"
+                                <?= $notificationsEmail['encryption'] == "none" ? "checked" : "" ?> />
+                            <label for="encryptionnone"><?= translate('none', $i18n) ?></label>
+                        </div>
                         <div>
                             <input type="radio" name="encryption" id="encryptiontls" value="tls"
                                 <?= $notificationsEmail['encryption'] == "tls" ? "checked" : "" ?> />
