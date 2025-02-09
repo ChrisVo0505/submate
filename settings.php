@@ -10,7 +10,7 @@ while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
     $currencyId = $row['id'];
     $currencies[$currencyId] = $row;
 }
-$userData['currency_symbol'] = "€";
+$userData['currency_symbol'] = $currencies[$main_currency]['symbol'];
 
 ?>
 
@@ -336,13 +336,18 @@ if ($isAdmin == 1) {
                 <label for="days"><?= translate('notify_me', $i18n) ?>:</label>
                 <div class="form-group-inline">
                     <select name="days" id="days">
+                        <option value="0" <?= $notifications['days'] == 0 ? "selected" : "" ?>>
+                            <?= translate('on_due_date', $i18n) ?>
+                        </option>
+                        <option value="1" <?= $notifications['days'] == 1 ? "selected" : "" ?>>
+                            1 <?= translate('day_before', $i18n) ?>
+                        </option>
                         <?php
-                        for ($i = 1; $i <= 7; $i++) {
-                            $dayText = $i > 1 ? translate('days_before', $i18n) : translate('day_before', $i18n);
+                        for ($i = 2; $i <= 7; $i++) {
                             $selected = $i == $notifications['days'] ? "selected" : "";
                             ?>
                             <option value="<?= $i ?>" <?= $selected ?>>
-                                <?= $i ?>     <?= $dayText ?>
+                                <?= $i ?>     <?= translate('day_before', $i18n) ?>
                             </option>
                             <?php
                         }
@@ -1194,6 +1199,25 @@ if ($isAdmin == 1) {
                         onChange="setShowOriginalPrice()" <?php if ($settings['show_original_price'])
                             echo 'checked'; ?>>
                     <label for="showoriginalprice"><?= translate('show_original_price', $i18n) ?></label>
+                </div>
+            </div>
+            <h3><?= translate('experience', $i18n) ?></h3>
+            <div>
+                <div class="form-group-inline">
+                    <input type="checkbox" id="mobilenavigation" name="mobilenavigation"
+                        onChange="setMobileNavigation()" <?php if ($settings['mobile_nav'])
+                            echo 'checked'; ?>>
+                    <label for="mobilenavigation"><?= translate('use_mobile_navigation_bar', $i18n) ?></label>
+                </div>
+                <div class="mobile-nav-image">
+                </div>
+            </div>
+            <div>
+                <div class="form-group-inline">
+                    <input type="checkbox" id="showsubscriptionprogress" name="showsubscriptionprogress"
+                        onChange="setShowSubscriptionProgress()" <?php if ($settings['show_subscription_progress'])
+                            echo 'checked'; ?>>
+                    <label for="showsubscriptionprogress"><?= translate('show_subscription_progress', $i18n) ?></label>
                 </div>
             </div>
             <h3><?= translate('disabled_subscriptions', $i18n) ?></h3>

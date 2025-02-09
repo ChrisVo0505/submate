@@ -414,6 +414,22 @@ button.mobile-action-renew {
   display: none;
 }
 
+.subscription-container>.subscription-progress-container {
+  position: absolute;
+  bottom: 0px;
+  left: 8px;
+  right: 8px;
+  height: 3px;
+  z-index: 1;
+} 
+
+.subscription-container>.subscription-progress-container>.subscription-progress {
+  height: 3px;
+  background-color: var(--accent-color);
+  display: block;
+  position: absolute;
+}
+
 .subscription.inactive {
   background-color: #FFF;
   color: rgba(100, 100, 100, 0.6);

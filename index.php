@@ -363,6 +363,7 @@ $headerClass = count($subscriptions) > 0 ? "main-actions" : "main-actions hidden
       $print[$id]['category_id'] = $subscription['category_id'];
       $print[$id]['payer_user_id'] = $subscription['payer_user_id'];
       $print[$id]['price'] = floatval($subscription['price']);
+      $print[$id]['progress'] = getSubscriptionProgress($cycle, $frequency, $subscription['next_payment']);
       $print[$id]['inactive'] = $subscription['inactive'];
       $print[$id]['url'] = $subscription['url'];
       $print[$id]['notes'] = $subscription['notes'];
@@ -393,7 +394,7 @@ $headerClass = count($subscriptions) > 0 ? "main-actions" : "main-actions hidden
     }
 
     if (isset($print)) {
-      printSubscriptions($print, $sort, $categories, $members, $i18n, $colorTheme, "", $settings['disabledToBottom'], $settings['mobileNavigation']);
+      printSubscriptions($print, $sort, $categories, $members, $i18n, $colorTheme, "", $settings['disabledToBottom'], $settings['mobileNavigation'], $settings['showSubscriptionProgress']);
     }
     $db->close();
 
@@ -566,7 +567,8 @@ $headerClass = count($subscriptions) > 0 ? "main-actions" : "main-actions hidden
         <div class="split66 mobile-split-50">
           <label for="notify_days_before"><?= translate('notify_me', $i18n) ?></label>
           <select id="notify_days_before" name="notify_days_before" disabled>
-            <option value="0"><?= translate('default_value_from_settings', $i18n) ?></option>
+            <option value="-1"><?= translate('default_value_from_settings', $i18n) ?></option>
+            <option value="0"><?= translate('on_due_date', $i18n) ?></option>
             <option value="1">1 <?= translate('day_before', $i18n) ?></option>
             <?php
             for ($i = 2; $i <= 90; $i++) {

@@ -105,24 +105,6 @@ require_once 'includes/header.php';
                     </a>
                 </span>
             </p>
-            <p>
-                <?= translate('the_author', $i18n) ?>:
-                <span>
-                    https://henrique.pt
-                    <a href="https://henrique.pt/" target="_blank" title="<?= translate('external_url', $i18n) ?>">
-                        <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                    </a>
-                </span>
-            </p>
-            <p><?= translate('license', $i18n) ?>:
-                <span>
-                    GPLv3
-                    <a href="https://www.gnu.org/licenses/gpl-3.0.en.html" target="_blank"
-                        title="<?= translate('external_url', $i18n) ?>">
-                        <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                    </a>
-                </span>
-            </p>
         </div>
     </section>
 

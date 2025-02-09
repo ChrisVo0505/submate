@@ -157,6 +157,7 @@ $i18n = [
     "enable_email_notifications" => "電子メール通知を有効にする",
     "notify_me" => "通知",
     "day_before" => "日前",
+    "on_due_date" => "支払い日",
     "days_before" => "日前",
     "smtp_address" => "SMTPアドレス",
     "port" => "ポート番号",
@@ -166,6 +167,7 @@ $i18n = [
     "smtp_password" => "SMTPパスワード",
     "from_email" => "送信元アドレス (オプション)",
     "send_to_other_emails" => "通知を以下のメールアドレスにも送信する（区切りには ; を使用）:",
+    "other_emails_placeholder" => "user@domain.com;test@user.com",
     "smtp_info" => "SMTPパスワードは平文で送信および保存されます。セキュリティのため専用のアカウントを作成してください。",
     "telegram" => "Telegram",
     "telegram_bot_token" => "Telegramボットトークン",
@@ -223,6 +225,8 @@ $i18n = [
     "calculate_monthly_price" => "すべての定期購入の月額料金を計算して表示する",
     "convert_prices" => "常にメイン通貨で価格を換算して表示する (遅い)",
     "show_original_price" => "変換や計算が行われるときに元の価格も表示する",
+    "experience" => "体験",
+    "show_subscription_progress" => "定期購入の進捗を表示する",
     "disabled_subscriptions" => "無効な定期購入",
     "hide_disabled_subscriptions" => "無効な定期購入を非表示にする",
     "show_disabled_subscriptions_at_the_bottom" => "無効な定期購入を一番下に表示する",
@@ -252,6 +256,13 @@ $i18n = [
     "backup" => "バックアップ",
     "restore" => "リストア",
     "restore_info" => "データベースをリストアすると、現在のデータがすべて上書きされます。リストア後はサインアウトされます。",
+    "account" => "アカウント",
+    "export_subscriptions" => "定期購入をエクスポート",
+    "export_as_json" => "JSONとしてエクスポート",
+    "export_as_csv" => "CSVとしてエクスポート",
+    "danger_zone" => "危険地帯",
+    "delete_account" => "アカウントを削除",
+    "delete_account_info" => "アカウントを削除するとすべてのサブスクリプションと設定も削除されます。",
     // Filters menu
     "filter" => "フィルタ",
     "clear" => "クリア",
@@ -367,6 +378,7 @@ $i18n = [
     "export_icalendar" => "iCalendarをエクスポート",
     // TOTP Page
     "insert_totp_code" => "TOTPコードを入力してください",
+    
 
 ];
 

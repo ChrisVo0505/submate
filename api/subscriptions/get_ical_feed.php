@@ -3,7 +3,7 @@
 This API Endpoint accepts both POST and GET requests.
 It receives the following parameters:
 - convert_currency: whether to convert to the main currency (boolean) default false.
-- apiKey: the API key of the user.
+- api_key: the API key of the user.
 
 It returns a downloadable VCAL file with the active subscriptions
 */
@@ -111,7 +111,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" || $_SERVER["REQUEST_METHOD"] === "GET
         $paymentMethods[$paymentMethod['id']] = $paymentMethod['name'];
     }
 
-    $sql = "SELECT * FROM subscriptions WHERE user_id = :userId ORDER BY next_payment ASC";
+    $sql = "SELECT * FROM subscriptions WHERE user_id = :userId AND inactive = 0 ORDER BY next_payment ASC";
 
     $stmt = $db->prepare($sql);
     $stmt->bindValue(':userId', $userId, SQLITE3_INTEGER);
@@ -165,8 +165,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" || $_SERVER["REQUEST_METHOD"] === "GET
         $uid = uniqid();
         $summary = "Wallos: " . $subscription['name'];
         $description = "Price: {$subscription['currency']}{$subscription['price']}\\nCategory: {$subscription['category']}\\nPayment Method: {$subscription['payment_method']}\\nPayer: {$subscription['payer_user']}\\nNotes: {$subscription['notes']}";
-        $dtstart = (new DateTime($subscription['next_payment']))->format('Ymd\THis\Z');
-        $dtend = (new DateTime($subscription['next_payment']))->modify('+1 hour')->format('Ymd\THis\Z');
+        $dtstart = (new DateTime($subscription['next_payment']))->format('Ymd');
+        $dtend = (new DateTime($subscription['next_payment']))->format('Ymd');
         $location = isset($subscription['url']) ? $subscription['url'] : '';
         $alarm_trigger = '-' . $subscription['trigger'] . 'D';
 
