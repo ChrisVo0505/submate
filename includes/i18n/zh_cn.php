@@ -52,6 +52,7 @@ $i18n = [
     "last_added" => "创建时间",
     "price" => "价格",
     "next_payment" => "下次支付时间",
+    "renewal_type" => "续订类型",
     "auto_renewal" => "自动续订",
     "automatically_renews" => "自动续订",
     "manual_renewal" => "手动续订",
@@ -123,11 +124,14 @@ $i18n = [
     "household_split" => "家庭视图",
     "payment_method_split" => "支付方式视图",
     "total_cost_trend" => "总费用趋势",
+    "cost_vs_budget" => "费用与预算",
 
     // 关于页面
     "about_and_credits" => "关于和鸣谢",
     "credits" => "鸣谢",
     "license" => "许可证",
+    "release_notes" => "发布说明",
+    "update_available" => "可用更新",
     "issues_and_requests" => "问题反馈与功能请求",
     "the_author" => "作者",
     "icons" => "图标",
@@ -184,7 +188,8 @@ $i18n = [
     "request_method" => "请求方法",
     "custom_headers" => "自定义标头",
     "webhook_payload" => "Webhook 负载",
-    "webhook_iterator_key" => "替换 {{subscriptions}} 为键名",
+    "payment_notifications_payload" => "付款通知负载",
+    "cancelation_notification_payload" => "取消通知负载",
     "variables_available" => "可用变量",
     "gotify" => "Gotify",
     "token" => "令牌",
@@ -395,6 +400,7 @@ $i18n = [
     "month-12" => "十二月",
     "total_cost" => "总费用",
     "export_icalendar" => "导出 iCalendar",
+    "over_budget_warning" => "您超出预算",
 
     // TOTP Page
     "insert_totp_code" => "请输入 TOTP 代码",

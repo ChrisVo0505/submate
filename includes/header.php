@@ -83,6 +83,7 @@ $mobileNavigation = $settings['mobile_nav'] ? "mobile-navigation" : "";
   <title>Submate - Manage Subscriptions</title>
   <meta name="apple-mobile-web-app-title" content="Wallos">
   <meta name="theme-color" content="<?= $theme == "light" ? "#FFFFFF" : "#222222" ?>" id="theme-color" />
+  <meta name="referrer" content="no-referrer">
   <link rel="icon" type="image/png" href="images/icon/favicon.ico" sizes="16x16">
   <link rel="apple-touch-icon" href="images/icon/apple-touch-icon.png">
   <link rel="apple-touch-icon" sizes="152x152" href="images/icon/apple-touch-icon-152.png">
@@ -225,23 +226,23 @@ $mobileNavigation = $settings['mobile_nav'] ? "mobile-navigation" : "";
     <nav class="mobile-nav">
         <a href="." class="nav-link <?= $subscriptionsClass ?>" title="<?= translate('subscriptions', $i18n) ?>">
           <?php include "images/siteicons/svg/mobile-menu/home.php"; ?>
-          Home
+          <?= translate('subscriptions', $i18n) ?>
         </a>
         <a href="calendar.php" class="nav-link <?= $calendarClass ?>" title="<?= translate('calendar', $i18n) ?>">
           <?php include "images/siteicons/svg/mobile-menu/calendar.php"; ?>
-          Calendar
+          <?= translate('calendar', $i18n) ?>
         </a>
         <a href="stats.php" class="nav-link <?= $statsClass ?>" title="<?= translate('stats', $i18n) ?>">
           <?php include "images/siteicons/svg/mobile-menu/statistics.php"; ?>
-          Statistics
+          <?= translate('stats', $i18n) ?>
         </a>
         <a href="settings.php" class="nav-link <?= $settingsClass ?>" title="<?= translate('settings', $i18n) ?>">
           <?php include "images/siteicons/svg/mobile-menu/settings.php"; ?>
-          Settings
+          <?= translate('settings', $i18n) ?>
         </a>
         <a href="profile.php" class="nav-link <?= $profileClass ?>" title="<?= translate('profile', $i18n) ?>">
           <?php include "images/siteicons/svg/mobile-menu/profile.php"; ?>
-          Profile
+          <?= translate('profile', $i18n) ?>
         </a>
     </nav>
     <?php

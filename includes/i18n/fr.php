@@ -48,6 +48,7 @@ $i18n = [
     "last_added" => "Dernier ajouté",
     "price" => "Prix",
     "next_payment" => "Prochain paiement",
+    "renewal_type" => "Type de renouvellement",
     "auto_renewal" => "Renouvellement automatique",
     "automatically_renews" => "Renouvellement automatique",
     "manual_renewal" => "Renouvellement manuel",
@@ -117,11 +118,13 @@ $i18n = [
     "household_split" => "Répartition du ménage",
     "payment_method_split" => "Répartition par méthode de paiement",
     "total_cost_trend" => "Tendance du coût total",
-
+    "cost_vs_budget" => "Coût par rapport au budget",
     // Page À propos
     "about_and_credits" => "À propos et crédits",
     "credits" => "Crédits",
     "license" => "Licence",
+    "release_notes" => "Notes de version",
+    "update_available" => "Mise à jour disponible",
     "issues_and_requests" => "Problèmes et demandes",
     "the_author" => "L'auteur",
     "icons" => "Icônes",
@@ -177,7 +180,8 @@ $i18n = [
     "request_method" => "Méthode de requête",
     "custom_headers" => "En-têtes personnalisés",
     "webhook_payload" => "Charge utile du webhook",
-    "webhook_iterator_key" => "Remplacer {{subscriptions}} par le nom de la clé",
+    "payment_notifications_payload" => "Charge utile de la notification de paiement",
+    "cancelation_notification_payload" => "Charge utile de la notification d'annulation",
     "variables_available" => "Variables disponibles",
     "gotify" => "Gotify",
     "token" => "Jeton",
@@ -376,6 +380,7 @@ $i18n = [
     "month-12" => "Décembre",
     "total_cost" => "Coût total",
     "export_icalendar" => "Exporter en iCalendar",
+    "over_budget_warning" => "Vous avez dépassé votre budget",
     // TOTP Page
     "insert_totp_code" => "Veuillez insérer le code TOTP",
 

@@ -16,7 +16,8 @@ function getBillingCycle($cycle, $frequency, $i18n)
     }
 }
 
-function getSubscriptionProgress($cycle, $frequency, $next_payment) {
+function getSubscriptionProgress($cycle, $frequency, $next_payment)
+{
     $nextPaymentDate = new DateTime($next_payment);
     $currentDate = new DateTime('now');
 
@@ -31,7 +32,7 @@ function getSubscriptionProgress($cycle, $frequency, $next_payment) {
         $paymentCycleDays = 365 * $frequency;
     }
 
-    $lastPaymentDate = clone $nextPaymentDate; 
+    $lastPaymentDate = clone $nextPaymentDate;
     $lastPaymentDate->modify("-$paymentCycleDays days");
 
     $totalCycleDays = $lastPaymentDate->diff($nextPaymentDate)->days;
@@ -80,7 +81,57 @@ function getPriceConverted($price, $currency, $database)
     }
 }
 
-function printSubscriptions($subscriptions, $sort, $categories, $members, $i18n, $colorTheme, $imagePath, $disabledToBottom, $mobileNavigation, $showSubscriptionProgress)
+function formatPrice($price, $currencyCode, $currencies)
+{
+    $formattedPrice = CurrencyFormatter::format($price, $currencyCode);
+    if (strstr($formattedPrice, $currencyCode)) {
+        $symbol = $currencyCode;
+        
+        foreach ($currencies as $currency) {
+
+            if ($currency['code'] === $currencyCode) {
+                if ($currency['symbol'] != "") {
+                    $symbol = $currency['symbol'];
+                }
+                break;
+            }
+        }
+        $formattedPrice = str_replace($currencyCode, $symbol, $formattedPrice);
+    }
+
+    return $formattedPrice;
+}
+
+function formatDate($date, $lang = 'en')
+{
+    $currentYear = date('Y');
+    $dateYear = date('Y', strtotime($date));
+
+    // Determine the date format based on whether the year matches the current year
+    $dateFormat = ($currentYear == $dateYear) ? 'MMM d' : 'MMM yyyy';
+
+    // Validate the locale and fallback to 'en' if unsupported
+    if (!in_array($lang, ResourceBundle::getLocales(''))) {
+        $lang = 'en'; // Fallback to English
+    }
+
+    // Create an IntlDateFormatter instance for the specified language
+    $formatter = new IntlDateFormatter(
+        $lang,
+        IntlDateFormatter::SHORT,
+        IntlDateFormatter::NONE,
+        null,
+        null,
+        $dateFormat
+    );
+
+    // Format the date
+    $formattedDate = $formatter->format(new DateTime($date));
+
+    return $formattedDate;
+}
+
+function printSubscriptions($subscriptions, $sort, $categories, $members, $i18n, $colorTheme, $imagePath, $disabledToBottom, $mobileNavigation, $showSubscriptionProgress, $currencies, $lang)
 {
     if ($sort === "price") {
         usort($subscriptions, function ($a, $b) {
@@ -167,15 +218,21 @@ function printSubscriptions($subscriptions, $sort, $categories, $members, $i18n,
             if ($subscription['auto_renew'] != 1) {
                 $subscriptionExtraClasses .= " manual";
             }
+
+            $hasLogo = false;
+            if ($subscription['logo'] != "") {
+                $hasLogo = true;
+            }
+
             ?>
 
             <div class="subscription<?= $subscriptionExtraClasses ?>"
                 onClick="toggleOpenSubscription(<?= $subscription['id'] ?>)" data-id="<?= $subscription['id'] ?>"
                 data-name="<?= $subscription['name'] ?>">
                 <div class="subscription-main">
-                    <span class="logo">
+                    <span class="logo <?= !$hasLogo ? 'hideOnMobile' : '' ?>">
                         <?php
-                        if ($subscription['logo'] != "") {
+                        if ($hasLogo) {
                             ?>
                             <img src="<?= $subscription['logo'] ?>">
                             <?php
@@ -184,7 +241,7 @@ function printSubscriptions($subscriptions, $sort, $categories, $members, $i18n,
                         }
                         ?>
                     </span>
-                    <span class="name"><?= $subscription['name'] ?></span>
+                    <span class="name <?= $hasLogo ? 'hideOnMobile' : '' ?>"><?= $subscription['name'] ?></span>
                     <span class="cycle"
                         title="<?= $subscription['auto_renew'] ? translate("automatically_renews", $i18n) : translate("manual_renewal", $i18n) ?>">
                         <?php
@@ -196,23 +253,24 @@ function printSubscriptions($subscriptions, $sort, $categories, $members, $i18n,
                         ?>
                         <?= $subscription['billing_cycle'] ?>
                     </span>
-                    <span class="next"><?= $subscription['next_payment'] ?></span>
+                    <span class="next"><?= formatDate($subscription['next_payment'], $lang) ?></span>
                     <span class="price">
-                        <span class="payment_method">
-                            <img src="<?= $subscription['payment_method_icon'] ?>"
-                                title="<?= translate('payment_method', $i18n) ?>: <?= $subscription['payment_method_name'] ?>" />
-                        </span>
                         <span class="value">
-                            <?= CurrencyFormatter::format($subscription['price'], $subscription['currency_code']) ?>
+                            <?= formatPrice($subscription['price'], $subscription['currency_code'], $currencies) ?>
                             <?php
                             if (isset($subscription['original_price']) && $subscription['original_price'] != $subscription['price']) {
                                 ?>
                                 <span
-                                    class="original_price">(<?= CurrencyFormatter::format($subscription['original_price'], $subscription['original_currency_code']) ?>)</span>
+                                    class="original_price">(<?= formatPrice($subscription['original_price'], $subscription['original_currency_code'], $currencies) ?>)</span>
                                 <?php
                             }
                             ?>
                         </span>
+
+                    </span>
+                    <span class="payment_method">
+                        <img src="<?= $subscription['payment_method_icon'] ?>"
+                            title="<?= translate('payment_method', $i18n) ?>: <?= $subscription['payment_method_name'] ?>" />
                     </span>
                     <?php
                     $desktopMenuButtonClass = ""; {
@@ -268,8 +326,8 @@ function printSubscriptions($subscriptions, $sort, $categories, $members, $i18n,
                             $url = "https://" . $url;
                         }
                         ?>
-                        <span class="url" title="<?= translate('external_url', $i18n) ?>"><a href="<?= $url ?>"
-                                target="_blank"><?php include $imagePath . "images/siteicons/svg/web.php"; ?></a></span>
+                        <span class="url" title="<?= translate('external_url', $i18n) ?>"><a href="<?= $url ?>" target="_blank"
+                                rel="noreferrer"><?php include $imagePath . "images/siteicons/svg/web.php"; ?></a></span>
                         <?php
                     }
                     ?>

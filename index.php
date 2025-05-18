@@ -21,7 +21,7 @@ if (isset($_COOKIE['sortOrder']) && $_COOKIE['sortOrder'] != "") {
 }
 
 $sortOrder = $sort;
-$allowedSortCriteria = ['name', 'id', 'next_payment', 'price', 'payer_user_id', 'category_id', 'payment_method_id', 'inactive', 'alphanumeric'];
+$allowedSortCriteria = ['name', 'id', 'next_payment', 'price', 'payer_user_id', 'category_id', 'payment_method_id', 'inactive', 'alphanumeric', 'renewal_type'];
 $order = ($sort == "price" || $sort == "id") ? "DESC" : "ASC";
 
 if ($sort == "alphanumeric") {
@@ -30,6 +30,10 @@ if ($sort == "alphanumeric") {
 
 if (!in_array($sort, $allowedSortCriteria)) {
   $sort = "next_payment";
+}
+
+if ($sort == "renewal_type") {
+  $sort = "auto_renew";
 }
 
 $sql = "SELECT * FROM subscriptions WHERE user_id = :userId";
@@ -106,7 +110,6 @@ $sql .= " ORDER BY " . implode(", ", $orderByClauses);
 $stmt = $db->prepare($sql);
 $stmt->bindValue(':userId', $userId, SQLITE3_INTEGER);
 
-
 if (!empty($params)) {
   foreach ($params as $key => $value) {
     $stmt->bindValue($key, $value, SQLITE3_INTEGER);
@@ -130,6 +133,18 @@ foreach ($subscriptions as $subscription) {
   $payment_methods[$paymentMethodId]['count']++;
 }
 
+if ($sortOrder == "category_id") {
+  usort($subscriptions, function ($a, $b) use ($categories) {
+    return $categories[$a['category_id']]['order'] - $categories[$b['category_id']]['order'];
+  });
+}
+
+if ($sortOrder == "payment_method_id") {
+  usort($subscriptions, function ($a, $b) use ($payment_methods) {
+    return $payment_methods[$a['payment_method_id']]['order'] - $payment_methods[$b['payment_method_id']]['order'];
+  });
+}
+
 $headerClass = count($subscriptions) > 0 ? "main-actions" : "main-actions hidden";
 ?>
 <style>
@@ -146,7 +161,11 @@ $headerClass = count($subscriptions) > 0 ? "main-actions" : "main-actions hidden
       if (version_compare($version, $latestVersion) == -1) {
         ?>
         <div class="update-banner">
-          <?= translate('new_version_available', $i18n) ?>: <span><?= $latestVersion ?></span>
+          <?= translate('new_version_available', $i18n) ?>:
+          <span><a href="https://github.com/ellite/Wallos/releases/tag/<?= htmlspecialchars($latestVersion) ?>"
+              target="_blank" rel="noreferer">
+              <?= htmlspecialchars($latestVersion) ?>
+            </a></span>
         </div>
         <?php
       }
@@ -180,119 +199,7 @@ $headerClass = count($subscriptions) > 0 ? "main-actions" : "main-actions hidden
         <button class="button secondary-button" id="filtermenu-button" title="<?= translate("filter", $i18n) ?>">
           <i class="fa-solid fa-filter"></i>
         </button>
-        <div class="filtermenu-content">
-          <?php
-          if (count($members) > 1) {
-            ?>
-            <div class="filtermenu-submenu">
-              <div class="filter-title" onClick="toggleSubMenu('member')"><?= translate("member", $i18n) ?></div>
-              <div class="filtermenu-submenu-content" id="filter-member">
-                <?php
-                foreach ($members as $member) {
-                  if ($member['count'] == 0) {
-                    continue;
-                  }
-                  $selectedClass = '';
-                  if (isset($_GET['member'])) {
-                    $memberIds = explode(',', $_GET['member']);
-                    if (in_array($member['id'], $memberIds)) {
-                      $selectedClass = 'selected';
-                    }
-                  }
-                  ?>
-                  <div class="filter-item <?= $selectedClass ?>" data-memberid="<?= $member['id'] ?>"><?= $member['name'] ?>
-                  </div>
-                  <?php
-                }
-                ?>
-              </div>
-            </div>
-            <?php
-          }
-          ?>
-          <?php
-          if (count($categories) > 1) {
-            ?>
-            <div class="filtermenu-submenu">
-              <div class="filter-title" onClick="toggleSubMenu('category')"><?= translate("category", $i18n) ?></div>
-              <div class="filtermenu-submenu-content" id="filter-category">
-                <?php
-                foreach ($categories as $category) {
-                  if ($category['count'] == 0) {
-                    continue;
-                  }
-                  if ($category['name'] == "No category") {
-                    $category['name'] = translate("no_category", $i18n);
-                  }
-                  $selectedClass = '';
-                  if (isset($_GET['category'])) {
-                    $categoryIds = explode(',', $_GET['category']);
-                    if (in_array($category['id'], $categoryIds)) {
-                      $selectedClass = 'selected';
-                    }
-                  }
-                  ?>
-                  <div class="filter-item <?= $selectedClass ?>" data-categoryid="<?= $category['id'] ?>">
-                    <?= $category['name'] ?>
-                  </div>
-                  <?php
-                }
-                ?>
-              </div>
-            </div>
-            <?php
-          }
-          ?>
-          <?php
-          if (count($payment_methods) > 1) {
-            ?>
-            <div class="filtermenu-submenu">
-              <div class="filter-title" onClick="toggleSubMenu('payment')"><?= translate("payment_method", $i18n) ?></div>
-              <div class="filtermenu-submenu-content" id="filter-payment">
-                <?php
-                foreach ($payment_methods as $payment) {
-                  if ($payment['count'] == 0) {
-                    continue;
-                  }
-                  $selectedClass = '';
-                  if (isset($_GET['payment'])) {
-                    $paymentIds = explode(',', $_GET['payment']);
-                    if (in_array($payment['id'], $paymentIds)) {
-                      $selectedClass = 'selected';
-                    }
-                  }
-                  ?>
-                  <div class="filter-item <?= $selectedClass ?>" data-paymentid="<?= $payment['id'] ?>">
-                    <?= $payment['name'] ?>
-                  </div>
-                  <?php
-                }
-                ?>
-              </div>
-            </div>
-            <?php
-          }
-          ?>
-          <?php
-          if (!isset($settings['hideDisabledSubscriptions']) || $settings['hideDisabledSubscriptions'] !== 'true') {
-            ?>
-            <div class="filtermenu-submenu">
-              <div class="filter-title" onClick="toggleSubMenu('state')"><?= translate("state", $i18n) ?></div>
-              <div class="filtermenu-submenu-content" id="filter-state">
-                <div class="filter-item capitalize" data-state="0"><?= translate("enabled", $i18n) ?></div>
-                <div class="filter-item capitalize" data-state="1"><?= translate("disabled", $i18n) ?></div>
-              </div>
-            </div>
-            <?php
-          }
-          ?>
-
-          <div class="filtermenu-submenu hide" id="clear-filters">
-            <div class="filter-title filter-clear" onClick="clearFilters()">
-              <i class="fa-solid fa-times-circle"></i> <?= translate("clear", $i18n) ?>
-            </div>
-          </div>
-        </div>
+        <?php include 'includes/filters_menu.php'; ?>
       </div>
 
       <div class="sort-container">
@@ -300,44 +207,21 @@ $headerClass = count($subscriptions) > 0 ? "main-actions" : "main-actions hidden
           title="<?= translate('sort', $i18n) ?>">
           <i class="fa-solid fa-arrow-down-wide-short"></i>
         </button>
-        <div class="sort-options" id="sort-options">
-          <ul>
-            <li <?= $sortOrder == "name" ? 'class="selected"' : "" ?> onClick="setSortOption('name')" id="sort-name">
-              <?= translate('name', $i18n) ?>
-            </li>
-            <li <?= $sortOrder == "id" ? 'class="selected"' : "" ?> onClick="setSortOption('id')" id="sort-id">
-              <?= translate('last_added', $i18n) ?>
-            </li>
-            <li <?= $sortOrder == "price" ? 'class="selected"' : "" ?> onClick="setSortOption('price')" id="sort-price">
-              <?= translate('price', $i18n) ?>
-            </li>
-            <li <?= $sortOrder == "next_payment" ? 'class="selected"' : "" ?> onClick="setSortOption('next_payment')"
-              id="sort-next_payment"><?= translate('next_payment', $i18n) ?></li>
-            <li <?= $sortOrder == "payer_user_id" ? 'class="selected"' : "" ?> onClick="setSortOption('payer_user_id')"
-              id="sort-payer_user_id"><?= translate('member', $i18n) ?></li>
-            <li <?= $sortOrder == "category_id" ? 'class="selected"' : "" ?> onClick="setSortOption('category_id')"
-              id="sort-category_id"><?= translate('category', $i18n) ?></li>
-            <li <?= $sortOrder == "payment_method_id" ? 'class="selected"' : "" ?>
-              onClick="setSortOption('payment_method_id')" id="sort-payment_method_id">
-              <?= translate('payment_method', $i18n) ?>
-            </li>
-            <?php
-            if (!isset($settings['hideDisabledSubscriptions']) || $settings['hideDisabledSubscriptions'] !== 'true') {
-              ?>
-              <li <?= $sortOrder == "inactive" ? 'class="selected"' : "" ?> onClick="setSortOption('inactive')"
-                id="sort-inactive"><?= translate('state', $i18n) ?></li>
-              <?php
-            }
-            ?>
-            <li <?= $sortOrder == "alphanumeric" ? 'class="selected"' : "" ?> onClick="setSortOption('alphanumeric')"
-              id="sort-alphanumeric"><?= translate('alphanumeric', $i18n) ?></li>
-          </ul>
-        </div>
+        <?php include 'includes/sort_options.php'; ?>
       </div>
     </div>
   </header>
   <div class="subscriptions" id="subscriptions">
     <?php
+    $formatter = new IntlDateFormatter(
+      'en', // Force English locale
+      IntlDateFormatter::SHORT,
+      IntlDateFormatter::NONE,
+      null,
+      null,
+      'MMM d, yyyy'
+    );
+
     foreach ($subscriptions as $subscription) {
       if ($subscription['inactive'] == 1 && isset($settings['hideDisabledSubscriptions']) && $settings['hideDisabledSubscriptions'] === 'true') {
         continue;
@@ -394,15 +278,14 @@ $headerClass = count($subscriptions) > 0 ? "main-actions" : "main-actions hidden
     }
 
     if (isset($print)) {
-      printSubscriptions($print, $sort, $categories, $members, $i18n, $colorTheme, "", $settings['disabledToBottom'], $settings['mobileNavigation'], $settings['showSubscriptionProgress']);
+      printSubscriptions($print, $sort, $categories, $members, $i18n, $colorTheme, "", $settings['disabledToBottom'], $settings['mobileNavigation'], $settings['showSubscriptionProgress'], $currencies, $lang);
     }
     $db->close();
 
     if (count($subscriptions) == 0) {
       ?>
       <div class="empty-page">
-        <!-- <img src="images/siteimages/empty.png" alt="<?= translate('empty_page', $i18n) ?>" /> -->
-        <img src="images/siteimages/empty.gif" alt="<?= translate('empty_page', $i18n) ?>" />
+        <img src="images/siteimages/empty.png" alt="<?= translate('empty_page', $i18n) ?>" />
         <p>
           <?= translate('no_subscriptions_yet', $i18n) ?>
         </p>

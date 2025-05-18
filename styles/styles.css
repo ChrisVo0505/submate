@@ -1,3 +1,7 @@
+:root {
+  --logo-flex-basis: 17%;
+}
+
 body {
   font-family: Barlow, 'Helvetica Neue', Helvetica, sans-serif;
   margin: 0;
@@ -408,6 +412,8 @@ button.mobile-action-renew {
   cursor: pointer;
   position: relative;
   transition: transform 0.2s;
+  box-sizing: border-box;
+  justify-content: center;
 }
 
 .subscription-container.hide {
@@ -421,7 +427,7 @@ button.mobile-action-renew {
   right: 8px;
   height: 3px;
   z-index: 1;
-} 
+}
 
 .subscription-container>.subscription-progress-container>.subscription-progress {
   height: 3px;
@@ -440,12 +446,17 @@ button.mobile-action-renew {
   text-decoration: line-through;
 }
 
+.subscription.inactive .payment_method img {
+  opacity: 0.4;
+}
+
 .subscription-main {
   display: flex;
   flex-direction: row;
   align-items: center;
   gap: 12px;
   position: relative;
+  min-height: 40px;
 }
 
 .subscription-main .actions-expand {
@@ -550,7 +561,7 @@ button.mobile-action-renew {
 }
 
 .subscription .logo {
-  flex-basis: 17%;
+  flex-basis: var(--logo-flex-basis);
 }
 
 .subscription .logo img {
@@ -578,7 +589,7 @@ button.mobile-action-renew {
   align-items: center;
 }
 
-.subscription .cycle > svg {
+.subscription .cycle>svg {
   width: 15px;
   height: 15px;
   margin-right: 3px;
@@ -588,25 +599,32 @@ button.mobile-action-renew {
 .subscription .next {
   flex-basis: 16%;
   flex-grow: 1;
+  text-transform: capitalize;
+}
+
+.subscription .payment_method {
+  margin-left: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .subscription .payment_method img {
-  width: 45px;
+  width: 44px;
   height: 30px;
   aspect-ratio: 3 / 2;
   object-fit: contain;
-  margin-right: 12px;
 }
 
 .rtl .subscription .payment_method img {
-  margin-right: 0px;
-  margin-left: 12px;
+  margin-right: 10px;
+  margin-left: 0px;
 
 }
 
 .subscription .price {
   flex-basis: 8%;
-  justify-content: flex-start;
+  justify-content: center;
   flex-direction: row;
 }
 
@@ -656,8 +674,18 @@ button.mobile-action-renew {
 }
 
 @media (max-width: 768px) {
-  .subscription-main>.name {
+
+  .subscription-main>.hideOnMobile {
     display: none;
+  }
+
+  .subscription-main>.name {
+    flex-basis: var(--logo-flex-basis);
+    font-size: 14px;
+    font-weight: normal;
+    max-height: 38px;
+    overflow: hidden;
+    align-items: baseline;
   }
 
   .subscription-secondary>.name {
@@ -989,7 +1017,7 @@ header #avatar {
 }
 
 .account-notification-section-settings.is-open {
-  max-height: 1000px;
+  max-height: 1500px;
   /* Set to a value larger than the content's natural height */
 }
 
@@ -1105,13 +1133,25 @@ header #avatar {
   line-break: anywhere;
 }
 
-.credits-list>p {
+.credits-list>div {
   margin: 0px;
   font-size: 18px;
+  display: flex;
+  flex-direction: column;
 }
 
-.updates-list>p {
+.updates-list>div {
   margin: 0px;
+}
+
+.credits-list>div>h3 {
+  margin: 2px 0px 0px 0px;
+  font-size: 20px;
+}
+
+.credits-list>div>h3>i {
+  color: var(--accent-color);
+  font-size: 18px;
 }
 
 .settings-notes {
@@ -1122,19 +1162,19 @@ header #avatar {
   margin-bottom: 0px;
 }
 
-.credits-list>p>span,
+.credits-list>div>span,
 .updates-list>p>span,
 .settings-notes>p>span {
   color: #AAA;
   font-size: 14px;
 }
 
-.credits-list>p>span,
+.credits-list>div>span,
 .updates-list>p>span {
   font-size: 16px;
 }
 
-.credits-list>p>span>a,
+.credits-list>div>span>a,
 .updates-list>p>span>a,
 .settings-notes>p>span>a {
   margin-left: 5px;
@@ -1142,14 +1182,14 @@ header #avatar {
   color: var(--accent-color);
 }
 
-.rtl .credits-list>p>span>a,
+.rtl .credits-list>div>span>a,
 .rtl .updates-list>p>span>a,
 .rtl .settings-notes>p>span>a {
   margin-left: 0px;
   margin-right: 5px;
 }
 
-.credits-list>p>span>a:visited,
+.credits-list>div>span>a:visited,
 .updates-list>p>span>a:visited,
 .settings-notes>p>span>a:visited {
   color: var(--accent-color);
@@ -1991,6 +2031,10 @@ button.dark-theme-button i {
   font-weight: normal;
 }
 
+.graph.x2 {
+  flex-basis: 100%;
+}
+
 @media (max-width: 768px) {
   .graph {
     flex-basis: 100%;
@@ -2337,6 +2381,10 @@ button.dark-theme-button i {
   font-size: 18px;
 }
 
+.calendar-nav .month {
+  text-align: center;
+}
+
 .calendar {
   display: flex;
   flex-direction: column;
@@ -2437,6 +2485,20 @@ button.dark-theme-button i {
   font-weight: 700;
 }
 
+.over-budget {
+  background-color: rgba(var(--error-color-rgb), 0.2);
+  border: 1px solid var(--error-color);
+  border-radius: 8px;
+  padding: 10px;
+  margin-top: 20px;
+  text-align: center;
+  font-size: 16px;
+}
+
+.over-budget>i {
+  color: var(--error-color);
+}
+
 .subscription-modal {
   max-width: 400px;
 }
@@ -2480,45 +2542,62 @@ input[type="checkbox"] {
 
 input[type="checkbox"]+label {
   position: relative;
-  padding-left: 35px;
+  padding-left: 54px;
   cursor: pointer;
-  display: inline-block;
-  line-height: 22px;
+  display: inline-flex;
+  align-items: center;
 }
 
 input[type="checkbox"]+label::before {
   content: '';
   position: absolute;
   left: 0;
-  top: 0;
-  width: 22px;
-  height: 22px;
-  background: #fafafa;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 44px;
+  height: 24px;
+  background-color: #e9e9eb;
+  border-radius: 12px;
+  transition: background-color 0.3s ease;
   border: 1px solid #ccc;
-  border-radius: 3px;
+}
+
+input[type="checkbox"]+label::after {
+  content: '';
+  position: absolute;
+  left: 3px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  background-color: #fff;
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease;
 }
 
 input[type="checkbox"]:focus+label::before {
-  border-color: var(--main-color);
-  box-shadow: 0 0 0 2px rgba(--main-color-rgb, 0.5);
+  box-shadow: 0 0 0 2px rgba(var(--main-color-rgb, 100, 149, 237), 0.5);
 }
 
 input[type="checkbox"]:disabled+label::before {
-  background-color: #F5F5F5;
-  border-color: #F5F5F5;
-  cursor: not-allowed;
+  background-color: #d3d3d3;
+}
+
+input[type="checkbox"]:disabled+label::after {
+  background-color: #f0f0f0;
+}
+
+input[type="checkbox"]:checked+label::before {
+  background-color: var(--main-color);
 }
 
 input[type="checkbox"]:checked+label::after {
-  content: '';
-  position: absolute;
-  left: 8px;
-  top: 2px;
-  width: 4px;
-  height: 12px;
-  border: solid var(--main-color);
-  border-width: 0 4px 4px 0;
-  transform: rotate(45deg);
+  transform: translate(20px, -50%);
+}
+
+input[type="checkbox"]:focus+label::after {
+  outline: 2px solid rgba(var(--main-color-rgb, 100, 149, 237), 0.5);
 }
 
 /* Radio */
@@ -2691,7 +2770,7 @@ input[type="radio"]:checked+label::after {
 .mobile-nav-image {
   width: 100%;
   max-width: 440px;
-  margin-top: 15px; 
+  margin-top: 15px;
   background-image: url("../images/siteimages/mobilenav.png");
   background-size: contain;
   background-position: center;

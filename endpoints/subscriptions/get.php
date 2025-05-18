@@ -18,11 +18,13 @@ if (isset($settings['color_theme'])) {
   $colorTheme = $settings['color_theme'];
 }
 
-$locale = isset($_COOKIE['user_locale']) ? $_COOKIE['user_locale'] : 'en_US';
 $formatter = new IntlDateFormatter(
-  $locale,
-  IntlDateFormatter::MEDIUM,
-  IntlDateFormatter::NONE
+  'en', // Force English locale
+  IntlDateFormatter::SHORT,
+  IntlDateFormatter::NONE,
+  null,
+  null,
+  'MMM d, yyyy'
 );
 
 if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
@@ -85,12 +87,17 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
     $params[':inactive'] = $_GET['state'];
   }
 
+  if (isset($_GET['renewalType']) && $_GET['renewalType'] != "") {
+    $sql .= " AND auto_renew = :auto_renew";
+    $params[':auto_renew'] = $_GET['renewalType'];
+  }
+
   if (isset($_COOKIE['sortOrder']) && $_COOKIE['sortOrder'] != "") {
     $sort = $_COOKIE['sortOrder'];
   }
 
   $sortOrder = $sort;
-  $allowedSortCriteria = ['name', 'id', 'next_payment', 'price', 'payer_user_id', 'category_id', 'payment_method_id', 'inactive', 'alphanumeric'];
+  $allowedSortCriteria = ['name', 'id', 'next_payment', 'price', 'payer_user_id', 'category_id', 'payment_method_id', 'inactive', 'alphanumeric', 'renewal_type'];
   $order = ($sort == "price" || $sort == "id") ? "DESC" : "ASC";
 
   if ($sort == "alphanumeric") {
@@ -99,6 +106,10 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
 
   if (!in_array($sort, $allowedSortCriteria)) {
     $sort = "next_payment";
+  }
+
+  if ($sort == "renewal_type") {
+    $sort = "auto_renew";
   }
 
   $orderByClauses = [];
@@ -194,8 +205,20 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
     }
   }
 
+  if ($sortOrder == "category_id") {
+    usort($print, function ($a, $b) use ($categories) {
+      return $categories[$a['category_id']]['order'] - $categories[$b['category_id']]['order'];
+    });
+  }
+  
+  if ($sortOrder == "payment_method_id") {
+    usort($print, function ($a, $b) use ($payment_methods) {
+      return $payment_methods[$a['payment_method_id']]['order'] - $payment_methods[$b['payment_method_id']]['order'];
+    });
+  }
+
   if (isset($print)) {
-    printSubscriptions($print, $sort, $categories, $members, $i18n, $colorTheme, "../../", $settings['disabledToBottom'], $settings['mobileNavigation'], $settings['showSubscriptionProgress']);
+    printSubscriptions($print, $sort, $categories, $members, $i18n, $colorTheme, "../../", $settings['disabledToBottom'], $settings['mobileNavigation'], $settings['showSubscriptionProgress'], $currencies, $lang);
   }
 
   if (count($subscriptions) == 0) {
@@ -208,8 +231,7 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
         <span clasS="fa-solid fa-minus-circle"></span>
         <?= translate('clear_filters', $i18n) ?>
       </button>
-      <!-- <img src="images/siteimages/empty.png" alt="<?= translate('empty_page', $i18n) ?>" /> -->
-      <img src="images/siteimages/empty.gif" alt="<?= translate('empty_page', $i18n) ?>" />
+      <img src="images/siteimages/empty.png" alt="<?= translate('empty_page', $i18n) ?>" />
     </div>
     <?php
   }

@@ -1,12 +1,20 @@
 <?php
 require_once 'includes/header.php';
+
+$wallosIsUpToDate = true;
+if (!is_null($settings['latest_version'])) {
+    $latestVersion = $settings['latest_version'];
+    if (version_compare($version, $latestVersion) == -1) {
+        $wallosIsUpToDate = false;
+    }
+}
 ?>
 
 <section class="contain">
 
     <section class="account-section">
         <header>
-            <h2><?= translate('about_and_credits', $i18n) ?></h2>
+            <h2><?= translate('about', $i18n) ?></h2>
         </header>
         <div class="credits-list">
             <h3><?= translate('about', $i18n) ?></h3>
@@ -86,9 +94,9 @@ require_once 'includes/header.php';
                         <i class="fa-solid fa-arrow-up-right-from-square"></i>
                     </a>
                 </span>
-            </p>
-            <p>
-                QRCode.js:
+            </div>
+            <div>
+                <h3>QRCode.js</h3>
                 <span>
                     https://github.com/davidshimjs/qrcodejs
                     <a href="https://github.com/davidshimjs/qrcodejs" target="_blank" title="<?= translate('external_url', $i18n) ?>">

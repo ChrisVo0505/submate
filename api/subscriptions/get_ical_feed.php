@@ -10,7 +10,7 @@ It returns a downloadable VCAL file with the active subscriptions
 
 require_once '../../includes/connect_endpoint.php';
 
-header('Content-Type: application/json, charset=UTF-8');
+header('Content-Type: application/json; charset=UTF-8');
 
 if ($_SERVER["REQUEST_METHOD"] === "POST" || $_SERVER["REQUEST_METHOD"] === "GET") {
     // if the parameters are not set, return an error
@@ -126,6 +126,16 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" || $_SERVER["REQUEST_METHOD"] === "GET
 
     $subscriptionsToReturn = array();
 
+    // Get notification settings
+    $notificationQuery = "SELECT days FROM notification_settings WHERE user_id = :userId";
+    $notificationQueryStmt = $db->prepare($notificationQuery);
+    $notificationQueryStmt->bindValue(':userId', $userId, SQLITE3_INTEGER);
+    $notificationResult = $notificationQueryStmt->execute();
+    $globalNotificationDays = 1; // Default value
+    if ($row = $notificationResult->fetchArray(SQLITE3_ASSOC)) {
+        $globalNotificationDays = $row['days'];
+    }
+
     foreach ($subscriptions as $subscription) {
         $subscriptionToReturn = $subscription;
 
@@ -159,16 +169,16 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" || $_SERVER["REQUEST_METHOD"] === "GET
         $subscription['category'] = $categories[$subscription['category_id']];
         $subscription['payment_method'] = $paymentMethods[$subscription['payment_method_id']];
         $subscription['currency'] = $currencies[$subscription['currency_id']]['symbol'];
-        $subscription['trigger'] = $subscription['notify_days_before'] ? $subscription['notify_days_before'] : 1;
+        $subscription['trigger'] = ($subscription['notify_days_before'] == -1) ? $globalNotificationDays : ($subscription['notify_days_before'] ?: 1);
         $subscription['price'] = number_format($subscription['price'], 2);
 
         $uid = uniqid();
-        $summary = "Wallos: " . $subscription['name'];
+        $summary = html_entity_decode($subscription['name'], ENT_QUOTES, 'UTF-8');
         $description = "Price: {$subscription['currency']}{$subscription['price']}\\nCategory: {$subscription['category']}\\nPayment Method: {$subscription['payment_method']}\\nPayer: {$subscription['payer_user']}\\nNotes: {$subscription['notes']}";
         $dtstart = (new DateTime($subscription['next_payment']))->format('Ymd');
         $dtend = (new DateTime($subscription['next_payment']))->format('Ymd');
         $location = isset($subscription['url']) ? $subscription['url'] : '';
-        $alarm_trigger = '-' . $subscription['trigger'] . 'D';
+        $alarm_trigger = '-P' . $subscription['trigger'] . 'D';
 
         $icsContent .= <<<ICS
         BEGIN:VEVENT

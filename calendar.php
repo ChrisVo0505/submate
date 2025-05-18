@@ -18,6 +18,14 @@ function getPriceConverted($price, $currency, $database, $userId)
   }
 }
 
+// Get budget from user table
+$query = "SELECT budget FROM user WHERE id = :userId";
+$stmt = $db->prepare($query);
+$stmt->bindValue(':userId', $userId, SQLITE3_INTEGER);
+$result = $stmt->execute();
+$row = $result->fetchArray(SQLITE3_ASSOC);
+$budget = $row['budget'] ?? 0;
+
 $currentMonth = date('m');
 $currentYear = date('Y');
 $sameAsCurrent = false;
@@ -105,7 +113,7 @@ $yearsToLoad = $calendarYear - $currentYear + 1;
   ?>
   <div class="split-header">
     <h2>
-      Calendar
+    <?= translate('calendar', $i18n) ?>
       <button class="button export-ical" onClick="showExportPopup()" title="<?= translate('export_icalendar', $i18n) ?>">
         <?php require_once 'images/siteicons/svg/export_ical.php'; ?>
       </button>
@@ -133,7 +141,7 @@ $yearsToLoad = $calendarYear - $currentYear + 1;
         <?php
       }
       ?>
-      <span id="month"><?= translate('month-' . $calendarMonth, $i18n) ?> <?= $calendarYear ?></span>
+      <span id="month" class="month"><?= translate('month-' . $calendarMonth, $i18n) ?> <?= $calendarYear ?></span>
       <button class="button tiny" id="next" onclick="nextMonth(<?= $calendarMonth ?>, <?= $calendarYear ?>)"><i
           class="fa-solid fa-chevron-right"></i></button>
     </div>
@@ -336,6 +344,19 @@ $yearsToLoad = $calendarYear - $currentYear + 1;
       </div>
     </div>
 
+    <?php
+      if ($budget > 0 && $totalCostThisMonth > $budget) {
+        $overBudgetAmount = $totalCostThisMonth - $budget;
+        $overBudgetAmount = CurrencyFormatter::format($overBudgetAmount, $code);
+        ?>
+          <div class="over-budget">
+            <i class="fa-solid fa-exclamation-triangle"></i>
+            <?= translate('over_budget_warning', $i18n) ?>  (<?= $overBudgetAmount ?>)
+          </div>
+        <?php
+      }
+    ?>    
+
     <div class="calendar-monthly-stats">
       <div class="calendar-monthly-stats-header">
         <h3><?= translate("stats", $i18n) ?></h3>
@@ -348,7 +369,7 @@ $yearsToLoad = $calendarYear - $currentYear + 1;
         </div>
         <div class="statistic">
           <span><?= CurrencyFormatter::format($totalCostThisMonth, $code) ?></span>
-          <div class="title">Total cost</div>
+          <div class="title"><?= translate("total_cost", $i18n) ?></div>
         </div>
         <div class="statistic">
           <span><?= CurrencyFormatter::format($amountDueThisMonth, $code) ?></span>
