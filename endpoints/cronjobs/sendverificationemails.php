@@ -64,7 +64,7 @@ if ($rows) {
                 $mail->addAddress($user['email']);
                 $mail->isHTML(true);
                 $mail->Subject = 'Submate - Email Verification';
-                $link = $server_url . '/app/verifyemail.php?email=' . urlencode($user['email']) . '&token=' . urlencode($user['token']);
+                $link = $server_url . '/app/verifyemail.php?email=' . $user['email'] . '&token=' . $user['token'];
                 $mail->Body = '
                     <img src="' . $server_url . '/app/images/icon/logo.png" alt="Logo" />
                     <br>
