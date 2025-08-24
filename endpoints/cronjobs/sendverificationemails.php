@@ -64,12 +64,16 @@ if ($rows) {
                 $mail->addAddress($user['email']);
                 $mail->isHTML(true);
                 $mail->Subject = 'Submate - Email Verification';
-                $mail->Body = '<img src="' . $server_url . '/app/images/icon/logo.png" alt="Logo" />
+                $link = $server_url . '/app/verifyemail.php?email=' . urlencode($user['email']) . '&token=' . urlencode($user['token']);
+                $mail->Body = '
+                    <img src="' . $server_url . '/app/images/icon/logo.png" alt="Logo" />
                     <br>
                     Registration on Submate was successful.
                     <br>
                     Please click the following link to verify your email: 
-                    <a href="' . $server_url . '/app/verifyemail.php?email=' . urlencode($user['email']) . '&token=' . urlencode($user['token']) . '">Verify Email</a>';
+                    <a href="' . $link . '">Verify Email</a>
+                ';
+                $mail->AltBody = 'Please verify your email by visiting this link: ' . $link;
 
                 $mail->send();
 
