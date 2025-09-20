@@ -232,6 +232,25 @@ $userData['currency_symbol'] = $currencies[$main_currency]['symbol'];
         $notificationsTelegram['chat_id'] = "";
     }
 
+
+    // PushPlus notifications
+    $sql = "SELECT * FROM pushplus_notifications WHERE user_id = :userId LIMIT 1";
+    $stmt = $db->prepare($sql);
+    $stmt->bindValue(':userId', $userId, SQLITE3_INTEGER);
+    $result = $stmt->execute();
+
+    $rowCount = 0;
+    while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
+        $notificationsPushPlus['enabled'] = $row['enabled'];
+        $notificationsPushPlus['token'] = $row['token'];
+        $rowCount++;
+    }
+
+    if ($rowCount == 0) {
+        $notificationsPushPlus['enabled'] = 0;
+        $notificationsPushPlus['token'] = "";
+    }
+
     // Ntfy notifications
     $sql = "SELECT * FROM ntfy_notifications WHERE user_id = :userId LIMIT 1";
     $stmt = $db->prepare($sql);
@@ -563,6 +582,35 @@ if ($isAdmin == 1) {
                     </div>
                 </div>
             </section>
+
+            <section class="account-notifications-section">
+    <header class="account-notification-section-header" onclick="openNotificationsSettings('pushplus');">
+        <h3>
+            <i class="fa-solid fa-bell"></i>
+            <?= translate('pushplus', $i18n) ?>
+        </h3>
+    </header>
+    <div class="account-notification-section-settings" data-type="pushplus">
+        <div class="form-group-inline">
+            <input type="checkbox" id="pushplusenabled" name="pushplusenabled"
+                <?= $notificationsPushPlus['enabled'] ? "checked" : "" ?>>
+            <label for="pushplusenabled" class="capitalize"><?= translate('enabled', $i18n) ?></label>
+        </div>
+        <div class="form-group-inline">
+            <input type="text" name="pushplustoken" id="pushplustoken"
+                placeholder="<?= translate('pushplus_token', $i18n) ?>"
+                value="<?= $notificationsPushPlus['token'] ? $notificationsPushPlus['token'] : '' ?>" />
+        </div>
+        <div class="buttons">
+            <input type="button" class="secondary-button thin mobile-grow"
+                value="<?= translate('test', $i18n) ?>" id="testNotificationsPushPlus"
+                onClick="testNotificationsPushPlusButton()" />
+            <input type="submit" class="thin mobile-grow" value="<?= translate('save', $i18n) ?>"
+                id="saveNotificationsPushPlus" onClick="saveNotificationsPushPlusButton()" />
+        </div>
+    </div>
+</section>
+
             <section class="account-notifications-section">
                 <header class="account-notification-section-header" onclick="openNotificationsSettings('ntfy');">
                     <h3>
@@ -925,6 +973,91 @@ if ($isAdmin == 1) {
 ?>
 
     <?php
+    $sql = "SELECT * FROM ai_settings WHERE user_id = :userId LIMIT 1";
+    $stmt = $db->prepare($sql);
+    $stmt->bindValue(':userId', $userId, SQLITE3_INTEGER);
+    $result = $stmt->execute();
+
+    $aiSettings = [];
+    if ($row = $result->fetchArray(SQLITE3_ASSOC)) {
+        $aiSettings = $row;
+    }
+    ?>
+
+    <section class="account-section">
+        <header>
+            <h2><?= translate('ai_recommendations', $i18n) ?></h2>
+        </header>
+        <div class="account-ai-settings">
+            <div class="form-group-inline">
+                <input type="checkbox" id="ai_enabled" name="ai_enabled" <?= isset($aiSettings['enabled']) && $aiSettings['enabled'] ? "checked" : "" ?>>
+                <label for="ai_enabled" class="capitalize"><?= translate('enabled', $i18n) ?></label>
+            </div>
+            <div class="form-group">
+                <label for="ai_type"><?= translate('provider', $i18n) ?>:</label>
+                <select id="ai_type" name="ai_type" onchange="toggleAiInputs()">
+                    <option value="chatgpt" <?= (isset($aiSettings['type']) && $aiSettings['type'] == 'chatgpt') ? 'selected' : '' ?>>ChatGPT</option>
+                    <option value="gemini" <?= (isset($aiSettings['type']) && $aiSettings['type'] == 'gemini') ? 'selected' : '' ?>>Gemini</option>
+                    <option value="ollama" <?= (isset($aiSettings['type']) && $aiSettings['type'] == 'ollama') ? 'selected' : '' ?>>Local Ollama</option>
+                </select>
+            </div>
+            <div class="form-group-inline">
+                <input type="text" id="ai_api_key" name="ai_api_key"
+                    class="<?= (isset($aiSettings['type']) && $aiSettings['type'] == 'ollama') ? 'hidden' : '' ?>"
+                    placeholder="<?= translate('api_key', $i18n) ?>"
+                    value="<?= isset($aiSettings['api_key']) ? htmlspecialchars($aiSettings['api_key']) : '' ?>" />
+                <input type="text" id="ai_ollama_host" name="ai_ollama_host"
+                    class="<?= (!isset($aiSettings['type']) || $aiSettings['type'] != 'ollama') ? 'hidden' : '' ?>"
+                    placeholder="<?= translate('host', $i18n) ?>"
+                    value="<?= isset($aiSettings['url']) ? htmlspecialchars($aiSettings['url']) : '' ?>" />
+
+                <button type="button" id="fetchModelsButton" class="button thin" onclick="fetch_ai_models()">
+                    <?= translate('test', $i18n) ?>
+                </button>
+            </div>
+            <div class="form-group">
+                <label for="ai_model"><?= translate('ai_model', $i18n) ?>:</label>
+                <select id="ai_model" name="ai_model">
+                    <option value=""><?= translate('select_ai_model', $i18n) ?></option>
+                    <?php if (!empty($aiSettings['model'])): ?>
+                        <option value="<?= htmlspecialchars($aiSettings['model']) ?>" selected>
+                            <?= htmlspecialchars($aiSettings['model']) ?></option>
+                    <?php endif; ?>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="ai_run_schedule" class="flex"><?= translate('run_schedule', $i18n) ?>: <span
+                        class="info-badge"><?= translate("coming_soon", $i18n) ?></span></span></label>
+                <select id="ai_run_schedule" name="ai_run_schedule" disabled>
+                    <option value="manual" <?= (isset($aiSettings['run_schedule']) && $aiSettings['run_schedule'] == 'manual') ? 'selected' : '' ?>><?= translate('manually', $i18n) ?>
+                    </option>
+                    <option value="weekly" <?= (isset($aiSettings['run_schedule']) && $aiSettings['run_schedule'] == 'weekly') ? 'selected' : '' ?>><?= translate('Weekly', $i18n) ?>
+                    </option>
+                    <option value="monthly" <?= (isset($aiSettings['run_schedule']) && $aiSettings['run_schedule'] == 'monthly') ? 'selected' : '' ?>><?= translate('Monthly', $i18n) ?>
+                    </option>
+                </select>
+            </div>
+            <div class="buttons wrap mobile-reverse">
+                <?php
+                $canBeExecuted = !empty($aiSettings['model']) && !empty($aiSettings['enabled']) && $aiSettings['enabled'] == 1;
+                ?>
+                <input type="button" id="runAiRecommendations"
+                    class="secondary-button thin mobile-grow-force <?= !$canBeExecuted ? 'hidden' : '' ?>"
+                    onclick="runAiRecommendations()" value="<?= translate('generate_recommendations', $i18n) ?>" />
+                <div id="aiSpinner" class="spinner ai-spinner hidden"></div>
+
+                <input type="submit" class="thin mobile-grow-force" value="<?= translate('save', $i18n) ?>"
+                    id="saveAiSettings" onClick="saveAiSettingsButton()" />
+            </div>
+            <div class="settings-notes">
+                <p><i class="fa-solid fa-circle-info"></i><?= translate('ai_recommendations_info', $i18n) ?></p>
+                <p><i class="fa-solid fa-circle-info"></i><?= translate('may_take_time', $i18n) ?></p>
+                <p><i class="fa-solid fa-circle-info"></i><?= translate('recommendations_visible_on_dashboard', $i18n) ?></p>
+            </div>
+        </div>
+    </section>
+
+    <?php
     $sql = "SELECT * FROM payment_methods WHERE user_id = :userId ORDER BY `order` ASC";
     $stmt = $db->prepare($sql);
     $stmt->bindValue(':userId', $userId, SQLITE3_INTEGER);
@@ -1189,8 +1322,7 @@ if ($isAdmin == 1) {
             <div>
                 <div class="form-group-inline">
                     <input type="checkbox" id="showoriginalprice" name="showoriginalprice"
-                        onChange="setShowOriginalPrice()" <?php if ($settings['show_original_price'])
-                            echo 'checked'; ?>>
+                        onChange="setShowOriginalPrice()" <?= $settings['show_original_price'] ? 'checked' : '' ?>>
                     <label for="showoriginalprice"><?= translate('show_original_price', $i18n) ?></label>
                 </div>
             </div>
@@ -1198,8 +1330,7 @@ if ($isAdmin == 1) {
             <div>
                 <div class="form-group-inline">
                     <input type="checkbox" id="mobilenavigation" name="mobilenavigation"
-                        onChange="setMobileNavigation()" <?php if ($settings['mobile_nav'])
-                            echo 'checked'; ?>>
+                        onChange="setMobileNavigation()" <?= $settings['mobile_nav'] ? 'checked' : '' ?>>
                     <label for="mobilenavigation"><?= translate('use_mobile_navigation_bar', $i18n) ?></label>
                 </div>
                 <div class="mobile-nav-image">
@@ -1208,8 +1339,7 @@ if ($isAdmin == 1) {
             <div>
                 <div class="form-group-inline">
                     <input type="checkbox" id="showsubscriptionprogress" name="showsubscriptionprogress"
-                        onChange="setShowSubscriptionProgress()" <?php if ($settings['show_subscription_progress'])
-                            echo 'checked'; ?>>
+                        onChange="setShowSubscriptionProgress()" <?= $settings['show_subscription_progress'] ? 'checked' : '' ?>>
                     <label for="showsubscriptionprogress"><?= translate('show_subscription_progress', $i18n) ?></label>
                 </div>
             </div>
@@ -1217,16 +1347,15 @@ if ($isAdmin == 1) {
             <div>
                 <div class="form-group-inline">
                     <input type="checkbox" id="disabledtobottom" name="disabledtobottom"
-                        onChange="setDisabledToBottom()" <?php if ($settings['disabled_to_bottom'])
-                            echo 'checked'; ?>>
+                        onChange="setDisabledToBottom()" <?= $settings['disabled_to_bottom'] ? 'checked' : '' ?>>
                     <label
                         for="disabledtobottom"><?= translate('show_disabled_subscriptions_at_the_bottom', $i18n) ?></label>
                 </div>
             </div>
             <div>
                 <div class="form-group-inline">
-                    <input type="checkbox" id="hidedisabled" name="hidedisabled" onChange="setHideDisabled()" <?php if ($settings['hide_disabled'])
-                        echo 'checked'; ?>>
+                    <input type="checkbox" id="hidedisabled" name="hidedisabled" onChange="setHideDisabled()"
+                        <?= $settings['hide_disabled'] ? 'checked' : '' ?>>
                     <label for="hidedisabled"><?= translate('hide_disabled_subscriptions', $i18n) ?></label>
                 </div>
             </div>
@@ -1247,19 +1376,8 @@ if ($isAdmin == 1) {
             <div>
                 <div class="form-group-inline">
                     <input type="checkbox" id="removebackground" name="removebackground"
-                        onChange="setRemoveBackground()" <?php if ($settings['remove_background'])
-                            echo 'checked'; ?>>
+                        onChange="setRemoveBackground()" <?= $settings['remove_background'] ? 'checked' : '' ?>>
                     <label for="removebackground"><?= translate('remove_background', $i18n) ?></label>
-                </div>
-            </div>
-            <div>
-                <div class="form-group-inline">
-                    <input type="checkbox" id="mobilenavigation" name="mobilenavigation"
-                        onChange="setMobileNavigation()" <?php if ($settings['mobile_nav'])
-                            echo 'checked'; ?>>
-                    <label for="mobilenavigation"><?= translate('use_mobile_navigation_bar', $i18n) ?></label>
-                </div>
-                <div class="mobile-nav-image">
                 </div>
             </div>
         </div>

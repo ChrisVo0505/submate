@@ -2,6 +2,7 @@
 require_once 'connect.php';
 require_once 'checkuser.php';
 require_once 'checksession.php';
+require_once 'checkredirect.php';
 require_once 'currency_formatter.php';
 
 require_once 'i18n/languages.php';
@@ -175,7 +176,10 @@ $mobileNavigation = $settings['mobile_nav'] ? "mobile-navigation" : "";
               <?= translate('profile', $i18n) ?></a>
             <a href="." class="mobileNavigationHideOnMobile">
               <?php include "images/siteicons/svg/mobile-menu/home.php"; ?>
-              <?= translate('subscriptions', $i18n) ?></a>
+              <?= translate('dashboard', $i18n) ?></a>
+            <a href="subscriptions.php" class="mobileNavigationHideOnMobile">
+              <?php include "images/siteicons/svg/mobile-menu/subscriptions.php"; ?>
+              <?= translate('subscriptions', $i18n) ?></a>  
             <a href="calendar.php" class="mobileNavigationHideOnMobile">
                 <?php include "images/siteicons/svg/mobile-menu/calendar.php"; ?>
                 <?= translate('calendar', $i18n) ?></a>
@@ -185,6 +189,9 @@ $mobileNavigation = $settings['mobile_nav'] ? "mobile-navigation" : "";
             <a href="settings.php" class="mobileNavigationHideOnMobile">
               <?php include "images/siteicons/svg/mobile-menu/settings.php"; ?>
               <?= translate('settings', $i18n) ?></a>
+            <a href="profile.php">
+              <?php include "images/siteicons/svg/mobile-menu/profile.php"; ?>
+              <?= translate('profile', $i18n) ?></a>  
             <?php if ($isAdmin): ?>
               <a href="admin.php">
                 <?php include "images/siteicons/svg/mobile-menu/admin.php"; ?>
@@ -213,7 +220,8 @@ $mobileNavigation = $settings['mobile_nav'] ? "mobile-navigation" : "";
   <?php
   // find out which page is being viewed
   $page = basename($_SERVER['PHP_SELF']);
-  $subscriptionsClass = $page === 'index.php' ? 'active' : '';
+  $dashboardClass = $page === 'index.php' ? 'active' : '';
+  $subscriptionsClass = $page === 'subscriptions.php' ? 'active' : '';
   $calendarClass = $page === 'calendar.php' ? 'active' : '';
   $statsClass = $page === 'stats.php' ? 'active' : '';
   $settingsClass = $page === 'settings.php' ? 'active' : '';
@@ -224,8 +232,12 @@ $mobileNavigation = $settings['mobile_nav'] ? "mobile-navigation" : "";
   if ($settings['mobile_nav'] == 1) {
     ?>
     <nav class="mobile-nav">
-        <a href="." class="nav-link <?= $subscriptionsClass ?>" title="<?= translate('subscriptions', $i18n) ?>">
+        <a href="." class="nav-link <?= $dashboardClass ?>" title="<?= translate('dashboard', $i18n) ?>">
           <?php include "images/siteicons/svg/mobile-menu/home.php"; ?>
+          <?= translate('dashboard', $i18n) ?>
+        </a>
+        <a href="subscriptions.php" class="nav-link <?= $subscriptionsClass ?>" title="<?= translate('subscriptions', $i18n) ?>">
+          <?php include "images/siteicons/svg/mobile-menu/subscriptions.php"; ?>
           <?= translate('subscriptions', $i18n) ?>
         </a>
         <a href="calendar.php" class="nav-link <?= $calendarClass ?>" title="<?= translate('calendar', $i18n) ?>">

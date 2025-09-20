@@ -42,7 +42,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $smtpPort = $data["smtpport"];
         $smtpUsername = $data["smtpusername"];
         $smtpPassword = $data["smtppassword"];
-        $fromEmail = $data["fromemail"] ? $data['fromemail'] : "contact@submate.com.au";
+        $fromEmail = $data["fromemail"] ? $data['fromemail'] : "wallos@wallosapp.com";
 
         $mail = new PHPMailer(true);
         $mail->CharSet = "UTF-8";
@@ -69,7 +69,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $email = $user['email'];
         $name = $user['username'];
 
-        $mail->setFrom($fromEmail, 'Submate App');
+        $mail->setFrom($fromEmail, 'Wallos App');
         $mail->addAddress($email, $name);
 
         $mail->Subject = translate('wallos_notification', $i18n);

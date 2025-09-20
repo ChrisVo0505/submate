@@ -6,7 +6,7 @@ WORKDIR /var/www/html
 
 # Update packages and install dependencies
 RUN apk upgrade --no-cache && \
-    apk add --no-cache shadow sqlite-dev libpng libpng-dev libjpeg-turbo libjpeg-turbo-dev freetype freetype-dev curl autoconf libgomp icu-dev icu-data-full nginx dcron tzdata imagemagick imagemagick-dev libzip-dev sqlite libwebp-dev && \
+    apk add --no-cache dumb-init shadow sqlite-dev libpng libpng-dev libjpeg-turbo libjpeg-turbo-dev freetype freetype-dev curl autoconf libgomp icu-dev icu-data-full nginx dcron tzdata imagemagick imagemagick-dev libzip-dev sqlite libwebp-dev && \
     docker-php-ext-install pdo pdo_sqlite calendar && \
     docker-php-ext-enable pdo pdo_sqlite && \
     docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp && \
@@ -43,7 +43,11 @@ RUN dos2unix /etc/cron.d/cronjobs && \
 # Expose port 80 for Nginx
 EXPOSE 80
 
-ARG SOFTWARE_VERSION=1.20.0
+ENTRYPOINT ["dumb-init", "--"]
+
+# Requires docker engine 25+ for the --start-interval flag
+HEALTHCHECK --interval=2m --timeout=2s --start-period=20s --start-interval=5s --retries=3 \
+    CMD ["curl", "-fsS", "http://127.0.0.1/health.php"]
 
 # Start both PHP-FPM, Nginx
-CMD ["sh", "-c", "/var/www/html/startup.sh"]
+CMD ["/var/www/html/startup.sh"]

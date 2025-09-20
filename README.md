@@ -22,6 +22,7 @@ Submate: Manage Subscriptions
     - [Docker-Compose](#docker-compose)
 - [Usage](#usage)
 - [Screenshots](#screenshots)
+- [OIDC](#oidc)
 - [API Documentation](#api-documentation)
 - [Contributing](#contributing)
   - [Contributors](#contributors)
@@ -47,6 +48,8 @@ Wallos is a powerful, open-source, and self-hostable web application designed to
 - Statistics: Another perspective into your spendings.
 - Notifications:  Wallos supports multiple notification methods (email, discord, pushover, telegram, gotify and webhooks). Get notified about your upcoming payments.
 - Multi Language support.
+- OIDC with OAuth
+- AI Recommendations with ChatGPT, Gemini or Local Ollama
 
 ## Demo
 
@@ -119,6 +122,16 @@ docker run -d --name wallos -v /path/to/config/wallos/db:/var/www/html/db \
 bellamy/wallos:latest
 ```
 
+Disable healthcheck (optional, e.g., for Docker <25 or faster startup reporting):
+
+```bash
+docker run -d --name wallos -v /path/to/config/wallos/db:/var/www/html/db \
+-v /path/to/config/wallos/logos:/var/www/html/images/uploads/logos \
+-e TZ=Europe/Berlin -p 8282:80 --restart unless-stopped \
+--health-cmd=NONE \
+bellamy/wallos:latest
+```
+
 ### Docker Compose
 
 ```
@@ -135,6 +148,25 @@ services:
       - './db:/var/www/html/db'
       - './logos:/var/www/html/images/uploads/logos'
     restart: unless-stopped
+```
+
+Disable healthcheck (optional, e.g., for Docker <25 or faster startup reporting):
+
+```
+services:
+  wallos:
+    container_name: wallos
+    image: bellamy/wallos:latest
+    ports:
+      - "8282:80/tcp"
+    environment:
+      TZ: 'America/Toronto'
+    volumes:
+      - './db:/var/www/html/db'
+      - './logos:/var/www/html/images/uploads/logos'
+    restart: unless-stopped
+    healthcheck:
+      test: ["NONE"]
 ```
 
 ## Usage
@@ -157,7 +189,13 @@ If you want to trigger an Update of the exchange rates, change your main currenc
 
 ![Screenshot](screenshots/wallos-form.png)
 
+![Screenshot](screenshots/wallos-subscriptions-mobile-light.png) ![Screenshot](screenshots/wallos-subscriptions-mobile-dark.png)
+
 ![Screenshot](screenshots/wallos-dashboard-mobile-light.png) ![Screenshot](screenshots/wallos-dashboard-mobile-dark.png)
+
+## OIDC
+
+OIDC can be enabled on the Admin page and can be used with providers that support OAuth.
 
 ## API Documentation
 
