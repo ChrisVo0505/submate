@@ -1,9 +1,10 @@
 <?php
 require_once '../../includes/connect_endpoint.php';
+require_once '../../includes/validate_endpoint.php';
 
 $shouldUpdate = true;
 
-if (isset($_GET['force']) && $_GET['force'] === "true") {
+if (isset($_POST['force']) && $_POST['force'] === "true") {
     $shouldUpdate = true;
 } else {
     $query = "SELECT date FROM last_exchange_update WHERE user_id = :userId";
@@ -108,4 +109,3 @@ if ($result) {
     echo "Exchange rates update skipped. No fixer.io api key provided";
     $apiKey = null;
 }
-?>

@@ -5,6 +5,8 @@ require_once 'checksession.php';
 require_once 'checkredirect.php';
 require_once 'currency_formatter.php';
 
+require_once 'libs/csrf.php';
+
 require_once 'i18n/languages.php';
 require_once 'i18n/getlang.php';
 require_once 'i18n/' . $lang . '.php';
@@ -108,6 +110,7 @@ $mobileNavigation = $settings['mobile_nav'] ? "mobile-navigation" : "";
     window.lang = "<?= $lang ?>";
     window.colorTheme = "<?= $colorTheme ?>";
     window.mobileNavigation = "<?= $settings['mobileNavigation'] == "true" ?>";
+    window.csrfToken = "<?= htmlspecialchars(generate_csrf_token()) ?>";
   </script>
   <style>
     <?= htmlspecialchars($customCss, ENT_QUOTES, 'UTF-8') ?>
@@ -168,12 +171,9 @@ $mobileNavigation = $settings['mobile_nav'] ? "mobile-navigation" : "";
         <div class="dropdown">
           <button class="dropbtn" onClick="toggleDropdown()">
             <img src="<?= htmlspecialchars($userData['avatar'], ENT_QUOTES, 'UTF-8') ?>" alt="me" id="avatar">
-            <span id="user" class="mobileNavigationHideOnMobile"><?= $username ?></span>
+            <span id="user" class="mobileNavigationHideOnMobile"><?= $userData['username'] ?></span>
           </button>
           <div class="dropdown-content">
-            <a href="profile.php" class="mobileNavigationHideOnMobile">
-              <?php include "images/siteicons/svg/mobile-menu/profile.php"; ?>
-              <?= translate('profile', $i18n) ?></a>
             <a href="." class="mobileNavigationHideOnMobile">
               <?php include "images/siteicons/svg/mobile-menu/home.php"; ?>
               <?= translate('dashboard', $i18n) ?></a>
@@ -251,10 +251,6 @@ $mobileNavigation = $settings['mobile_nav'] ? "mobile-navigation" : "";
         <a href="settings.php" class="nav-link <?= $settingsClass ?>" title="<?= translate('settings', $i18n) ?>">
           <?php include "images/siteicons/svg/mobile-menu/settings.php"; ?>
           <?= translate('settings', $i18n) ?>
-        </a>
-        <a href="profile.php" class="nav-link <?= $profileClass ?>" title="<?= translate('profile', $i18n) ?>">
-          <?php include "images/siteicons/svg/mobile-menu/profile.php"; ?>
-          <?= translate('profile', $i18n) ?>
         </a>
     </nav>
     <?php

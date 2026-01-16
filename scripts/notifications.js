@@ -24,6 +24,7 @@ function makeFetchCall(url, data, button) {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
+            "X-CSRF-Token": window.csrfToken,
         },
         body: JSON.stringify(data),
     })
@@ -216,6 +217,44 @@ function saveNotificationsPushPlusButton() {
     makeFetchCall('endpoints/notifications/savepushplusnotifications.php', data, button);
 }
 
+function testNotificationsMattermostButton() {
+    const button = document.getElementById("testNotificationsMattermost");
+    button.disabled = true;
+  
+    const enabled = document.getElementById("mattermostenabled").checked ? 1 : 0;
+    const webhook_url = document.getElementById("mattermostwebhookurl").value;
+    const bot_username = document.getElementById("mattermostbotusername").value;
+    const bot_icon_emoji = document.getElementById("mattermostboticonemoji").value;
+  
+    const data = {
+      enabled: enabled,
+      webhook_url: webhook_url,
+      bot_username: bot_username,
+      bot_icon_emoji: bot_icon_emoji
+    };
+
+    makeFetchCall('endpoints/notifications/testmattermostnotifications.php', data, button);
+}
+
+function saveNotificationsMattermostButton() {
+    const button = document.getElementById("saveNotificationsMattermost");
+    button.disabled = true;
+  
+    const enabled = document.getElementById("mattermostenabled").checked ? 1 : 0;
+    const webhook_url = document.getElementById("mattermostwebhookurl").value;
+    const bot_username = document.getElementById("mattermostbotusername").value;
+    const bot_icon_emoji = document.getElementById("mattermostboticonemoji").value;
+  
+    const data = {
+      enabled: enabled,
+      webhook_url: webhook_url,
+      bot_username: bot_username,
+      bot_icon_emoji: bot_icon_emoji
+    };
+
+    makeFetchCall('endpoints/notifications/savemattermostnotifications.php', data, button);
+}
+
 function saveNotificationsGotifyButton() {
     const button = document.getElementById("saveNotificationsGotify");
     button.disabled = true;
@@ -365,4 +404,34 @@ function saveNotificationsNtfyButton() {
   };
 
   makeFetchCall('endpoints/notifications/saventfynotifications.php', data, button);
+}
+
+function testNotificationsServerchanButton() {
+  const button = document.getElementById("testNotificationsServerchan");
+  button.disabled = true;
+
+  const enabled = document.getElementById("serverchanenabled").checked ? 1 : 0;
+  const sendkey = document.getElementById("serverchansendkey").value;
+
+  const data = {
+    enabled: enabled,
+    sendkey: sendkey
+  };
+
+  makeFetchCall('endpoints/notifications/testserverchannotifications.php', data, button);
+}
+
+function saveNotificationsServerchanButton() {
+  const button = document.getElementById("saveNotificationsServerchan");
+  button.disabled = true;
+
+  const enabled = document.getElementById("serverchanenabled").checked ? 1 : 0;
+  const sendkey = document.getElementById("serverchansendkey").value;
+
+  const data = {
+    enabled: enabled,
+    sendkey: sendkey
+  };
+
+  makeFetchCall('endpoints/notifications/saveserverchannotifications.php', data, button);
 }

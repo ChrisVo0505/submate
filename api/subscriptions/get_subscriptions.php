@@ -19,64 +19,76 @@ It returns a JSON object with the following properties:
 
 Example response:
 {
-  "success": true,
-  "title": "subscriptions",
-  "subscriptions": [
-    {
-      "id": 1,
-      "name": "Example Subscription",
-      "logo": "example.png",
-      "price": 10.00,
-      "currency_id": 1,
-      "start_date": "2024-09-01",
-      "next_payment": "2024-09-01",
-      "cycle": 1,
-      "frequency": 1,
-      "auto_renew": 1,
-      "notes": "Example note",
-      "payment_method_id": 1,
-      "payer_user_id": 1,
-      "category_id": 1,
-      "notify": 1,
-      "url": "https://example.com",
-      "inactive": 0,
-      "notify_days_before": 1,
-      "user_id": 1,
-      "cancelation_date": null,
-      "cancellation_date": "",
-      "category_name": "General",
-      "payer_user_name": "John Doe",
-      "payment_method_name": "PayPal"
-    },
-    {
-      "id": 2,
-      "name": "Another Subscription",
-      "logo": "another.png",
-      "price": 15.00,
-      "currency_id": 2,
-      "start_date": "2024-09-02",
-      "next_payment": "2024-09-02",
-      "cycle": 1,
-      "frequency": 1,
-      "auto_renew": 0,
-      "notes": "",
-      "payment_method_id": 2,
-      "payer_user_id": 2,
-      "category_id": 2,
-      "notify": 0,
-      "url": "",
-      "inactive": 1,
-      "notify_days_before": null,
-      "user_id": 2,
-      "cancelation_date": null,
-      "cancellation_date": "",
-      "category_name": "Entertainment",
-      "payer_user_name": "Jane Doe",
-      "payment_method_name": "Credit Card"
-      "replacement_subscription_id": 1
-    }
-  ],
-  "notes": []
+    "success": true,
+    "title": "subscriptions",
+    "subscriptions": [
+        {
+            "id": 1,
+            "name": "Example Subscription",
+            "logo": "example.png",
+            "price": 10.00,
+            "currency_id": 1,
+            "start_date": "2024-09-01",
+            "next_payment": "2024-09-01",
+            "cycle": 1,
+            "frequency": 1,
+            "auto_renew": 1,
+            "notes": "Example note",
+            "payment_method_id": 1,
+            "payer_user_id": 1,
+            "category_id": 1,
+            "notify": 1,
+            "url": "https://example.com",
+            "inactive": 0,
+            "notify_days_before": 1,
+            "user_id": 1,
+            "cancelation_date": null,
+            "cancellation_date": "",
+            "category_name": "General",
+            "payer_user_name": "John Doe",
+            "payment_method_name": "PayPal"
+        },
+        {
+            "id": 2,
+            "name": "Another Subscription",
+            "logo": "another.png",
+            "price": 15.00,
+            "currency_id": 2,
+            "start_date": "2024-09-02",
+            "next_payment": "2024-09-02",
+            "cycle": 1,
+            "frequency": 1,
+            "auto_renew": 0,
+            "notes": "",
+            "payment_method_id": 2,
+            "payer_user_id": 2,
+            "category_id": 2,
+            "notify": 0,
+            "url": "",
+            "inactive": 1,
+            "notify_days_before": null,
+            "user_id": 2,
+            "cancelation_date": null,
+            "cancellation_date": "",
+            "category_name": "Entertainment",
+            "payer_user_name": "Jane Doe",
+            "payment_method_name": "Credit Card",
+            "replacement_subscription_id": 1
+        }
+    ],
+    "users": [
+        {
+            "id": 1,
+            "name": "admin",
+            "email": "admin@example.com"
+        },
+        {
+            "id": 2,
+            "name": "user",
+            "email": "user@example.com"
+        }
+    ],
+    "notes": []
 }
 */
 
@@ -86,9 +98,7 @@ header('Content-Type: application/json; charset=UTF-8');
 
 if ($_SERVER["REQUEST_METHOD"] === "POST" || $_SERVER["REQUEST_METHOD"] === "GET") {
     // if the parameters are not set, return an error
-
     $apiKey = $_REQUEST['api_key'] ?? $_REQUEST['apiKey'] ?? null;
-
     if (!$apiKey) {
         $response = [
             "success" => false,
@@ -98,14 +108,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" || $_SERVER["REQUEST_METHOD"] === "GET
         exit;
     }
 
-
     function getPriceConverted($price, $currency, $database)
     {
         $query = "SELECT rate FROM currencies WHERE id = :currency";
         $stmt = $database->prepare($query);
         $stmt->bindParam(':currency', $currency, SQLITE3_INTEGER);
         $result = $stmt->execute();
-
         $exchangeRate = $result->fetchArray(SQLITE3_ASSOC);
         if ($exchangeRate === false) {
             return $price;
@@ -131,9 +139,18 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" || $_SERVER["REQUEST_METHOD"] === "GET
         echo json_encode($response);
         exit;
     }
-
     $userId = $user['id'];
     $userCurrencyId = $user['main_currency'];
+
+    $allUserSubscription = isset($_REQUEST['all-user-subscription']) ? $_REQUEST['all-user-subscription'] : null;
+    if ($allUserSubscription == 1 && $userId != 1) {
+        $response = [
+            "success" => false,
+            "title" => "Denied. Not admin user"
+        ];
+        echo json_encode($response);
+        exit;
+    }
 
     // Get last exchange update date for user
     $sql = "SELECT * FROM last_exchange_update WHERE user_id = :userId";
@@ -141,7 +158,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" || $_SERVER["REQUEST_METHOD"] === "GET
     $stmt->bindValue(':userId', $userId);
     $result = $stmt->execute();
     $lastExchangeUpdate = $result->fetchArray(SQLITE3_ASSOC);
-
     $canConvertCurrency = empty($lastExchangeUpdate['date']) ? false : true;
 
     // Get currencies for user
@@ -188,67 +204,61 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" || $_SERVER["REQUEST_METHOD"] === "GET
     if (isset($_REQUEST['sort'])) {
         $sort = $_REQUEST['sort'];
     }
-
     $sortOrder = $sort;
     $allowedSortCriteria = ['name', 'id', 'next_payment', 'price', 'payer_user_id', 'category_id', 'payment_method_id', 'inactive', 'alphanumeric'];
     $order = ($sort == "price" || $sort == "id") ? "DESC" : "ASC";
-
     if ($sort == "alphanumeric") {
         $sort = "name";
     }
-
     if (!in_array($sort, $allowedSortCriteria)) {
         $sort = "next_payment";
     }
 
-    $sql = "SELECT * FROM subscriptions WHERE user_id = :userId";
+    // Construction of the main SQL Query
+    $params = [];
+    if ($allUserSubscription == 1 && $userId == 1) {
+        $sql = "SELECT * FROM subscriptions";
+    } else {
+        $sql = "SELECT * FROM subscriptions WHERE user_id = :userId";
+        $params[':userId'] = $userId;
+    }
 
     if (isset($_REQUEST['member'])) {
         $memberIds = explode(',', $_REQUEST['member']);
         $placeholders = array_map(function ($key) {
             return ":member{$key}";
         }, array_keys($memberIds));
-
         $sql .= " AND payer_user_id IN (" . implode(',', $placeholders) . ")";
-
         foreach ($memberIds as $key => $memberId) {
             $params[":member{$key}"] = $memberId;
         }
     }
-
     if (isset($_REQUEST['category'])) {
         $categoryIds = explode(',', $_REQUEST['category']);
         $placeholders = array_map(function ($key) {
             return ":category{$key}";
         }, array_keys($categoryIds));
-
         $sql .= " AND category_id IN (" . implode(',', $placeholders) . ")";
-
         foreach ($categoryIds as $key => $categoryId) {
             $params[":category{$key}"] = $categoryId;
         }
     }
-
     if (isset($_REQUEST['payment'])) {
         $paymentIds = explode(',', $_REQUEST['payment']);
         $placeholders = array_map(function ($key) {
             return ":payment{$key}";
         }, array_keys($paymentIds));
-
         $sql .= " AND payment_method_id IN (" . implode(',', $placeholders) . ")";
-
         foreach ($paymentIds as $key => $paymentId) {
             $params[":payment{$key}"] = $paymentId;
         }
     }
-
     if (isset($_REQUEST['state']) && $_REQUEST['state'] != "") {
         $sql .= " AND inactive = :inactive";
         $params[':inactive'] = $_REQUEST['state'];
     }
 
     $orderByClauses = [];
-
     if (isset($_REQUEST['disabled_to_bottom']) && $_REQUEST['disabled_to_bottom'] === 'true') {
         if (in_array($sort, ["payer_user_id", "category_id", "payment_method_id"])) {
             $orderByClauses[] = "$sort $order";
@@ -263,47 +273,35 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" || $_SERVER["REQUEST_METHOD"] === "GET
             $orderByClauses[] = "inactive ASC";
         }
     }
-
     if ($sort != "next_payment") {
         $orderByClauses[] = "next_payment ASC";
     }
-
     $sql .= " ORDER BY " . implode(", ", $orderByClauses);
 
     $stmt = $db->prepare($sql);
-    $stmt->bindValue(':userId', $userId, SQLITE3_INTEGER);
-
-
     if (!empty($params)) {
         foreach ($params as $key => $value) {
             $stmt->bindValue($key, $value, SQLITE3_INTEGER);
         }
     }
-
     $result = $stmt->execute();
-
     if ($result) {
         $subscriptions = array();
         while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
             $subscriptions[] = $row;
         }
     }
-
     $subscriptionsToReturn = array();
-
     foreach ($subscriptions as $subscription) {
         $subscriptionToReturn = $subscription;
-
         if (isset($_REQUEST['convert_currency']) && $_REQUEST['convert_currency'] === 'true' && $canConvertCurrency && $subscription['currency_id'] != $userCurrencyId) {
             $subscriptionToReturn['price'] = getPriceConverted($subscription['price'], $subscription['currency_id'], $db);
         } else {
             $subscriptionToReturn['price'] = $subscription['price'];
         }
-
-        $subscriptionToReturn['category_name'] = $categories[$subscription['category_id']];
-        $subscriptionToReturn['payer_user_name'] = $members[$subscription['payer_user_id']];
-        $subscriptionToReturn['payment_method_name'] = $paymentMethods[$subscription['payment_method_id']];
-
+        $subscriptionToReturn['category_name'] = isset($categories[$subscription['category_id']]) ? $categories[$subscription['category_id']] : 'No category';
+        $subscriptionToReturn['payer_user_name'] = isset($members[$subscription['payer_user_id']]) ? $members[$subscription['payer_user_id']] : 'Unknown member';
+        $subscriptionToReturn['payment_method_name'] = isset($paymentMethods[$subscription['payment_method_id']]) ? $paymentMethods[$subscription['payment_method_id']] : 'Unknown payment method';
         $subscriptionsToReturn[] = $subscriptionToReturn;
     }
 
@@ -314,8 +312,35 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" || $_SERVER["REQUEST_METHOD"] === "GET
         "notes" => []
     ];
 
-    echo json_encode($response);
+    if ($allUserSubscription == 1 && $userId == 1) {
+        $sql = "PRAGMA table_info(user)";
+        $stmt = $db->prepare($sql);
+        $result = $stmt->execute();
+        $userColumns = array();
+        while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
+            $userColumns[] = $row['name'];
+        }
+        $userNameCol = in_array('username', $userColumns) ? 'username' : null;
+        $userEmailCol = in_array('email', $userColumns) ? 'email' : null;
+        if ($userNameCol && $userEmailCol) {
+            $sql = "SELECT id, $userNameCol as name, $userEmailCol as email FROM user";
+        } elseif ($userNameCol) {
+            $sql = "SELECT id, $userNameCol as name FROM user";
+        } elseif ($userEmailCol) {
+            $sql = "SELECT id, $userEmailCol as email FROM user";
+        } else {
+            $sql = "SELECT id FROM user";
+        }
+        $stmt = $db->prepare($sql);
+        $result = $stmt->execute();
+        $users = array();
+        while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
+            $users[] = $row;
+        }
+        $response['users'] = $users;
+    }
 
+    echo json_encode($response);
     $db->close();
     exit;
 
@@ -328,6 +353,3 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" || $_SERVER["REQUEST_METHOD"] === "GET
     echo json_encode($response);
     exit;
 }
-
-
-?>

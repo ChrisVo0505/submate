@@ -63,17 +63,12 @@ if ($rows) {
             foreach ($rows as $user) {
                 $mail->addAddress($user['email']);
                 $mail->isHTML(true);
-                $mail->Subject = 'Submate - Email Verification';
-                $link = $server_url . '/app/verifyemail.php?email=' . $user['email'] . '&token=' . $user['token'];
-                $mail->Body = '
-                    <img src="' . $server_url . '/app/images/icon/logo.png" alt="Logo" />
+                $mail->Subject = 'Wallos - Email Verification';
+                $mail->Body = '<img src="' . $server_url . '/images/siteicons/wallos.png" alt="Logo" />
                     <br>
-                    Registration on Submate was successful.
+                    Registration on Wallos was successful.
                     <br>
-                    Please click the following link to verify your email: 
-                    <a href="' . $link . '">Verify Email</a>
-                ';
-                $mail->AltBody = 'Please verify your email by visiting this link: ' . $link;
+                    Please click the following link to verify your email: <a href="' . $server_url . '/verifyemail.php?email=' . $user['email'] . '&token=' . $user['token'] . '">Verify Email</a>';
 
                 $mail->send();
 

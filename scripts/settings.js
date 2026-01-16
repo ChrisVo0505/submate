@@ -27,9 +27,10 @@ function saveBudget() {
   fetch('endpoints/user/budget.php', {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'X-CSRF-Token': window.csrfToken,
     },
-    body: JSON.stringify({ budget: budget })
+    body: JSON.stringify({budget: budget}),
   })
     .then(response => response.json())
     .then(data => {
@@ -38,65 +39,70 @@ function saveBudget() {
       } else {
         showErrorMessage(data.message);
       }
-      button.disabled = false;
     })
     .catch(error => {
+      console.error(error);
       showErrorMessage(translate('unknown_error'));
+    })
+    .finally(() => {
       button.disabled = false;
     });
-
 }
 
+
 function addMemberButton(memberId) {
-  document.getElementById("addMember").disabled = true;
-  const url = 'endpoints/household/household.php?action=add';
-  fetch(url)
+  const addButton = document.getElementById("addMember");
+  addButton.disabled = true;
+
+  fetch("endpoints/household/household.php", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+      'X-CSRF-Token': window.csrfToken,
+    },
+    body: new URLSearchParams({action: "add"}),
+  })
     .then(response => {
       if (!response.ok) {
-        throw new Error(translate('network_response_error'));
-        showErrorMessage(translate('failed_add_member'));
+        showErrorMessage(translate("failed_add_member"));
+        throw new Error(translate("network_response_error"));
       }
       return response.json();
     })
     .then(responseData => {
       if (responseData.success) {
-        const newMemberId = responseData.householdId;;
-        let container = document.getElementById("householdMembers");
-        let div = document.createElement("div");
+        const newMemberId = responseData.householdId;
+        const container = document.getElementById("householdMembers");
+
+        const div = document.createElement("div");
         div.className = "form-group-inline";
         div.dataset.memberid = newMemberId;
 
-        let input = document.createElement("input");
+        const input = document.createElement("input");
         input.type = "text";
-        input.placeholder = translate('member');
+        input.placeholder = translate("member");
         input.name = "member";
-        input.value = translate('member');
+        input.value = translate("member");
 
-        let emailInput = document.createElement("input");
+        const emailInput = document.createElement("input");
         emailInput.type = "text";
-        emailInput.placeholder = translate('email');
+        emailInput.placeholder = translate("email");
         emailInput.name = "email";
         emailInput.value = "";
 
-        let editLink = document.createElement("button");
-        editLink.className = "image-button medium"
+        const editLink = document.createElement("button");
+        editLink.className = "image-button medium";
         editLink.name = "save";
-        editLink.onclick = function () {
-          editMember(newMemberId);
-        };
-
+        editLink.onclick = () => editMember(newMemberId);
         editLink.innerHTML = editSvgContent;
-        editLink.title = translate('save_member');
+        editLink.title = translate("save_member");
 
-        let deleteLink = document.createElement("button");
-        deleteLink.className = "image-button medium"
+        const deleteLink = document.createElement("button");
+        deleteLink.className = "image-button medium";
         deleteLink.name = "delete";
-        deleteLink.onclick = function () {
-          removeMember(newMemberId);
-        };
-
+        deleteLink.onclick = () => removeMember(newMemberId);
         deleteLink.innerHTML = deleteSvgContent;
-        deleteLink.title = translate('delete_member');
+        deleteLink.title = translate("delete_member");
 
         div.appendChild(input);
         div.appendChild(emailInput);
@@ -105,78 +111,115 @@ function addMemberButton(memberId) {
 
         container.appendChild(div);
       } else {
-        showErrorMessage(responseData.errorMessage);
+        showErrorMessage(responseData.message || translate("failed_add_member"));
       }
-      document.getElementById("addMember").disabled = false;
     })
     .catch(error => {
-      showErrorMessage(translate('failed_add_member'));
-      document.getElementById("addMember").disabled = false;
+      console.error(error);
+      showErrorMessage(translate("failed_add_member"));
+    })
+    .finally(() => {
+      addButton.disabled = false;
     });
-
 }
 
 function removeMember(memberId) {
-  let url = `endpoints/household/household.php?action=delete&memberId=${memberId}`;
-  fetch(url)
+  fetch("endpoints/household/household.php", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+      'X-CSRF-Token': window.csrfToken,
+    },
+    body: new URLSearchParams({
+      action: "delete",
+      memberId: memberId,
+    }),
+  })
     .then(response => {
       if (!response.ok) {
-        throw new Error(translate('network_response_error'));
+        throw new Error(translate("network_response_error"));
       }
       return response.json();
     })
     .then(responseData => {
       if (responseData.success) {
-        let divToRemove = document.querySelector(`[data-memberid="${memberId}"]`);
-        if (divToRemove) {
-          divToRemove.parentNode.removeChild(divToRemove);
-        }
+        const divToRemove = document.querySelector(`[data-memberid="${memberId}"]`);
+        if (divToRemove) divToRemove.remove();
         showSuccessMessage(responseData.message);
       } else {
-        showErrorMessage(responseData.errorMessage || translate('failed_remove_member'));
+        showErrorMessage(responseData.message || translate("failed_remove_member"));
       }
     })
     .catch(error => {
-      showErrorMessage(translate('failed_remove_member'));
+      console.error(error);
+      showErrorMessage(translate("failed_remove_member"));
     });
 }
 
+
 function editMember(memberId) {
-  var saveButton = document.querySelector(`div[data-memberid="${memberId}"] button[name="save"]`);
-  var memberNameElement = document.querySelector(`div[data-memberid="${memberId}"] input[name="member"]`);
-  var memberEmailElement = document.querySelector(`div[data-memberid="${memberId}"] input[name="email"]`);
+  const saveButton = document.querySelector(`div[data-memberid="${memberId}"] button[name="save"]`);
+  const memberNameElement = document.querySelector(`div[data-memberid="${memberId}"] input[name="member"]`);
+  const memberEmailElement = document.querySelector(`div[data-memberid="${memberId}"] input[name="email"]`);
+
+  if (!memberNameElement) return;
+
   saveButton.classList.add("disabled");
   saveButton.disabled = true;
-  if (memberNameElement) {
-    var memberName = encodeURIComponent(memberNameElement.value);
-    var memberEmail = memberEmailElement ? encodeURIComponent(memberEmailElement.value) : '';
-    var url = `endpoints/household/household.php?action=edit&memberId=${memberId}&name=${memberName}&email=${memberEmail}`;
 
-    fetch(url)
-      .then(response => {
-        saveButton.classList.remove("disabled");
-        if (!response.ok) {
-          showErrorMessage(translate('failed_save_member'));
-        }
-        return response.json();
-      })
-      .then(responseData => {
-        if (responseData.success) {
-          showSuccessMessage(responseData.message);
-        } else {
-          showErrorMessage(responseData.errorMessage || translate('failed_save_member'));
-        }
-      })
-      .catch(error => {
-        showErrorMessage(translate('failed_save_member'));
-      });
-  }
+  const memberName = memberNameElement.value;
+  const memberEmail = memberEmailElement ? memberEmailElement.value : "";
+
+  fetch("endpoints/household/household.php", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+      'X-CSRF-Token': window.csrfToken,
+    },
+    body: new URLSearchParams({
+      action: "edit",
+      memberId: memberId,
+      name: memberName,
+      email: memberEmail,
+    }),
+  })
+    .then(response => {
+      if (!response.ok) {
+        showErrorMessage(translate("failed_save_member"));
+        throw new Error(translate("network_response_error"));
+      }
+      return response.json();
+    })
+    .then(responseData => {
+      if (responseData.success) {
+        showSuccessMessage(responseData.message);
+      } else {
+        showErrorMessage(responseData.message || translate("failed_save_member"));
+      }
+    })
+    .catch(error => {
+      console.error(error);
+      showErrorMessage(translate("failed_save_member"));
+    })
+    .finally(() => {
+      saveButton.classList.remove("disabled");
+      saveButton.disabled = false;
+    });
 }
 
+
 function addCategoryButton(categoryId) {
-  document.getElementById("addCategory").disabled = true;
-  const url = 'endpoints/categories/category.php?action=add';
-  fetch(url)
+  const addButton = document.getElementById("addCategory");
+  addButton.disabled = true;
+
+  fetch('endpoints/categories/category.php', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'X-CSRF-Token': window.csrfToken,
+    },
+    body: new URLSearchParams({action: 'add'}),
+  })
     .then(response => {
       if (!response.ok) {
         showErrorMessage(translate('failed_add_category'));
@@ -186,38 +229,37 @@ function addCategoryButton(categoryId) {
     })
     .then(responseData => {
       if (responseData.success) {
-        const newCategoryId = responseData.categoryId;;
-        let container = document.getElementById("categories");
-        let row = document.createElement("div");
+        const newCategoryId = responseData.categoryId;
+        const container = document.getElementById("categories");
+
+        const row = document.createElement("div");
         row.className = "form-group-inline";
         row.dataset.categoryid = newCategoryId;
 
-        let dragIcon = document.createElement("div");
+        const dragIcon = document.createElement("div");
         dragIcon.className = "drag-icon";
 
-        let input = document.createElement("input");
+        const input = document.createElement("input");
         input.type = "text";
         input.placeholder = translate('category');
         input.name = "category";
         input.value = translate('category');
 
-        let editLink = document.createElement("button");
-        editLink.className = "image-button medium"
+        const editLink = document.createElement("button");
+        editLink.className = "image-button medium";
         editLink.name = "save";
         editLink.onclick = function () {
           editCategory(newCategoryId);
         };
-
         editLink.innerHTML = editSvgContent;
         editLink.title = translate('save_member');
 
-        let deleteLink = document.createElement("button");
-        deleteLink.className = "image-button medium"
+        const deleteLink = document.createElement("button");
+        deleteLink.className = "image-button medium";
         deleteLink.name = "delete";
         deleteLink.onclick = function () {
           removeCategory(newCategoryId);
         };
-
         deleteLink.innerHTML = deleteSvgContent;
         deleteLink.title = translate('delete_member');
 
@@ -225,23 +267,33 @@ function addCategoryButton(categoryId) {
         row.appendChild(input);
         row.appendChild(editLink);
         row.appendChild(deleteLink);
-
         container.appendChild(row);
       } else {
-        showErrorMessage(responseData.errorMessage);
+        showErrorMessage(responseData.message);
       }
-      document.getElementById("addCategory").disabled = false;
     })
     .catch(error => {
+      console.error(error);
       showErrorMessage(translate('failed_add_category'));
-      document.getElementById("addCategory").disabled = false;
+    })
+    .finally(() => {
+      addButton.disabled = false;
     });
-
 }
 
+
 function removeCategory(categoryId) {
-  let url = `endpoints/categories/category.php?action=delete&categoryId=${categoryId}`;
-  fetch(url)
+  fetch('endpoints/categories/category.php', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'X-CSRF-Token': window.csrfToken,
+    },
+    body: new URLSearchParams({
+      action: 'delete',
+      categoryId: categoryId,
+    }),
+  })
     .then(response => {
       if (!response.ok) {
         throw new Error(translate('network_response_error'));
@@ -250,106 +302,130 @@ function removeCategory(categoryId) {
     })
     .then(responseData => {
       if (responseData.success) {
-        let divToRemove = document.querySelector(`[data-categoryid="${categoryId}"]`);
-        if (divToRemove) {
-          divToRemove.parentNode.removeChild(divToRemove);
-        }
+        const divToRemove = document.querySelector(`[data-categoryid="${categoryId}"]`);
+        if (divToRemove) divToRemove.remove();
         showSuccessMessage(responseData.message);
       } else {
-        showErrorMessage(responseData.errorMessage || translate('failed_remove_category'));
+        showErrorMessage(responseData.message || translate('failed_remove_category'));
       }
     })
     .catch(error => {
+      console.error(error);
       showErrorMessage(translate('failed_remove_category'));
     });
 }
 
+
 function editCategory(categoryId) {
-  var saveButton = document.querySelector(`div[data-categoryid="${categoryId}"] button[name="save"]`);
-  var inputElement = document.querySelector(`div[data-categoryid="${categoryId}"] input[name="category"]`);
+  const saveButton = document.querySelector(`div[data-categoryid="${categoryId}"] button[name="save"]`);
+  const inputElement = document.querySelector(`div[data-categoryid="${categoryId}"] input[name="category"]`);
+
+  if (!inputElement) return;
 
   saveButton.classList.add("disabled");
   saveButton.disabled = true;
-  if (inputElement) {
-    var categoryName = encodeURIComponent(inputElement.value);
-    var url = `endpoints/categories/category.php?action=edit&categoryId=${categoryId}&name=${categoryName}`;
 
-    fetch(url)
-      .then(response => {
-        saveButton.classList.remove("disabled");
-        if (!response.ok) {
-          showErrorMessage(translate('failed_save_category'));
-        }
-        return response.json();
-      })
-      .then(responseData => {
-        if (responseData.success) {
-          showSuccessMessage(responseData.message);
-        } else {
-          showErrorMessage(responseData.errorMessage || translate('failed_save_category'));
-        }
-      })
-      .catch(error => {
+  const categoryName = inputElement.value;
+
+  fetch('endpoints/categories/category.php', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'X-CSRF-Token': window.csrfToken,
+    },
+    body: new URLSearchParams({
+      action: 'edit',
+      categoryId: categoryId,
+      name: categoryName,
+    }),
+  })
+    .then(response => {
+      saveButton.classList.remove("disabled");
+      saveButton.disabled = false;
+
+      if (!response.ok) {
         showErrorMessage(translate('failed_save_category'));
-      });
-  }
+        throw new Error(translate('network_response_error'));
+      }
+      return response.json();
+    })
+    .then(responseData => {
+      if (responseData.success) {
+        showSuccessMessage(responseData.message);
+      } else {
+        showErrorMessage(responseData.message || translate('failed_save_category'));
+      }
+    })
+    .catch(error => {
+      console.error(error);
+      showErrorMessage(translate('failed_save_category'));
+      saveButton.classList.remove("disabled");
+      saveButton.disabled = false;
+    });
 }
 
+
 function addCurrencyButton(currencyId) {
-  document.getElementById("addCurrency").disabled = true;
-  const url = 'endpoints/currency/add.php';
-  fetch(url)
+  const addButton = document.getElementById("addCurrency");
+  addButton.disabled = true;
+
+  fetch('endpoints/currency/currency.php', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'X-CSRF-Token': window.csrfToken,
+    },
+    body: new URLSearchParams({action: 'add'}),
+  })
     .then(response => {
       if (!response.ok) {
         throw new Error(translate('network_response_error'));
-        showErrorMessage(response.text());
       }
-      return response.text();
+      return response.json();
     })
-    .then(responseText => {
-      if (responseText !== "Error") {
-        const newCurrencyId = responseText;
-        let container = document.getElementById("currencies");
-        let div = document.createElement("div");
+    .then(responseData => {
+      if (responseData.success) {
+        const newCurrencyId = responseData.currencyId;
+        const container = document.getElementById("currencies");
+
+        const div = document.createElement("div");
         div.className = "form-group-inline";
         div.dataset.currencyid = newCurrencyId;
 
-        let inputSymbol = document.createElement("input");
+        const inputSymbol = document.createElement("input");
         inputSymbol.type = "text";
         inputSymbol.placeholder = "$";
         inputSymbol.name = "symbol";
         inputSymbol.value = "$";
         inputSymbol.classList.add("short");
 
-        let inputName = document.createElement("input");
+        const inputName = document.createElement("input");
         inputName.type = "text";
         inputName.placeholder = translate('currency');
         inputName.name = "currency";
         inputName.value = translate('currency');
 
-        let inputCode = document.createElement("input");
+        const inputCode = document.createElement("input");
         inputCode.type = "text";
         inputCode.placeholder = translate('currency_code');
         inputCode.name = "code";
         inputCode.value = "CODE";
 
-        let editLink = document.createElement("button");
-        editLink.className = "image-button medium"
+        const editLink = document.createElement("button");
+        editLink.className = "image-button medium";
         editLink.name = "save";
         editLink.onclick = function () {
           editCurrency(newCurrencyId);
         };
-
         editLink.innerHTML = editSvgContent;
         editLink.title = translate('save_member');
 
-        let deleteLink = document.createElement("button");
-        deleteLink.className = "image-button medium"
+        const deleteLink = document.createElement("button");
+        deleteLink.className = "image-button medium";
         deleteLink.name = "delete";
         deleteLink.onclick = function () {
           removeCurrency(newCurrencyId);
         };
-
         deleteLink.innerHTML = deleteSvgContent;
         deleteLink.title = translate('delete_member');
 
@@ -361,20 +437,30 @@ function addCurrencyButton(currencyId) {
 
         container.appendChild(div);
       } else {
-        // TODO: Show error
+        showErrorMessage(responseData.message || translate('failed_add_currency'));
       }
-      document.getElementById("addCurrency").disabled = false;
     })
     .catch(error => {
-      // TODO: Show error
-      document.getElementById("addCurrency").disabled = false;
+      console.error(error);
+      showErrorMessage(translate('failed_add_currency'));
+    })
+    .finally(() => {
+      addButton.disabled = false;
     });
-
 }
 
 function removeCurrency(currencyId) {
-  let url = `endpoints/currency/remove.php?currencyId=${currencyId}`;
-  fetch(url)
+  fetch('endpoints/currency/currency.php', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'X-CSRF-Token': window.csrfToken,
+    },
+    body: new URLSearchParams({
+      action: 'delete',
+      currencyId: currencyId,
+    }),
+  })
     .then(response => {
       if (!response.ok) {
         throw new Error(translate('network_response_error'));
@@ -384,85 +470,110 @@ function removeCurrency(currencyId) {
     .then(data => {
       if (data.success) {
         showSuccessMessage(data.message);
-        let divToRemove = document.querySelector(`[data-currencyid="${currencyId}"]`);
-        if (divToRemove) {
-          divToRemove.parentNode.removeChild(divToRemove);
-        }
+        const divToRemove = document.querySelector(`[data-currencyid="${currencyId}"]`);
+        if (divToRemove) divToRemove.remove();
       } else {
         showErrorMessage(data.message || translate('failed_remove_currency'));
       }
     })
     .catch(error => {
+      console.error(error);
       showErrorMessage(error.message || translate('failed_remove_currency'));
     });
 }
 
 function editCurrency(currencyId) {
-  var saveButton = document.querySelector(`div[data-currencyid="${currencyId}"] button[name="save"]`);
-  var inputSymbolElement = document.querySelector(`div[data-currencyid="${currencyId}"] input[name="symbol"]`);
-  var inputNameElement = document.querySelector(`div[data-currencyid="${currencyId}"] input[name="currency"]`);
-  var inputCodeElement = document.querySelector(`div[data-currencyid="${currencyId}"] input[name="code"]`);
+  const saveButton = document.querySelector(`div[data-currencyid="${currencyId}"] button[name="save"]`);
+  const inputSymbolElement = document.querySelector(`div[data-currencyid="${currencyId}"] input[name="symbol"]`);
+  const inputNameElement = document.querySelector(`div[data-currencyid="${currencyId}"] input[name="currency"]`);
+  const inputCodeElement = document.querySelector(`div[data-currencyid="${currencyId}"] input[name="code"]`);
+
+  if (!inputNameElement) return;
+
   saveButton.classList.add("disabled");
   saveButton.disabled = true;
-  if (inputNameElement) {
-    var currencyName = encodeURIComponent(inputNameElement.value);
-    var currencySymbol = encodeURIComponent(inputSymbolElement.value);
-    var currencyCode = encodeURIComponent(inputCodeElement.value);
-    var url = `endpoints/currency/edit.php?currencyId=${currencyId}&name=${currencyName}&symbol=${currencySymbol}&code=${currencyCode}`;
 
-    fetch(url)
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(translate('network_response_error'));
-        }
-        return response.json();
-      })
-      .then(data => {
-        if (data.success) {
-          saveButton.classList.remove("disabled");
-          saveButton.disabled = false;
-          showSuccessMessage(decodeURI(data.message));
-        } else {
-          saveButton.classList.remove("disabled");
-          saveButton.disabled = false;
-          showErrorMessage(data.message || translate('failed_save_currency'));
-        }
-      })
-      .catch(error => {
-        saveButton.classList.remove("disabled");
-        saveButton.disabled = false;
-        showErrorMessage(error.message || translate('failed_save_currency'));
-      });
-  }
+  const currencyName = inputNameElement.value;
+  const currencySymbol = inputSymbolElement.value;
+  const currencyCode = inputCodeElement.value;
+
+  fetch('endpoints/currency/currency.php', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'X-CSRF-Token': window.csrfToken,
+    },
+    body: new URLSearchParams({
+      action: 'edit',
+      currencyId: currencyId,
+      name: currencyName,
+      symbol: currencySymbol,
+      code: currencyCode,
+    }),
+  })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(translate('network_response_error'));
+      }
+      return response.json();
+    })
+    .then(data => {
+      saveButton.classList.remove("disabled");
+      saveButton.disabled = false;
+
+      if (data.success) {
+        showSuccessMessage(data.message);
+      } else {
+        showErrorMessage(data.message || translate('failed_save_currency'));
+      }
+    })
+    .catch(error => {
+      console.error(error);
+      showErrorMessage(error.message || translate('failed_save_currency'));
+      saveButton.classList.remove("disabled");
+      saveButton.disabled = false;
+    });
 }
 
 function togglePayment(paymentId) {
   const element = document.querySelector(`div[data-paymentid="${paymentId}"]`);
 
-  if (element.dataset.inUse === 'yes') {
-    return showErrorMessage(translate('cant_disable_payment_in_use'));
+  if (element.dataset.inUse === "yes") {
+    return showErrorMessage(translate("cant_disable_payment_in_use"));
   }
 
-  const newEnabledState = element.dataset.enabled === '1' ? '0' : '1';
-  const paymentMethodName = element.querySelector('.payment-name').innerText;
+  const newEnabledState = element.dataset.enabled === "1" ? "0" : "1";
+  const paymentMethodName = element.querySelector(".payment-name").innerText;
 
-  const url = `endpoints/payments/payment.php?action=toggle&paymentId=${paymentId}&enabled=${newEnabledState}`;
-
-  fetch(url).then(response => {
-    if (!response.ok) {
-      throw new Error(translate('network_response_error'));
-    }
-    return response.json();
-  }).then(data => {
-    if (data.success) {
-      element.dataset.enabled = newEnabledState;
-      showSuccessMessage(`${paymentMethodName} ${data.message}`);
-    } else {
-      showErrorMessage(data.message || translate('failed_save_payment_method'));
-    }
-  }).catch(error => {
-    showErrorMessage(error.message || translate('failed_save_payment_method'));
-  });
+  fetch("endpoints/payments/toggle.php", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+      "X-CSRF-Token": window.csrfToken,
+    },
+    body: new URLSearchParams({
+      paymentId: paymentId,
+      enabled: newEnabledState,
+    }),
+  })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(translate("network_response_error"));
+      }
+      return response.json();
+    })
+    .then(data => {
+      if (data.success) {
+        element.dataset.enabled = newEnabledState;
+        showSuccessMessage(`${paymentMethodName} ${data.message}`);
+      } else {
+        showErrorMessage(data.message || translate("failed_save_payment_method"));
+      }
+    })
+    .catch(error => {
+      console.error(error);
+      showErrorMessage(error.message || translate("failed_save_payment_method"));
+    });
 }
 
 document.body.addEventListener('click', function (e) {
@@ -496,27 +607,38 @@ document.body.addEventListener('blur', function (e) {
 
 function renamePayment(paymentId, newName) {
   const name = newName.trim();
+  if (!name) return;
+
   const formData = new FormData();
-  formData.append('paymentId', paymentId);
-  formData.append('name', name);
-  fetch('endpoints/payments/rename.php', {
-    method: 'POST',
-    body: formData
-  }).then(response => {
-    if (!response.ok) {
-      throw new Error(translate('network_response_error'));
-    }
-    return response.json();
-  }).then(data => {
-    if (data.success) {
-      showSuccessMessage(`${newName} ${data.message}`);
-    } else {
-      showErrorMessage(data.message);
-    }
-  }).catch(error => {
-    showErrorMessage(translate('unknown_error'));
-  });
+  formData.append("paymentId", paymentId);
+  formData.append("name", name);
+
+  fetch("endpoints/payments/rename.php", {
+    method: "POST",
+    headers: {
+      "X-CSRF-Token": window.csrfToken,
+    },
+    body: formData,
+  })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(translate("network_response_error"));
+      }
+      return response.json();
+    })
+    .then(data => {
+      if (data.success) {
+        showSuccessMessage(`${newName} ${data.message}`);
+      } else {
+        showErrorMessage(data.message || translate("failed_save_payment_method"));
+      }
+    })
+    .catch(error => {
+      console.error(error);
+      showErrorMessage(translate("unknown_error"));
+    });
 }
+
 
 document.body.addEventListener('keypress', function (e) {
   let targetElement = e.target;
@@ -642,10 +764,14 @@ function addPaymentMethod() {
 
   submitButton.disabled = true;
   const formData = new FormData(paymentMethodForm);
+  formData.append("action", "add");
 
   fetch(addPaymentMethodEndpoint, {
     method: "POST",
-    body: formData
+    headers: {
+      "X-CSRF-Token": window.csrfToken,
+    },
+    body: formData,
   })
     .then(response => response.json())
     .then(data => {
@@ -655,22 +781,25 @@ function addPaymentMethod() {
         resetFormIcon();
         reloadPaymentMethods();
       } else {
-        showErrorMessage(data.errorMessage);
+        showErrorMessage(data.message || translate("failed_add_payment_method"));
       }
-      submitButton.disabled = false;
     })
     .catch(error => {
-      showErrorMessage(translate('unknown_error'));
+      console.error(error);
+      showErrorMessage(translate("unknown_error"));
+    })
+    .finally(() => {
       submitButton.disabled = false;
     });
-
 }
+
 
 function deletePaymentMethod(paymentId) {
   fetch(`endpoints/payments/delete.php?id=${paymentId}`, {
-    method: 'DELETE',
+    method: 'POST',
     headers: {
       'Content-Type': 'application/json',
+       "X-CSRF-Token": window.csrfToken,
     },
     body: JSON.stringify({ id: paymentId }),
   })
@@ -683,7 +812,7 @@ function deletePaymentMethod(paymentId) {
           paymentToRemove.remove();
         }
       } else {
-        showErrorMessage(data.errorMessage);
+        showErrorMessage(data.message);
       }
     })
     .catch((error) => {
@@ -692,30 +821,36 @@ function deletePaymentMethod(paymentId) {
 }
 
 function savePaymentMethodsSorting() {
-  const paymentMethods = document.getElementById('payments-list');
-  const paymentMethodIds = Array.from(paymentMethods.children).map(paymentMethod => paymentMethod.dataset.paymentid);
+  const paymentMethods = document.getElementById("payments-list");
+  const paymentMethodIds = Array.from(paymentMethods.children).map(
+    paymentMethod => paymentMethod.dataset.paymentid
+  );
 
   const formData = new FormData();
-  paymentMethodIds.forEach(paymentMethodId => {
-    formData.append('paymentMethodIds[]', paymentMethodId);
-  });
+  paymentMethodIds.forEach(id => formData.append("paymentMethodIds[]", id));
+  formData.append("action", "sort");
 
-  fetch('endpoints/payments/sort.php', {
-    method: 'POST',
-    body: formData
+  fetch("endpoints/payments/sort.php", {
+    method: "POST",
+    headers: {
+      "X-CSRF-Token": window.csrfToken,
+    },
+    body: formData,
   })
     .then(response => response.json())
     .then(data => {
       if (data.success) {
         showSuccessMessage(data.message);
       } else {
-        showErrorMessage(data.errorMessage);
+        showErrorMessage(data.message || translate("failed_sort_payment_methods"));
       }
     })
     .catch(error => {
-      showErrorMessage(translate('unknown_error'));
+      console.error(error);
+      showErrorMessage(translate("unknown_error"));
     });
 }
+
 
 var el = document.getElementById('payments-list');
 var sortable = Sortable.create(el, {
@@ -745,42 +880,59 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 function addFixerKeyButton() {
-  document.getElementById("addFixerKey").disabled = true;
+  const addButton = document.getElementById("addFixerKey");
+  addButton.disabled = true;
+
   const apiKeyInput = document.querySelector("#fixerKey");
-  apiKey = apiKeyInput.value.trim();
+  const apiKey = apiKeyInput.value.trim();
   const provider = document.querySelector("#fixerProvider").value;
   const convertCurrencyCheckbox = document.querySelector("#convertcurrency");
+
   fetch("endpoints/currency/fixer_api_key.php", {
     method: "POST",
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",
+      'X-CSRF-Token': window.csrfToken,
     },
-    body: `api_key=${encodeURIComponent(apiKey)}&provider=${encodeURIComponent(provider)}`,
+    body: new URLSearchParams({
+      api_key: apiKey,
+      provider: provider,
+    }),
   })
     .then(response => response.json())
     .then(data => {
       if (data.success) {
         showSuccessMessage(data.message);
-        document.getElementById("addFixerKey").disabled = false;
+        addButton.disabled = false;
         convertCurrencyCheckbox.disabled = false;
-        // update currency exchange rates
-        fetch("endpoints/currency/update_exchange.php?force=true");
+
+        fetch("endpoints/currency/update_exchange.php", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+            'X-CSRF-Token': window.csrfToken,
+          },
+          body: new URLSearchParams({force: "true"}),
+        }).catch(console.error);
       } else {
         showErrorMessage(data.message);
-        document.getElementById("addFixerKey").disabled = false;
+        addButton.disabled = false;
       }
     })
     .catch(error => {
-      showErrorMessage(error);
-      document.getElementById("addFixerKey").disabled = false;
+      console.error(error);
+      showErrorMessage(translate("unknown_error"));
+      addButton.disabled = false;
     });
 }
+
 
 function storeSettingsOnDB(endpoint, value) {
   fetch('endpoints/settings/' + endpoint + '.php', {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'X-CSRF-Token': window.csrfToken,
     },
     body: JSON.stringify({ "value": value })
   })
@@ -789,7 +941,7 @@ function storeSettingsOnDB(endpoint, value) {
       if (data.success) {
         showSuccessMessage(data.message);
       } else {
-        showErrorMessage(data.errorMessage);
+        showErrorMessage(data.message);
       }
     });
 }
@@ -851,30 +1003,32 @@ function setShowSubscriptionProgress() {
 }
 
 function saveCategorySorting() {
-  const categories = document.getElementById('categories');
-  const categoryIds = Array.from(categories.children).map(category => category.dataset.categoryid);
+  const categories = document.getElementById("categories");
+  const categoryIds = Array.from(categories.children).map(c => c.dataset.categoryid);
 
   const formData = new FormData();
-  categoryIds.forEach(categoryId => {
-    formData.append('categoryIds[]', categoryId);
-  });
+  categoryIds.forEach(categoryId => formData.append("categoryIds[]", categoryId));
+  formData.append("action", "sort");
 
-  fetch('endpoints/categories/sort.php', {
-    method: 'POST',
-    body: formData
+  fetch("endpoints/categories/category.php", {
+    method: "POST",
+    headers: {"X-CSRF-Token": window.csrfToken},
+    body: formData,
   })
     .then(response => response.json())
     .then(data => {
       if (data.success) {
         showSuccessMessage(data.message);
       } else {
-        showErrorMessage(data.errorMessage);
+        showErrorMessage(data.message);
       }
     })
     .catch(error => {
-      showErrorMessage(translate('unknown_error'));
+      console.error(error);
+      showErrorMessage(translate("unknown_error"));
     });
 }
+
 
 var el = document.getElementById('categories');
 var sortable = Sortable.create(el, {
@@ -898,7 +1052,8 @@ function fetch_ai_models() {
   fetch(endpoint, {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'X-CSRF-Token': window.csrfToken,
     },
     body: JSON.stringify({ type, api_key, ollama_host })
   })
@@ -913,7 +1068,7 @@ function fetch_ai_models() {
           modelSelect.appendChild(option);
         });
       } else {
-        showErrorMessage(data.errorMessage);
+        showErrorMessage(data.message);
       }
     })
     .catch(error => {
@@ -945,7 +1100,8 @@ function saveAiSettingsButton() {
   fetch('endpoints/ai/save_settings.php', {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'X-CSRF-Token': window.csrfToken,
     },
     body: JSON.stringify({ ai_enabled: aiEnabled, ai_type: aiType, api_key: aiApiKey, ollama_host: aiOllamaHost, model: aiModel })
   })
@@ -960,7 +1116,7 @@ function saveAiSettingsButton() {
           runAiActionButton.classList.add("hidden");
         }
       } else {
-        showErrorMessage(data.errorMessage);
+        showErrorMessage(data.message);
       }
     })
     .catch(error => {
@@ -979,7 +1135,8 @@ function runAiRecommendations() {
   fetch(endpoint, {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'X-CSRF-Token': window.csrfToken,
     }
   })
     .then(response => response.json())
@@ -987,7 +1144,7 @@ function runAiRecommendations() {
       if (data.success) {
         showSuccessMessage(data.message);
       } else {
-        showErrorMessage(data.errorMessage);
+        showErrorMessage(data.message);
       }
     })
     .catch(error => {

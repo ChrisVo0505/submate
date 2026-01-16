@@ -71,7 +71,7 @@ See instructions to run Wallos below.
 #### Baremetal
 
 - NGINX or APACHE websever running
-- PHP 8.2 with the following modules enabled:
+- PHP 8.3 with the following modules enabled:
     - curl
     - dom
     - gd
@@ -80,6 +80,8 @@ See instructions to run Wallos below.
     - openssl
     - sqlite3
     - zip
+    - mbstring
+    - fpm
 
 #### Docker
 
@@ -179,9 +181,9 @@ If you want to trigger an Update of the exchange rates, change your main currenc
 
 ## Screenshots
 
-![Screenshot](screenshots/wallos-dashboard-light.png)
+![Screenshot](screenshots/wallos-subscriptions-light.png)
 
-![Screenshot](screenshots/wallos-dashboard-dark.png)
+![Screenshot](screenshots/wallos-subscriptions-dark.png)
 
 ![Screenshot](screenshots/wallos-stats.png)
 
@@ -237,3 +239,4 @@ I strongly believe in the importance of open source software and the collaborati
 - The author: [henrique.pt](https://henrique.pt)
 - Wallos Landingpage: [wallosapp.com](https://wallosapp.com)
 - Join the conversation: [Discord Server](https://discord.gg/anex9GUrPW)
+
