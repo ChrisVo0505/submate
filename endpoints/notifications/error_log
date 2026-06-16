@@ -1,0 +1,506 @@
+[28-Oct-2024 15:51:45 Australia/Sydney] PHP Fatal error:  Uncaught PHPMailer\PHPMailer\Exception: SMTP Error: Could not connect to SMTP host. in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php:2244
+Stack trace:
+#0 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(2023): PHPMailer\PHPMailer\PHPMailer->smtpConnect()
+#1 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1682): PHPMailer\PHPMailer\PHPMailer->smtpSend()
+#2 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1516): PHPMailer\PHPMailer\PHPMailer->postSend()
+#3 /home/submatec/public_html/endpoints/notifications/testemailnotifications.php(69): PHPMailer\PHPMailer\PHPMailer->send()
+#4 {main}
+  thrown in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php on line 2244
+[29-Oct-2024 20:20:20 Australia/Sydney] PHP Fatal error:  Uncaught PHPMailer\PHPMailer\Exception: SMTP Error: Could not connect to SMTP host. in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php:2244
+Stack trace:
+#0 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(2023): PHPMailer\PHPMailer\PHPMailer->smtpConnect()
+#1 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1682): PHPMailer\PHPMailer\PHPMailer->smtpSend()
+#2 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1516): PHPMailer\PHPMailer\PHPMailer->postSend()
+#3 /home/submatec/public_html/endpoints/notifications/testemailnotifications.php(69): PHPMailer\PHPMailer\PHPMailer->send()
+#4 {main}
+  thrown in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php on line 2244
+[29-Oct-2024 20:20:25 Australia/Sydney] PHP Warning:  SQLite3Stmt::execute(): Unable to execute statement: database is locked in /home/submatec/public_html/endpoints/notifications/savenotificationsettings.php on line 49
+[29-Oct-2024 20:20:30 Australia/Sydney] PHP Warning:  SQLite3Stmt::execute(): Unable to execute statement: database is locked in /home/submatec/public_html/endpoints/notifications/saveemailnotifications.php on line 73
+[30-Oct-2024 08:33:46 Australia/Sydney] PHP Fatal error:  Uncaught PHPMailer\PHPMailer\Exception: SMTP Error: Could not connect to SMTP host. Failed to connect to server in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php:2244
+Stack trace:
+#0 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(2023): PHPMailer\PHPMailer\PHPMailer->smtpConnect()
+#1 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1682): PHPMailer\PHPMailer\PHPMailer->smtpSend()
+#2 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1516): PHPMailer\PHPMailer\PHPMailer->postSend()
+#3 /home/submatec/public_html/endpoints/notifications/testemailnotifications.php(69): PHPMailer\PHPMailer\PHPMailer->send()
+#4 {main}
+  thrown in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php on line 2244
+[30-Oct-2024 08:33:53 Australia/Sydney] PHP Fatal error:  Uncaught PHPMailer\PHPMailer\Exception: SMTP Error: Could not connect to SMTP host. Failed to connect to server in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php:2244
+Stack trace:
+#0 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(2023): PHPMailer\PHPMailer\PHPMailer->smtpConnect()
+#1 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1682): PHPMailer\PHPMailer\PHPMailer->smtpSend()
+#2 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1516): PHPMailer\PHPMailer\PHPMailer->postSend()
+#3 /home/submatec/public_html/endpoints/notifications/testemailnotifications.php(69): PHPMailer\PHPMailer\PHPMailer->send()
+#4 {main}
+  thrown in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php on line 2244
+[30-Oct-2024 08:35:04 Australia/Sydney] PHP Fatal error:  Uncaught PHPMailer\PHPMailer\Exception: SMTP Error: Could not connect to SMTP host. in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php:2244
+Stack trace:
+#0 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(2023): PHPMailer\PHPMailer\PHPMailer->smtpConnect()
+#1 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1682): PHPMailer\PHPMailer\PHPMailer->smtpSend()
+#2 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1516): PHPMailer\PHPMailer\PHPMailer->postSend()
+#3 /home/submatec/public_html/endpoints/notifications/testemailnotifications.php(69): PHPMailer\PHPMailer\PHPMailer->send()
+#4 {main}
+  thrown in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php on line 2244
+[30-Oct-2024 08:36:06 Australia/Sydney] PHP Fatal error:  Uncaught PHPMailer\PHPMailer\Exception: SMTP Error: Could not connect to SMTP host. in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php:2244
+Stack trace:
+#0 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(2023): PHPMailer\PHPMailer\PHPMailer->smtpConnect()
+#1 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1682): PHPMailer\PHPMailer\PHPMailer->smtpSend()
+#2 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1516): PHPMailer\PHPMailer\PHPMailer->postSend()
+#3 /home/submatec/public_html/endpoints/notifications/testemailnotifications.php(69): PHPMailer\PHPMailer\PHPMailer->send()
+#4 {main}
+  thrown in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php on line 2244
+[30-Oct-2024 08:38:33 Australia/Sydney] PHP Fatal error:  Uncaught PHPMailer\PHPMailer\Exception: SMTP Error: Could not connect to SMTP host. in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php:2244
+Stack trace:
+#0 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(2023): PHPMailer\PHPMailer\PHPMailer->smtpConnect()
+#1 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1682): PHPMailer\PHPMailer\PHPMailer->smtpSend()
+#2 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1516): PHPMailer\PHPMailer\PHPMailer->postSend()
+#3 /home/submatec/public_html/endpoints/notifications/testemailnotifications.php(69): PHPMailer\PHPMailer\PHPMailer->send()
+#4 {main}
+  thrown in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php on line 2244
+[30-Oct-2024 08:42:51 Australia/Sydney] PHP Fatal error:  Uncaught PHPMailer\PHPMailer\Exception: SMTP Error: Could not connect to SMTP host. in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php:2244
+Stack trace:
+#0 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(2023): PHPMailer\PHPMailer\PHPMailer->smtpConnect()
+#1 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1682): PHPMailer\PHPMailer\PHPMailer->smtpSend()
+#2 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1516): PHPMailer\PHPMailer\PHPMailer->postSend()
+#3 /home/submatec/public_html/endpoints/notifications/testemailnotifications.php(69): PHPMailer\PHPMailer\PHPMailer->send()
+#4 {main}
+  thrown in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php on line 2244
+[30-Oct-2024 09:09:28 Australia/Sydney] PHP Fatal error:  Uncaught PHPMailer\PHPMailer\Exception: SMTP Error: Could not connect to SMTP host. in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php:2244
+Stack trace:
+#0 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(2023): PHPMailer\PHPMailer\PHPMailer->smtpConnect()
+#1 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1682): PHPMailer\PHPMailer\PHPMailer->smtpSend()
+#2 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1516): PHPMailer\PHPMailer\PHPMailer->postSend()
+#3 /home/submatec/public_html/endpoints/notifications/testemailnotifications.php(69): PHPMailer\PHPMailer\PHPMailer->send()
+#4 {main}
+  thrown in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php on line 2244
+[30-Oct-2024 09:13:01 Australia/Sydney] PHP Fatal error:  Uncaught PHPMailer\PHPMailer\Exception: SMTP Error: Could not connect to SMTP host. in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php:2244
+Stack trace:
+#0 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(2023): PHPMailer\PHPMailer\PHPMailer->smtpConnect()
+#1 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1682): PHPMailer\PHPMailer\PHPMailer->smtpSend()
+#2 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1516): PHPMailer\PHPMailer\PHPMailer->postSend()
+#3 /home/submatec/public_html/endpoints/notifications/testemailnotifications.php(69): PHPMailer\PHPMailer\PHPMailer->send()
+#4 {main}
+  thrown in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php on line 2244
+[30-Oct-2024 09:18:40 Australia/Sydney] PHP Fatal error:  Uncaught PHPMailer\PHPMailer\Exception: SMTP Error: Could not connect to SMTP host. Failed to connect to server in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php:2244
+Stack trace:
+#0 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(2023): PHPMailer\PHPMailer\PHPMailer->smtpConnect()
+#1 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1682): PHPMailer\PHPMailer\PHPMailer->smtpSend()
+#2 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1516): PHPMailer\PHPMailer\PHPMailer->postSend()
+#3 /home/submatec/public_html/endpoints/notifications/testemailnotifications.php(69): PHPMailer\PHPMailer\PHPMailer->send()
+#4 {main}
+  thrown in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php on line 2244
+[30-Oct-2024 09:18:46 Australia/Sydney] PHP Fatal error:  Uncaught PHPMailer\PHPMailer\Exception: SMTP Error: Could not connect to SMTP host. Failed to connect to server in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php:2244
+Stack trace:
+#0 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(2023): PHPMailer\PHPMailer\PHPMailer->smtpConnect()
+#1 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1682): PHPMailer\PHPMailer\PHPMailer->smtpSend()
+#2 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1516): PHPMailer\PHPMailer\PHPMailer->postSend()
+#3 /home/submatec/public_html/endpoints/notifications/testemailnotifications.php(69): PHPMailer\PHPMailer\PHPMailer->send()
+#4 {main}
+  thrown in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php on line 2244
+[30-Oct-2024 09:19:59 Australia/Sydney] PHP Fatal error:  Uncaught PHPMailer\PHPMailer\Exception: SMTP Error: Could not connect to SMTP host. in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php:2244
+Stack trace:
+#0 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(2023): PHPMailer\PHPMailer\PHPMailer->smtpConnect()
+#1 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1682): PHPMailer\PHPMailer\PHPMailer->smtpSend()
+#2 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1516): PHPMailer\PHPMailer\PHPMailer->postSend()
+#3 /home/submatec/public_html/endpoints/notifications/testemailnotifications.php(69): PHPMailer\PHPMailer\PHPMailer->send()
+#4 {main}
+  thrown in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php on line 2244
+[30-Oct-2024 09:21:15 Australia/Sydney] PHP Fatal error:  Uncaught PHPMailer\PHPMailer\Exception: SMTP Error: Could not connect to SMTP host. Failed to connect to server in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php:2244
+Stack trace:
+#0 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(2023): PHPMailer\PHPMailer\PHPMailer->smtpConnect()
+#1 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1682): PHPMailer\PHPMailer\PHPMailer->smtpSend()
+#2 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1516): PHPMailer\PHPMailer\PHPMailer->postSend()
+#3 /home/submatec/public_html/endpoints/notifications/testemailnotifications.php(69): PHPMailer\PHPMailer\PHPMailer->send()
+#4 {main}
+  thrown in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php on line 2244
+[30-Oct-2024 09:32:33 Australia/Sydney] PHP Fatal error:  Uncaught PHPMailer\PHPMailer\Exception: SMTP Error: Could not connect to SMTP host. in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php:2244
+Stack trace:
+#0 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(2023): PHPMailer\PHPMailer\PHPMailer->smtpConnect()
+#1 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1682): PHPMailer\PHPMailer\PHPMailer->smtpSend()
+#2 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1516): PHPMailer\PHPMailer\PHPMailer->postSend()
+#3 /home/submatec/public_html/endpoints/notifications/testemailnotifications.php(69): PHPMailer\PHPMailer\PHPMailer->send()
+#4 {main}
+  thrown in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php on line 2244
+[30-Oct-2024 10:31:21 Australia/Sydney] PHP Fatal error:  Uncaught PHPMailer\PHPMailer\Exception: SMTP Error: Could not connect to SMTP host. in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php:2244
+Stack trace:
+#0 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(2023): PHPMailer\PHPMailer\PHPMailer->smtpConnect()
+#1 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1682): PHPMailer\PHPMailer\PHPMailer->smtpSend()
+#2 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1516): PHPMailer\PHPMailer\PHPMailer->postSend()
+#3 /home/submatec/public_html/endpoints/notifications/testemailnotifications.php(69): PHPMailer\PHPMailer\PHPMailer->send()
+#4 {main}
+  thrown in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php on line 2244
+[30-Oct-2024 11:01:52 Australia/Sydney] PHP Fatal error:  Uncaught PHPMailer\PHPMailer\Exception: SMTP Error: Could not connect to SMTP host. in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php:2244
+Stack trace:
+#0 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(2023): PHPMailer\PHPMailer\PHPMailer->smtpConnect()
+#1 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1682): PHPMailer\PHPMailer\PHPMailer->smtpSend()
+#2 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1516): PHPMailer\PHPMailer\PHPMailer->postSend()
+#3 /home/submatec/public_html/endpoints/notifications/testemailnotifications.php(69): PHPMailer\PHPMailer\PHPMailer->send()
+#4 {main}
+  thrown in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php on line 2244
+[30-Oct-2024 11:10:50 Australia/Sydney] PHP Fatal error:  Uncaught PHPMailer\PHPMailer\Exception: SMTP Error: Could not connect to SMTP host. in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php:2244
+Stack trace:
+#0 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(2023): PHPMailer\PHPMailer\PHPMailer->smtpConnect()
+#1 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1682): PHPMailer\PHPMailer\PHPMailer->smtpSend()
+#2 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1516): PHPMailer\PHPMailer\PHPMailer->postSend()
+#3 /home/submatec/public_html/endpoints/notifications/testemailnotifications.php(69): PHPMailer\PHPMailer\PHPMailer->send()
+#4 {main}
+  thrown in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php on line 2244
+[30-Oct-2024 11:14:45 Australia/Sydney] PHP Fatal error:  Uncaught PHPMailer\PHPMailer\Exception: SMTP Error: Could not connect to SMTP host. in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php:2244
+Stack trace:
+#0 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(2023): PHPMailer\PHPMailer\PHPMailer->smtpConnect()
+#1 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1682): PHPMailer\PHPMailer\PHPMailer->smtpSend()
+#2 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1516): PHPMailer\PHPMailer\PHPMailer->postSend()
+#3 /home/submatec/public_html/endpoints/notifications/testemailnotifications.php(69): PHPMailer\PHPMailer\PHPMailer->send()
+#4 {main}
+  thrown in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php on line 2244
+[30-Oct-2024 11:15:26 Australia/Sydney] PHP Fatal error:  Uncaught PHPMailer\PHPMailer\Exception: SMTP Error: Could not connect to SMTP host. Failed to connect to server in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php:2244
+Stack trace:
+#0 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(2023): PHPMailer\PHPMailer\PHPMailer->smtpConnect()
+#1 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1682): PHPMailer\PHPMailer\PHPMailer->smtpSend()
+#2 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1516): PHPMailer\PHPMailer\PHPMailer->postSend()
+#3 /home/submatec/public_html/endpoints/notifications/testemailnotifications.php(69): PHPMailer\PHPMailer\PHPMailer->send()
+#4 {main}
+  thrown in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php on line 2244
+[30-Oct-2024 11:15:35 Australia/Sydney] PHP Fatal error:  Uncaught PHPMailer\PHPMailer\Exception: SMTP Error: Could not connect to SMTP host. Failed to connect to server in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php:2244
+Stack trace:
+#0 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(2023): PHPMailer\PHPMailer\PHPMailer->smtpConnect()
+#1 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1682): PHPMailer\PHPMailer\PHPMailer->smtpSend()
+#2 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1516): PHPMailer\PHPMailer\PHPMailer->postSend()
+#3 /home/submatec/public_html/endpoints/notifications/testemailnotifications.php(69): PHPMailer\PHPMailer\PHPMailer->send()
+#4 {main}
+  thrown in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php on line 2244
+[30-Oct-2024 11:18:55 Australia/Sydney] PHP Fatal error:  Uncaught PHPMailer\PHPMailer\Exception: SMTP Error: Could not connect to SMTP host. in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php:2244
+Stack trace:
+#0 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(2023): PHPMailer\PHPMailer\PHPMailer->smtpConnect()
+#1 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1682): PHPMailer\PHPMailer\PHPMailer->smtpSend()
+#2 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1516): PHPMailer\PHPMailer\PHPMailer->postSend()
+#3 /home/submatec/public_html/endpoints/notifications/testemailnotifications.php(69): PHPMailer\PHPMailer\PHPMailer->send()
+#4 {main}
+  thrown in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php on line 2244
+[30-Oct-2024 11:22:31 Australia/Sydney] PHP Fatal error:  Uncaught PHPMailer\PHPMailer\Exception: SMTP Error: Could not connect to SMTP host. in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php:2244
+Stack trace:
+#0 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(2023): PHPMailer\PHPMailer\PHPMailer->smtpConnect()
+#1 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1682): PHPMailer\PHPMailer\PHPMailer->smtpSend()
+#2 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1516): PHPMailer\PHPMailer\PHPMailer->postSend()
+#3 /home/submatec/public_html/endpoints/notifications/testemailnotifications.php(69): PHPMailer\PHPMailer\PHPMailer->send()
+#4 {main}
+  thrown in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php on line 2244
+[30-Oct-2024 11:23:09 Australia/Sydney] PHP Fatal error:  Uncaught PHPMailer\PHPMailer\Exception: SMTP Error: Could not connect to SMTP host. in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php:2244
+Stack trace:
+#0 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(2023): PHPMailer\PHPMailer\PHPMailer->smtpConnect()
+#1 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1682): PHPMailer\PHPMailer\PHPMailer->smtpSend()
+#2 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1516): PHPMailer\PHPMailer\PHPMailer->postSend()
+#3 /home/submatec/public_html/endpoints/notifications/testemailnotifications.php(69): PHPMailer\PHPMailer\PHPMailer->send()
+#4 {main}
+  thrown in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php on line 2244
+[30-Oct-2024 11:23:20 Australia/Sydney] PHP Fatal error:  Uncaught PHPMailer\PHPMailer\Exception: SMTP Error: Could not connect to SMTP host. in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php:2244
+Stack trace:
+#0 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(2023): PHPMailer\PHPMailer\PHPMailer->smtpConnect()
+#1 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1682): PHPMailer\PHPMailer\PHPMailer->smtpSend()
+#2 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1516): PHPMailer\PHPMailer\PHPMailer->postSend()
+#3 /home/submatec/public_html/endpoints/notifications/testemailnotifications.php(69): PHPMailer\PHPMailer\PHPMailer->send()
+#4 {main}
+  thrown in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php on line 2244
+[30-Oct-2024 11:24:06 Australia/Sydney] PHP Fatal error:  Uncaught PHPMailer\PHPMailer\Exception: SMTP Error: Could not connect to SMTP host. in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php:2244
+Stack trace:
+#0 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(2023): PHPMailer\PHPMailer\PHPMailer->smtpConnect()
+#1 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1682): PHPMailer\PHPMailer\PHPMailer->smtpSend()
+#2 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1516): PHPMailer\PHPMailer\PHPMailer->postSend()
+#3 /home/submatec/public_html/endpoints/notifications/testemailnotifications.php(69): PHPMailer\PHPMailer\PHPMailer->send()
+#4 {main}
+  thrown in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php on line 2244
+[30-Oct-2024 11:25:21 Australia/Sydney] PHP Fatal error:  Uncaught PHPMailer\PHPMailer\Exception: SMTP Error: Could not connect to SMTP host. in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php:2244
+Stack trace:
+#0 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(2023): PHPMailer\PHPMailer\PHPMailer->smtpConnect()
+#1 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1682): PHPMailer\PHPMailer\PHPMailer->smtpSend()
+#2 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1516): PHPMailer\PHPMailer\PHPMailer->postSend()
+#3 /home/submatec/public_html/endpoints/notifications/testemailnotifications.php(69): PHPMailer\PHPMailer\PHPMailer->send()
+#4 {main}
+  thrown in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php on line 2244
+[30-Oct-2024 11:37:39 Australia/Sydney] PHP Fatal error:  Uncaught PHPMailer\PHPMailer\Exception: SMTP Error: Could not connect to SMTP host. in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php:2244
+Stack trace:
+#0 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(2023): PHPMailer\PHPMailer\PHPMailer->smtpConnect()
+#1 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1682): PHPMailer\PHPMailer\PHPMailer->smtpSend()
+#2 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1516): PHPMailer\PHPMailer\PHPMailer->postSend()
+#3 /home/submatec/public_html/endpoints/notifications/testemailnotifications.php(69): PHPMailer\PHPMailer\PHPMailer->send()
+#4 {main}
+  thrown in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php on line 2244
+[30-Oct-2024 11:39:14 Australia/Sydney] PHP Fatal error:  Uncaught PHPMailer\PHPMailer\Exception: SMTP Error: Could not connect to SMTP host. in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php:2244
+Stack trace:
+#0 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(2023): PHPMailer\PHPMailer\PHPMailer->smtpConnect()
+#1 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1682): PHPMailer\PHPMailer\PHPMailer->smtpSend()
+#2 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1516): PHPMailer\PHPMailer\PHPMailer->postSend()
+#3 /home/submatec/public_html/endpoints/notifications/testemailnotifications.php(69): PHPMailer\PHPMailer\PHPMailer->send()
+#4 {main}
+  thrown in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php on line 2244
+[30-Oct-2024 11:46:46 Australia/Sydney] PHP Fatal error:  Uncaught PHPMailer\PHPMailer\Exception: SMTP Error: Could not connect to SMTP host. in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php:2244
+Stack trace:
+#0 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(2023): PHPMailer\PHPMailer\PHPMailer->smtpConnect()
+#1 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1682): PHPMailer\PHPMailer\PHPMailer->smtpSend()
+#2 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1516): PHPMailer\PHPMailer\PHPMailer->postSend()
+#3 /home/submatec/public_html/endpoints/notifications/testemailnotifications.php(69): PHPMailer\PHPMailer\PHPMailer->send()
+#4 {main}
+  thrown in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php on line 2244
+[30-Oct-2024 11:50:33 Australia/Sydney] PHP Fatal error:  Uncaught PHPMailer\PHPMailer\Exception: SMTP Error: Could not connect to SMTP host. in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php:2244
+Stack trace:
+#0 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(2023): PHPMailer\PHPMailer\PHPMailer->smtpConnect()
+#1 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1682): PHPMailer\PHPMailer\PHPMailer->smtpSend()
+#2 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1516): PHPMailer\PHPMailer\PHPMailer->postSend()
+#3 /home/submatec/public_html/endpoints/notifications/testemailnotifications.php(69): PHPMailer\PHPMailer\PHPMailer->send()
+#4 {main}
+  thrown in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php on line 2244
+[30-Oct-2024 12:03:11 Australia/Sydney] PHP Fatal error:  Uncaught PHPMailer\PHPMailer\Exception: SMTP Error: Could not connect to SMTP host. in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php:2244
+Stack trace:
+#0 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(2023): PHPMailer\PHPMailer\PHPMailer->smtpConnect()
+#1 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1682): PHPMailer\PHPMailer\PHPMailer->smtpSend()
+#2 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1516): PHPMailer\PHPMailer\PHPMailer->postSend()
+#3 /home/submatec/public_html/endpoints/notifications/testemailnotifications.php(69): PHPMailer\PHPMailer\PHPMailer->send()
+#4 {main}
+  thrown in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php on line 2244
+[30-Oct-2024 12:03:49 Australia/Sydney] PHP Fatal error:  Uncaught PHPMailer\PHPMailer\Exception: SMTP Error: Could not connect to SMTP host. in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php:2244
+Stack trace:
+#0 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(2023): PHPMailer\PHPMailer\PHPMailer->smtpConnect()
+#1 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1682): PHPMailer\PHPMailer\PHPMailer->smtpSend()
+#2 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1516): PHPMailer\PHPMailer\PHPMailer->postSend()
+#3 /home/submatec/public_html/endpoints/notifications/testemailnotifications.php(69): PHPMailer\PHPMailer\PHPMailer->send()
+#4 {main}
+  thrown in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php on line 2244
+[30-Oct-2024 12:04:03 Australia/Sydney] PHP Fatal error:  Uncaught PHPMailer\PHPMailer\Exception: SMTP Error: Could not connect to SMTP host. in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php:2244
+Stack trace:
+#0 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(2023): PHPMailer\PHPMailer\PHPMailer->smtpConnect()
+#1 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1682): PHPMailer\PHPMailer\PHPMailer->smtpSend()
+#2 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1516): PHPMailer\PHPMailer\PHPMailer->postSend()
+#3 /home/submatec/public_html/endpoints/notifications/testemailnotifications.php(69): PHPMailer\PHPMailer\PHPMailer->send()
+#4 {main}
+  thrown in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php on line 2244
+[30-Oct-2024 12:04:19 Australia/Sydney] PHP Fatal error:  Uncaught PHPMailer\PHPMailer\Exception: SMTP Error: Could not connect to SMTP host. Failed to connect to server in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php:2244
+Stack trace:
+#0 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(2023): PHPMailer\PHPMailer\PHPMailer->smtpConnect()
+#1 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1682): PHPMailer\PHPMailer\PHPMailer->smtpSend()
+#2 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1516): PHPMailer\PHPMailer\PHPMailer->postSend()
+#3 /home/submatec/public_html/endpoints/notifications/testemailnotifications.php(69): PHPMailer\PHPMailer\PHPMailer->send()
+#4 {main}
+  thrown in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php on line 2244
+[30-Oct-2024 12:05:29 Australia/Sydney] PHP Fatal error:  Uncaught PHPMailer\PHPMailer\Exception: SMTP Error: Could not connect to SMTP host. in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php:2244
+Stack trace:
+#0 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(2023): PHPMailer\PHPMailer\PHPMailer->smtpConnect()
+#1 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1682): PHPMailer\PHPMailer\PHPMailer->smtpSend()
+#2 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1516): PHPMailer\PHPMailer\PHPMailer->postSend()
+#3 /home/submatec/public_html/endpoints/notifications/testemailnotifications.php(69): PHPMailer\PHPMailer\PHPMailer->send()
+#4 {main}
+  thrown in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php on line 2244
+[30-Oct-2024 12:07:56 Australia/Sydney] PHP Fatal error:  Uncaught PHPMailer\PHPMailer\Exception: SMTP Error: Could not connect to SMTP host. Failed to connect to server in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php:2244
+Stack trace:
+#0 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(2023): PHPMailer\PHPMailer\PHPMailer->smtpConnect()
+#1 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1682): PHPMailer\PHPMailer\PHPMailer->smtpSend()
+#2 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1516): PHPMailer\PHPMailer\PHPMailer->postSend()
+#3 /home/submatec/public_html/endpoints/notifications/testemailnotifications.php(69): PHPMailer\PHPMailer\PHPMailer->send()
+#4 {main}
+  thrown in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php on line 2244
+[30-Oct-2024 12:08:25 Australia/Sydney] PHP Fatal error:  Uncaught PHPMailer\PHPMailer\Exception: SMTP Error: Could not connect to SMTP host. Failed to connect to server in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php:2244
+Stack trace:
+#0 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(2023): PHPMailer\PHPMailer\PHPMailer->smtpConnect()
+#1 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1682): PHPMailer\PHPMailer\PHPMailer->smtpSend()
+#2 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1516): PHPMailer\PHPMailer\PHPMailer->postSend()
+#3 /home/submatec/public_html/endpoints/notifications/testemailnotifications.php(69): PHPMailer\PHPMailer\PHPMailer->send()
+#4 {main}
+  thrown in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php on line 2244
+[30-Oct-2024 12:08:31 Australia/Sydney] PHP Fatal error:  Uncaught PHPMailer\PHPMailer\Exception: SMTP Error: Could not connect to SMTP host. Failed to connect to server in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php:2244
+Stack trace:
+#0 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(2023): PHPMailer\PHPMailer\PHPMailer->smtpConnect()
+#1 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1682): PHPMailer\PHPMailer\PHPMailer->smtpSend()
+#2 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1516): PHPMailer\PHPMailer\PHPMailer->postSend()
+#3 /home/submatec/public_html/endpoints/notifications/testemailnotifications.php(69): PHPMailer\PHPMailer\PHPMailer->send()
+#4 {main}
+  thrown in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php on line 2244
+[30-Oct-2024 12:09:45 Australia/Sydney] PHP Fatal error:  Uncaught PHPMailer\PHPMailer\Exception: SMTP Error: Could not connect to SMTP host. in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php:2244
+Stack trace:
+#0 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(2023): PHPMailer\PHPMailer\PHPMailer->smtpConnect()
+#1 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1682): PHPMailer\PHPMailer\PHPMailer->smtpSend()
+#2 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1516): PHPMailer\PHPMailer\PHPMailer->postSend()
+#3 /home/submatec/public_html/endpoints/notifications/testemailnotifications.php(69): PHPMailer\PHPMailer\PHPMailer->send()
+#4 {main}
+  thrown in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php on line 2244
+[30-Oct-2024 12:14:41 Australia/Sydney] PHP Fatal error:  Uncaught PHPMailer\PHPMailer\Exception: SMTP Error: Could not connect to SMTP host. in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php:2244
+Stack trace:
+#0 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(2023): PHPMailer\PHPMailer\PHPMailer->smtpConnect()
+#1 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1682): PHPMailer\PHPMailer\PHPMailer->smtpSend()
+#2 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1516): PHPMailer\PHPMailer\PHPMailer->postSend()
+#3 /home/submatec/public_html/endpoints/notifications/testemailnotifications.php(69): PHPMailer\PHPMailer\PHPMailer->send()
+#4 {main}
+  thrown in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php on line 2244
+[30-Oct-2024 12:18:03 Australia/Sydney] PHP Fatal error:  Uncaught PHPMailer\PHPMailer\Exception: SMTP Error: Could not connect to SMTP host. in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php:2244
+Stack trace:
+#0 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(2023): PHPMailer\PHPMailer\PHPMailer->smtpConnect()
+#1 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1682): PHPMailer\PHPMailer\PHPMailer->smtpSend()
+#2 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1516): PHPMailer\PHPMailer\PHPMailer->postSend()
+#3 /home/submatec/public_html/endpoints/notifications/testemailnotifications.php(69): PHPMailer\PHPMailer\PHPMailer->send()
+#4 {main}
+  thrown in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php on line 2244
+[30-Oct-2024 12:19:22 Australia/Sydney] PHP Fatal error:  Uncaught PHPMailer\PHPMailer\Exception: SMTP Error: Could not connect to SMTP host. in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php:2244
+Stack trace:
+#0 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(2023): PHPMailer\PHPMailer\PHPMailer->smtpConnect()
+#1 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1682): PHPMailer\PHPMailer\PHPMailer->smtpSend()
+#2 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1516): PHPMailer\PHPMailer\PHPMailer->postSend()
+#3 /home/submatec/public_html/endpoints/notifications/testemailnotifications.php(69): PHPMailer\PHPMailer\PHPMailer->send()
+#4 {main}
+  thrown in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php on line 2244
+[30-Oct-2024 12:24:16 Australia/Sydney] PHP Fatal error:  Uncaught PHPMailer\PHPMailer\Exception: SMTP Error: Could not connect to SMTP host. in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php:2244
+Stack trace:
+#0 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(2023): PHPMailer\PHPMailer\PHPMailer->smtpConnect()
+#1 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1682): PHPMailer\PHPMailer\PHPMailer->smtpSend()
+#2 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1516): PHPMailer\PHPMailer\PHPMailer->postSend()
+#3 /home/submatec/public_html/endpoints/notifications/testemailnotifications.php(69): PHPMailer\PHPMailer\PHPMailer->send()
+#4 {main}
+  thrown in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php on line 2244
+[30-Oct-2024 12:26:03 Australia/Sydney] PHP Fatal error:  Uncaught PHPMailer\PHPMailer\Exception: SMTP Error: Could not connect to SMTP host. in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php:2244
+Stack trace:
+#0 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(2023): PHPMailer\PHPMailer\PHPMailer->smtpConnect()
+#1 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1682): PHPMailer\PHPMailer\PHPMailer->smtpSend()
+#2 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1516): PHPMailer\PHPMailer\PHPMailer->postSend()
+#3 /home/submatec/public_html/endpoints/notifications/testemailnotifications.php(69): PHPMailer\PHPMailer\PHPMailer->send()
+#4 {main}
+  thrown in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php on line 2244
+[30-Oct-2024 12:29:25 Australia/Sydney] PHP Fatal error:  Uncaught PHPMailer\PHPMailer\Exception: SMTP Error: Could not connect to SMTP host. in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php:2244
+Stack trace:
+#0 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(2023): PHPMailer\PHPMailer\PHPMailer->smtpConnect()
+#1 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1682): PHPMailer\PHPMailer\PHPMailer->smtpSend()
+#2 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1516): PHPMailer\PHPMailer\PHPMailer->postSend()
+#3 /home/submatec/public_html/endpoints/notifications/testemailnotifications.php(69): PHPMailer\PHPMailer\PHPMailer->send()
+#4 {main}
+  thrown in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php on line 2244
+[30-Oct-2024 12:31:03 Australia/Sydney] PHP Fatal error:  Uncaught PHPMailer\PHPMailer\Exception: SMTP Error: Could not connect to SMTP host. in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php:2244
+Stack trace:
+#0 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(2023): PHPMailer\PHPMailer\PHPMailer->smtpConnect()
+#1 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1682): PHPMailer\PHPMailer\PHPMailer->smtpSend()
+#2 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1516): PHPMailer\PHPMailer\PHPMailer->postSend()
+#3 /home/submatec/public_html/endpoints/notifications/testemailnotifications.php(69): PHPMailer\PHPMailer\PHPMailer->send()
+#4 {main}
+  thrown in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php on line 2244
+[30-Oct-2024 12:35:00 Australia/Sydney] PHP Fatal error:  Uncaught PHPMailer\PHPMailer\Exception: SMTP Error: Could not connect to SMTP host. in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php:2244
+Stack trace:
+#0 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(2023): PHPMailer\PHPMailer\PHPMailer->smtpConnect()
+#1 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1682): PHPMailer\PHPMailer\PHPMailer->smtpSend()
+#2 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1516): PHPMailer\PHPMailer\PHPMailer->postSend()
+#3 /home/submatec/public_html/endpoints/notifications/testemailnotifications.php(69): PHPMailer\PHPMailer\PHPMailer->send()
+#4 {main}
+  thrown in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php on line 2244
+[30-Oct-2024 13:55:34 Australia/Sydney] PHP Fatal error:  Uncaught PHPMailer\PHPMailer\Exception: SMTP Error: Could not connect to SMTP host. Failed to connect to server in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php:2244
+Stack trace:
+#0 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(2023): PHPMailer\PHPMailer\PHPMailer->smtpConnect()
+#1 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1682): PHPMailer\PHPMailer\PHPMailer->smtpSend()
+#2 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1516): PHPMailer\PHPMailer\PHPMailer->postSend()
+#3 /home/submatec/public_html/endpoints/notifications/testemailnotifications.php(69): PHPMailer\PHPMailer\PHPMailer->send()
+#4 {main}
+  thrown in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php on line 2244
+[30-Oct-2024 13:55:43 Australia/Sydney] PHP Fatal error:  Uncaught PHPMailer\PHPMailer\Exception: SMTP Error: Could not connect to SMTP host. Failed to connect to server in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php:2244
+Stack trace:
+#0 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(2023): PHPMailer\PHPMailer\PHPMailer->smtpConnect()
+#1 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1682): PHPMailer\PHPMailer\PHPMailer->smtpSend()
+#2 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1516): PHPMailer\PHPMailer\PHPMailer->postSend()
+#3 /home/submatec/public_html/endpoints/notifications/testemailnotifications.php(69): PHPMailer\PHPMailer\PHPMailer->send()
+#4 {main}
+  thrown in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php on line 2244
+[30-Oct-2024 13:57:23 Australia/Sydney] PHP Fatal error:  Uncaught PHPMailer\PHPMailer\Exception: SMTP Error: Could not connect to SMTP host. Failed to connect to server in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php:2244
+Stack trace:
+#0 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(2023): PHPMailer\PHPMailer\PHPMailer->smtpConnect()
+#1 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1682): PHPMailer\PHPMailer\PHPMailer->smtpSend()
+#2 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1516): PHPMailer\PHPMailer\PHPMailer->postSend()
+#3 /home/submatec/public_html/endpoints/notifications/testemailnotifications.php(69): PHPMailer\PHPMailer\PHPMailer->send()
+#4 {main}
+  thrown in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php on line 2244
+[30-Oct-2024 14:03:42 Australia/Sydney] PHP Fatal error:  Uncaught PHPMailer\PHPMailer\Exception: SMTP Error: Could not connect to SMTP host. Failed to connect to server in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php:2244
+Stack trace:
+#0 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(2023): PHPMailer\PHPMailer\PHPMailer->smtpConnect()
+#1 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1682): PHPMailer\PHPMailer\PHPMailer->smtpSend()
+#2 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1516): PHPMailer\PHPMailer\PHPMailer->postSend()
+#3 /home/submatec/public_html/endpoints/notifications/testemailnotifications.php(69): PHPMailer\PHPMailer\PHPMailer->send()
+#4 {main}
+  thrown in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php on line 2244
+[30-Oct-2024 14:04:49 Australia/Sydney] PHP Fatal error:  Uncaught PHPMailer\PHPMailer\Exception: SMTP Error: Could not connect to SMTP host. in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php:2244
+Stack trace:
+#0 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(2023): PHPMailer\PHPMailer\PHPMailer->smtpConnect()
+#1 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1682): PHPMailer\PHPMailer\PHPMailer->smtpSend()
+#2 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1516): PHPMailer\PHPMailer\PHPMailer->postSend()
+#3 /home/submatec/public_html/endpoints/notifications/testemailnotifications.php(69): PHPMailer\PHPMailer\PHPMailer->send()
+#4 {main}
+  thrown in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php on line 2244
+[30-Oct-2024 14:30:45 Australia/Sydney] PHP Fatal error:  Uncaught PHPMailer\PHPMailer\Exception: SMTP Error: Could not connect to SMTP host. in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php:2244
+Stack trace:
+#0 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(2023): PHPMailer\PHPMailer\PHPMailer->smtpConnect()
+#1 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1682): PHPMailer\PHPMailer\PHPMailer->smtpSend()
+#2 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1516): PHPMailer\PHPMailer\PHPMailer->postSend()
+#3 /home/submatec/public_html/endpoints/notifications/testemailnotifications.php(69): PHPMailer\PHPMailer\PHPMailer->send()
+#4 {main}
+  thrown in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php on line 2244
+[30-Oct-2024 14:52:03 Australia/Sydney] PHP Fatal error:  Uncaught PHPMailer\PHPMailer\Exception: SMTP Error: Could not connect to SMTP host. in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php:2244
+Stack trace:
+#0 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(2023): PHPMailer\PHPMailer\PHPMailer->smtpConnect()
+#1 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1682): PHPMailer\PHPMailer\PHPMailer->smtpSend()
+#2 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1516): PHPMailer\PHPMailer\PHPMailer->postSend()
+#3 /home/submatec/public_html/endpoints/notifications/testemailnotifications.php(69): PHPMailer\PHPMailer\PHPMailer->send()
+#4 {main}
+  thrown in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php on line 2244
+[30-Oct-2024 14:52:29 Australia/Sydney] PHP Fatal error:  Uncaught PHPMailer\PHPMailer\Exception: SMTP Error: Could not connect to SMTP host. Failed to connect to server in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php:2244
+Stack trace:
+#0 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(2023): PHPMailer\PHPMailer\PHPMailer->smtpConnect()
+#1 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1682): PHPMailer\PHPMailer\PHPMailer->smtpSend()
+#2 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1516): PHPMailer\PHPMailer\PHPMailer->postSend()
+#3 /home/submatec/public_html/endpoints/notifications/testemailnotifications.php(69): PHPMailer\PHPMailer\PHPMailer->send()
+#4 {main}
+  thrown in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php on line 2244
+[30-Oct-2024 14:53:50 Australia/Sydney] PHP Fatal error:  Uncaught PHPMailer\PHPMailer\Exception: SMTP Error: Could not connect to SMTP host. in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php:2244
+Stack trace:
+#0 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(2023): PHPMailer\PHPMailer\PHPMailer->smtpConnect()
+#1 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1682): PHPMailer\PHPMailer\PHPMailer->smtpSend()
+#2 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1516): PHPMailer\PHPMailer\PHPMailer->postSend()
+#3 /home/submatec/public_html/endpoints/notifications/testemailnotifications.php(69): PHPMailer\PHPMailer\PHPMailer->send()
+#4 {main}
+  thrown in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php on line 2244
+[30-Oct-2024 14:55:03 Australia/Sydney] PHP Fatal error:  Uncaught PHPMailer\PHPMailer\Exception: SMTP Error: Could not connect to SMTP host. in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php:2244
+Stack trace:
+#0 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(2023): PHPMailer\PHPMailer\PHPMailer->smtpConnect()
+#1 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1682): PHPMailer\PHPMailer\PHPMailer->smtpSend()
+#2 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1516): PHPMailer\PHPMailer\PHPMailer->postSend()
+#3 /home/submatec/public_html/endpoints/notifications/testemailnotifications.php(69): PHPMailer\PHPMailer\PHPMailer->send()
+#4 {main}
+  thrown in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php on line 2244
+[30-Oct-2024 14:56:44 Australia/Sydney] PHP Fatal error:  Uncaught PHPMailer\PHPMailer\Exception: SMTP Error: Could not connect to SMTP host. in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php:2244
+Stack trace:
+#0 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(2023): PHPMailer\PHPMailer\PHPMailer->smtpConnect()
+#1 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1682): PHPMailer\PHPMailer\PHPMailer->smtpSend()
+#2 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1516): PHPMailer\PHPMailer\PHPMailer->postSend()
+#3 /home/submatec/public_html/endpoints/notifications/testemailnotifications.php(69): PHPMailer\PHPMailer\PHPMailer->send()
+#4 {main}
+  thrown in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php on line 2244
+[30-Oct-2024 14:58:43 Australia/Sydney] PHP Fatal error:  Uncaught PHPMailer\PHPMailer\Exception: SMTP Error: Could not connect to SMTP host. Failed to connect to server in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php:2244
+Stack trace:
+#0 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(2023): PHPMailer\PHPMailer\PHPMailer->smtpConnect()
+#1 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1682): PHPMailer\PHPMailer\PHPMailer->smtpSend()
+#2 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1516): PHPMailer\PHPMailer\PHPMailer->postSend()
+#3 /home/submatec/public_html/endpoints/notifications/testemailnotifications.php(69): PHPMailer\PHPMailer\PHPMailer->send()
+#4 {main}
+  thrown in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php on line 2244
+[30-Oct-2024 14:59:51 Australia/Sydney] PHP Fatal error:  Uncaught PHPMailer\PHPMailer\Exception: SMTP Error: Could not connect to SMTP host. in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php:2244
+Stack trace:
+#0 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(2023): PHPMailer\PHPMailer\PHPMailer->smtpConnect()
+#1 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1682): PHPMailer\PHPMailer\PHPMailer->smtpSend()
+#2 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1516): PHPMailer\PHPMailer\PHPMailer->postSend()
+#3 /home/submatec/public_html/endpoints/notifications/testemailnotifications.php(69): PHPMailer\PHPMailer\PHPMailer->send()
+#4 {main}
+  thrown in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php on line 2244
+[30-Oct-2024 15:39:51 Australia/Sydney] PHP Fatal error:  Uncaught PHPMailer\PHPMailer\Exception: SMTP Error: Could not connect to SMTP host. in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php:2244
+Stack trace:
+#0 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(2023): PHPMailer\PHPMailer\PHPMailer->smtpConnect()
+#1 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1682): PHPMailer\PHPMailer\PHPMailer->smtpSend()
+#2 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1516): PHPMailer\PHPMailer\PHPMailer->postSend()
+#3 /home/submatec/public_html/endpoints/notifications/testemailnotifications.php(69): PHPMailer\PHPMailer\PHPMailer->send()
+#4 {main}
+  thrown in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php on line 2244
+[30-Oct-2024 19:08:54 Australia/Sydney] PHP Fatal error:  Uncaught PHPMailer\PHPMailer\Exception: SMTP Error: Could not connect to SMTP host. in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php:2244
+Stack trace:
+#0 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(2023): PHPMailer\PHPMailer\PHPMailer->smtpConnect()
+#1 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1682): PHPMailer\PHPMailer\PHPMailer->smtpSend()
+#2 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1516): PHPMailer\PHPMailer\PHPMailer->postSend()
+#3 /home/submatec/public_html/endpoints/notifications/testemailnotifications.php(69): PHPMailer\PHPMailer\PHPMailer->send()
+#4 {main}
+  thrown in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php on line 2244

@@ -1,0 +1,5 @@
+[14-Jun-2025 15:50:39 Australia/Sydney] PHP Warning:  SQLite3::prepare(): Unable to prepare statement: 1, no such column: firstname in /home/submatec/public_html/app/endpoints/user/save_user.php on line 287
+[14-Jun-2025 15:50:39 Australia/Sydney] PHP Fatal error:  Uncaught Error: Call to a member function bindParam() on bool in /home/submatec/public_html/app/endpoints/user/save_user.php:288
+Stack trace:
+#0 {main}
+  thrown in /home/submatec/public_html/app/endpoints/user/save_user.php on line 288

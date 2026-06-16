@@ -1,0 +1,32 @@
+[20-Sep-2025 21:45:12 Australia/Sydney] PHP Warning:  Undefined array key "response" in /home/submatec/public_html/app/endpoints/ai/generate_recommendations.php on line 282
+[20-Sep-2025 21:45:12 Australia/Sydney] PHP Deprecated:  json_decode(): Passing null to parameter #1 ($json) of type string is deprecated in /home/submatec/public_html/app/endpoints/ai/generate_recommendations.php on line 282
+[20-Sep-2025 21:45:43 Australia/Sydney] PHP Warning:  Undefined array key "response" in /home/submatec/public_html/app/endpoints/ai/generate_recommendations.php on line 282
+[20-Sep-2025 21:45:43 Australia/Sydney] PHP Deprecated:  json_decode(): Passing null to parameter #1 ($json) of type string is deprecated in /home/submatec/public_html/app/endpoints/ai/generate_recommendations.php on line 282
+[20-Sep-2025 21:45:45 Australia/Sydney] PHP Warning:  Undefined array key "response" in /home/submatec/public_html/app/endpoints/ai/generate_recommendations.php on line 282
+[20-Sep-2025 21:45:45 Australia/Sydney] PHP Deprecated:  json_decode(): Passing null to parameter #1 ($json) of type string is deprecated in /home/submatec/public_html/app/endpoints/ai/generate_recommendations.php on line 282
+[20-Sep-2025 21:45:52 Australia/Sydney] PHP Warning:  Undefined array key "response" in /home/submatec/public_html/app/endpoints/ai/generate_recommendations.php on line 282
+[20-Sep-2025 21:45:52 Australia/Sydney] PHP Deprecated:  json_decode(): Passing null to parameter #1 ($json) of type string is deprecated in /home/submatec/public_html/app/endpoints/ai/generate_recommendations.php on line 282
+[20-Sep-2025 21:45:56 Australia/Sydney] PHP Warning:  Undefined array key "response" in /home/submatec/public_html/app/endpoints/ai/generate_recommendations.php on line 282
+[20-Sep-2025 21:45:56 Australia/Sydney] PHP Deprecated:  json_decode(): Passing null to parameter #1 ($json) of type string is deprecated in /home/submatec/public_html/app/endpoints/ai/generate_recommendations.php on line 282
+[20-Sep-2025 21:53:10 Australia/Sydney] PHP Warning:  Undefined array key "response" in /home/submatec/public_html/app/endpoints/ai/generate_recommendations.php on line 282
+[20-Sep-2025 21:53:10 Australia/Sydney] PHP Deprecated:  json_decode(): Passing null to parameter #1 ($json) of type string is deprecated in /home/submatec/public_html/app/endpoints/ai/generate_recommendations.php on line 282
+[20-Sep-2025 21:54:47 Australia/Sydney] PHP Warning:  Undefined array key "response" in /home/submatec/public_html/app/endpoints/ai/generate_recommendations.php on line 282
+[20-Sep-2025 21:54:47 Australia/Sydney] PHP Deprecated:  json_decode(): Passing null to parameter #1 ($json) of type string is deprecated in /home/submatec/public_html/app/endpoints/ai/generate_recommendations.php on line 282
+[20-Sep-2025 21:55:31 Australia/Sydney] PHP Warning:  Undefined array key "response" in /home/submatec/public_html/app/endpoints/ai/generate_recommendations.php on line 282
+[20-Sep-2025 21:55:31 Australia/Sydney] PHP Deprecated:  json_decode(): Passing null to parameter #1 ($json) of type string is deprecated in /home/submatec/public_html/app/endpoints/ai/generate_recommendations.php on line 282
+[20-Sep-2025 21:55:48 Australia/Sydney] PHP Warning:  Undefined array key "response" in /home/submatec/public_html/app/endpoints/ai/generate_recommendations.php on line 282
+[20-Sep-2025 21:55:48 Australia/Sydney] PHP Deprecated:  json_decode(): Passing null to parameter #1 ($json) of type string is deprecated in /home/submatec/public_html/app/endpoints/ai/generate_recommendations.php on line 282
+[20-Sep-2025 21:57:00 Australia/Sydney] PHP Warning:  Undefined array key "response" in /home/submatec/public_html/app/endpoints/ai/generate_recommendations.php on line 282
+[20-Sep-2025 21:57:00 Australia/Sydney] PHP Deprecated:  json_decode(): Passing null to parameter #1 ($json) of type string is deprecated in /home/submatec/public_html/app/endpoints/ai/generate_recommendations.php on line 282
+[20-Sep-2025 21:57:11 Australia/Sydney] PHP Warning:  Undefined array key "response" in /home/submatec/public_html/app/endpoints/ai/generate_recommendations.php on line 282
+[20-Sep-2025 21:57:11 Australia/Sydney] PHP Deprecated:  json_decode(): Passing null to parameter #1 ($json) of type string is deprecated in /home/submatec/public_html/app/endpoints/ai/generate_recommendations.php on line 282
+[20-Sep-2025 21:57:16 Australia/Sydney] PHP Warning:  Undefined array key "response" in /home/submatec/public_html/app/endpoints/ai/generate_recommendations.php on line 282
+[20-Sep-2025 21:57:16 Australia/Sydney] PHP Deprecated:  json_decode(): Passing null to parameter #1 ($json) of type string is deprecated in /home/submatec/public_html/app/endpoints/ai/generate_recommendations.php on line 282
+[20-Sep-2025 21:57:18 Australia/Sydney] PHP Warning:  Undefined array key "response" in /home/submatec/public_html/app/endpoints/ai/generate_recommendations.php on line 282
+[20-Sep-2025 21:57:18 Australia/Sydney] PHP Deprecated:  json_decode(): Passing null to parameter #1 ($json) of type string is deprecated in /home/submatec/public_html/app/endpoints/ai/generate_recommendations.php on line 282
+[20-Sep-2025 21:57:24 Australia/Sydney] PHP Warning:  Undefined array key "response" in /home/submatec/public_html/app/endpoints/ai/generate_recommendations.php on line 282
+[20-Sep-2025 21:57:24 Australia/Sydney] PHP Deprecated:  json_decode(): Passing null to parameter #1 ($json) of type string is deprecated in /home/submatec/public_html/app/endpoints/ai/generate_recommendations.php on line 282
+[22-Sep-2025 09:25:03 Australia/Sydney] PHP Warning:  Undefined array key "response" in /home/submatec/public_html/app/endpoints/ai/generate_recommendations.php on line 282
+[22-Sep-2025 09:25:03 Australia/Sydney] PHP Deprecated:  json_decode(): Passing null to parameter #1 ($json) of type string is deprecated in /home/submatec/public_html/app/endpoints/ai/generate_recommendations.php on line 282
+[23-Sep-2025 09:26:12 Australia/Sydney] PHP Warning:  Undefined array key "response" in /home/submatec/public_html/app/endpoints/ai/generate_recommendations.php on line 282
+[23-Sep-2025 09:26:12 Australia/Sydney] PHP Deprecated:  json_decode(): Passing null to parameter #1 ($json) of type string is deprecated in /home/submatec/public_html/app/endpoints/ai/generate_recommendations.php on line 282

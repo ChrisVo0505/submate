@@ -1,0 +1,407 @@
+[30-Oct-2024 09:41:31 Australia/Sydney] PHP Fatal error:  Uncaught PHPMailer\PHPMailer\Exception: SMTP Error: Could not connect to SMTP host. in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php:2244
+Stack trace:
+#0 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(2023): PHPMailer\PHPMailer\PHPMailer->smtpConnect()
+#1 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1682): PHPMailer\PHPMailer\PHPMailer->smtpSend()
+#2 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1516): PHPMailer\PHPMailer\PHPMailer->postSend()
+#3 /home/submatec/public_html/endpoints/cronjobs/sendnotifications.php(287): PHPMailer\PHPMailer\PHPMailer->send()
+#4 {main}
+  thrown in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php on line 2244
+[30-Oct-2024 09:44:25 Australia/Sydney] PHP Fatal error:  Uncaught PHPMailer\PHPMailer\Exception: SMTP Error: Could not connect to SMTP host. in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php:2244
+Stack trace:
+#0 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(2023): PHPMailer\PHPMailer\PHPMailer->smtpConnect()
+#1 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1682): PHPMailer\PHPMailer\PHPMailer->smtpSend()
+#2 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1516): PHPMailer\PHPMailer\PHPMailer->postSend()
+#3 /home/submatec/public_html/endpoints/cronjobs/sendnotifications.php(287): PHPMailer\PHPMailer\PHPMailer->send()
+#4 {main}
+  thrown in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php on line 2244
+[30-Oct-2024 09:53:52 Australia/Sydney] PHP Fatal error:  Uncaught PHPMailer\PHPMailer\Exception: SMTP Error: Could not connect to SMTP host. in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php:2244
+Stack trace:
+#0 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(2023): PHPMailer\PHPMailer\PHPMailer->smtpConnect()
+#1 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1682): PHPMailer\PHPMailer\PHPMailer->smtpSend()
+#2 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1516): PHPMailer\PHPMailer\PHPMailer->postSend()
+#3 /home/submatec/public_html/endpoints/cronjobs/sendnotifications.php(287): PHPMailer\PHPMailer\PHPMailer->send()
+#4 {main}
+  thrown in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php on line 2244
+[30-Oct-2024 09:53:58 Australia/Sydney] PHP Warning:  SQLite3::exec(): database is locked in /home/submatec/public_html/endpoints/cronjobs/checkforupdates.php on line 29
+[30-Oct-2024 10:35:06 Australia/Sydney] PHP Fatal error:  Uncaught PHPMailer\PHPMailer\Exception: SMTP Error: Could not connect to SMTP host. in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php:2244
+Stack trace:
+#0 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(2023): PHPMailer\PHPMailer\PHPMailer->smtpConnect()
+#1 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1682): PHPMailer\PHPMailer\PHPMailer->smtpSend()
+#2 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1516): PHPMailer\PHPMailer\PHPMailer->postSend()
+#3 /home/submatec/public_html/endpoints/cronjobs/sendnotifications.php(287): PHPMailer\PHPMailer\PHPMailer->send()
+#4 {main}
+  thrown in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php on line 2244
+[31-Oct-2024 09:12:06 Australia/Sydney] PHP Fatal error:  Uncaught PHPMailer\PHPMailer\Exception: SMTP Error: Could not authenticate. in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php:2223
+Stack trace:
+#0 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(2023): PHPMailer\PHPMailer\PHPMailer->smtpConnect()
+#1 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1682): PHPMailer\PHPMailer\PHPMailer->smtpSend()
+#2 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1516): PHPMailer\PHPMailer\PHPMailer->postSend()
+#3 /home/submatec/public_html/endpoints/cronjobs/sendnotifications.php(290): PHPMailer\PHPMailer\PHPMailer->send()
+#4 {main}
+  thrown in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php on line 2223
+[31-Oct-2024 09:12:20 Australia/Sydney] PHP Fatal error:  Uncaught PHPMailer\PHPMailer\Exception: SMTP Error: Could not authenticate. in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php:2223
+Stack trace:
+#0 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(2023): PHPMailer\PHPMailer\PHPMailer->smtpConnect()
+#1 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1682): PHPMailer\PHPMailer\PHPMailer->smtpSend()
+#2 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1516): PHPMailer\PHPMailer\PHPMailer->postSend()
+#3 /home/submatec/public_html/endpoints/cronjobs/sendcancellationnotifications.php(239): PHPMailer\PHPMailer\PHPMailer->send()
+#4 {main}
+  thrown in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php on line 2223
+[31-Oct-2024 09:12:26 Australia/Sydney] PHP Fatal error:  Uncaught PHPMailer\PHPMailer\Exception: SMTP Error: Could not authenticate. in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php:2223
+Stack trace:
+#0 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(2023): PHPMailer\PHPMailer\PHPMailer->smtpConnect()
+#1 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1682): PHPMailer\PHPMailer\PHPMailer->smtpSend()
+#2 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1516): PHPMailer\PHPMailer\PHPMailer->postSend()
+#3 /home/submatec/public_html/endpoints/cronjobs/sendcancellationnotifications.php(239): PHPMailer\PHPMailer\PHPMailer->send()
+#4 {main}
+  thrown in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php on line 2223
+[31-Oct-2024 09:13:11 Australia/Sydney] PHP Fatal error:  Uncaught PHPMailer\PHPMailer\Exception: SMTP Error: Could not authenticate. in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php:2223
+Stack trace:
+#0 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(2023): PHPMailer\PHPMailer\PHPMailer->smtpConnect()
+#1 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1682): PHPMailer\PHPMailer\PHPMailer->smtpSend()
+#2 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1516): PHPMailer\PHPMailer\PHPMailer->postSend()
+#3 /home/submatec/public_html/endpoints/cronjobs/sendnotifications.php(290): PHPMailer\PHPMailer\PHPMailer->send()
+#4 {main}
+  thrown in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php on line 2223
+[31-Oct-2024 09:13:18 Australia/Sydney] PHP Fatal error:  Uncaught PHPMailer\PHPMailer\Exception: SMTP Error: Could not authenticate. in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php:2223
+Stack trace:
+#0 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(2023): PHPMailer\PHPMailer\PHPMailer->smtpConnect()
+#1 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1682): PHPMailer\PHPMailer\PHPMailer->smtpSend()
+#2 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1516): PHPMailer\PHPMailer\PHPMailer->postSend()
+#3 /home/submatec/public_html/endpoints/cronjobs/sendcancellationnotifications.php(239): PHPMailer\PHPMailer\PHPMailer->send()
+#4 {main}
+  thrown in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php on line 2223
+[31-Oct-2024 09:42:09 Australia/Sydney] PHP Fatal error:  Uncaught PHPMailer\PHPMailer\Exception: SMTP Error: Could not authenticate. in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php:2223
+Stack trace:
+#0 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(2023): PHPMailer\PHPMailer\PHPMailer->smtpConnect()
+#1 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1682): PHPMailer\PHPMailer\PHPMailer->smtpSend()
+#2 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1516): PHPMailer\PHPMailer\PHPMailer->postSend()
+#3 /home/submatec/public_html/endpoints/cronjobs/sendnotifications.php(290): PHPMailer\PHPMailer\PHPMailer->send()
+#4 {main}
+  thrown in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php on line 2223
+[31-Oct-2024 09:42:17 Australia/Sydney] PHP Fatal error:  Uncaught PHPMailer\PHPMailer\Exception: SMTP Error: Could not authenticate. in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php:2223
+Stack trace:
+#0 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(2023): PHPMailer\PHPMailer\PHPMailer->smtpConnect()
+#1 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1682): PHPMailer\PHPMailer\PHPMailer->smtpSend()
+#2 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1516): PHPMailer\PHPMailer\PHPMailer->postSend()
+#3 /home/submatec/public_html/endpoints/cronjobs/sendcancellationnotifications.php(239): PHPMailer\PHPMailer\PHPMailer->send()
+#4 {main}
+  thrown in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php on line 2223
+[31-Oct-2024 10:29:05 Australia/Sydney] PHP Fatal error:  Uncaught PHPMailer\PHPMailer\Exception: SMTP Error: Could not authenticate. in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php:2223
+Stack trace:
+#0 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(2023): PHPMailer\PHPMailer\PHPMailer->smtpConnect()
+#1 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1682): PHPMailer\PHPMailer\PHPMailer->smtpSend()
+#2 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1516): PHPMailer\PHPMailer\PHPMailer->postSend()
+#3 /home/submatec/public_html/endpoints/cronjobs/sendnotifications.php(290): PHPMailer\PHPMailer\PHPMailer->send()
+#4 {main}
+  thrown in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php on line 2223
+[31-Oct-2024 10:29:14 Australia/Sydney] PHP Fatal error:  Uncaught PHPMailer\PHPMailer\Exception: SMTP Error: Could not authenticate. in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php:2223
+Stack trace:
+#0 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(2023): PHPMailer\PHPMailer\PHPMailer->smtpConnect()
+#1 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1682): PHPMailer\PHPMailer\PHPMailer->smtpSend()
+#2 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1516): PHPMailer\PHPMailer\PHPMailer->postSend()
+#3 /home/submatec/public_html/endpoints/cronjobs/sendcancellationnotifications.php(239): PHPMailer\PHPMailer\PHPMailer->send()
+#4 {main}
+  thrown in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php on line 2223
+[31-Oct-2024 10:29:47 Australia/Sydney] PHP Fatal error:  Uncaught PHPMailer\PHPMailer\Exception: SMTP Error: Could not authenticate. in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php:2223
+Stack trace:
+#0 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(2023): PHPMailer\PHPMailer\PHPMailer->smtpConnect()
+#1 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1682): PHPMailer\PHPMailer\PHPMailer->smtpSend()
+#2 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1516): PHPMailer\PHPMailer\PHPMailer->postSend()
+#3 /home/submatec/public_html/endpoints/cronjobs/sendnotifications.php(290): PHPMailer\PHPMailer\PHPMailer->send()
+#4 {main}
+  thrown in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php on line 2223
+[31-Oct-2024 10:29:55 Australia/Sydney] PHP Fatal error:  Uncaught PHPMailer\PHPMailer\Exception: SMTP Error: Could not authenticate. in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php:2223
+Stack trace:
+#0 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(2023): PHPMailer\PHPMailer\PHPMailer->smtpConnect()
+#1 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1682): PHPMailer\PHPMailer\PHPMailer->smtpSend()
+#2 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1516): PHPMailer\PHPMailer\PHPMailer->postSend()
+#3 /home/submatec/public_html/endpoints/cronjobs/sendcancellationnotifications.php(239): PHPMailer\PHPMailer\PHPMailer->send()
+#4 {main}
+  thrown in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php on line 2223
+[31-Oct-2024 10:31:36 Australia/Sydney] PHP Fatal error:  Uncaught PHPMailer\PHPMailer\Exception: SMTP Error: Could not authenticate. in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php:2223
+Stack trace:
+#0 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(2023): PHPMailer\PHPMailer\PHPMailer->smtpConnect()
+#1 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1682): PHPMailer\PHPMailer\PHPMailer->smtpSend()
+#2 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1516): PHPMailer\PHPMailer\PHPMailer->postSend()
+#3 /home/submatec/public_html/endpoints/cronjobs/sendnotifications.php(290): PHPMailer\PHPMailer\PHPMailer->send()
+#4 {main}
+  thrown in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php on line 2223
+[31-Oct-2024 10:31:43 Australia/Sydney] PHP Fatal error:  Uncaught PHPMailer\PHPMailer\Exception: SMTP Error: Could not authenticate. in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php:2223
+Stack trace:
+#0 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(2023): PHPMailer\PHPMailer\PHPMailer->smtpConnect()
+#1 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1682): PHPMailer\PHPMailer\PHPMailer->smtpSend()
+#2 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1516): PHPMailer\PHPMailer\PHPMailer->postSend()
+#3 /home/submatec/public_html/endpoints/cronjobs/sendcancellationnotifications.php(239): PHPMailer\PHPMailer\PHPMailer->send()
+#4 {main}
+  thrown in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php on line 2223
+[31-Oct-2024 10:34:28 Australia/Sydney] PHP Fatal error:  Uncaught PHPMailer\PHPMailer\Exception: SMTP Error: Could not authenticate. in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php:2223
+Stack trace:
+#0 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(2023): PHPMailer\PHPMailer\PHPMailer->smtpConnect()
+#1 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1682): PHPMailer\PHPMailer\PHPMailer->smtpSend()
+#2 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1516): PHPMailer\PHPMailer\PHPMailer->postSend()
+#3 /home/submatec/public_html/endpoints/cronjobs/sendnotifications.php(290): PHPMailer\PHPMailer\PHPMailer->send()
+#4 {main}
+  thrown in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php on line 2223
+[31-Oct-2024 10:34:34 Australia/Sydney] PHP Fatal error:  Uncaught PHPMailer\PHPMailer\Exception: SMTP Error: Could not authenticate. in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php:2223
+Stack trace:
+#0 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(2023): PHPMailer\PHPMailer\PHPMailer->smtpConnect()
+#1 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1682): PHPMailer\PHPMailer\PHPMailer->smtpSend()
+#2 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1516): PHPMailer\PHPMailer\PHPMailer->postSend()
+#3 /home/submatec/public_html/endpoints/cronjobs/sendcancellationnotifications.php(239): PHPMailer\PHPMailer\PHPMailer->send()
+#4 {main}
+  thrown in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php on line 2223
+[31-Oct-2024 10:58:47 Australia/Sydney] PHP Fatal error:  Uncaught PHPMailer\PHPMailer\Exception: SMTP Error: Could not authenticate. in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php:2223
+Stack trace:
+#0 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(2023): PHPMailer\PHPMailer\PHPMailer->smtpConnect()
+#1 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1682): PHPMailer\PHPMailer\PHPMailer->smtpSend()
+#2 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1516): PHPMailer\PHPMailer\PHPMailer->postSend()
+#3 /home/submatec/public_html/endpoints/cronjobs/sendcancellationnotifications.php(239): PHPMailer\PHPMailer\PHPMailer->send()
+#4 {main}
+  thrown in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php on line 2223
+[31-Oct-2024 10:58:53 Australia/Sydney] PHP Fatal error:  Uncaught PHPMailer\PHPMailer\Exception: SMTP Error: Could not authenticate. in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php:2223
+Stack trace:
+#0 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(2023): PHPMailer\PHPMailer\PHPMailer->smtpConnect()
+#1 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1682): PHPMailer\PHPMailer\PHPMailer->smtpSend()
+#2 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1516): PHPMailer\PHPMailer\PHPMailer->postSend()
+#3 /home/submatec/public_html/endpoints/cronjobs/sendnotifications.php(290): PHPMailer\PHPMailer\PHPMailer->send()
+#4 {main}
+  thrown in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php on line 2223
+[31-Oct-2024 11:05:17 Australia/Sydney] PHP Fatal error:  Uncaught PHPMailer\PHPMailer\Exception: SMTP Error: Could not authenticate. in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php:2223
+Stack trace:
+#0 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(2023): PHPMailer\PHPMailer\PHPMailer->smtpConnect()
+#1 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1682): PHPMailer\PHPMailer\PHPMailer->smtpSend()
+#2 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1516): PHPMailer\PHPMailer\PHPMailer->postSend()
+#3 /home/submatec/public_html/endpoints/cronjobs/sendnotifications.php(290): PHPMailer\PHPMailer\PHPMailer->send()
+#4 {main}
+  thrown in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php on line 2223
+[31-Oct-2024 11:05:25 Australia/Sydney] PHP Fatal error:  Uncaught PHPMailer\PHPMailer\Exception: SMTP Error: Could not authenticate. in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php:2223
+Stack trace:
+#0 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(2023): PHPMailer\PHPMailer\PHPMailer->smtpConnect()
+#1 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1682): PHPMailer\PHPMailer\PHPMailer->smtpSend()
+#2 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1516): PHPMailer\PHPMailer\PHPMailer->postSend()
+#3 /home/submatec/public_html/endpoints/cronjobs/sendcancellationnotifications.php(239): PHPMailer\PHPMailer\PHPMailer->send()
+#4 {main}
+  thrown in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php on line 2223
+[31-Oct-2024 11:06:43 Australia/Sydney] PHP Fatal error:  Uncaught PHPMailer\PHPMailer\Exception: SMTP Error: Could not authenticate. in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php:2223
+Stack trace:
+#0 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(2023): PHPMailer\PHPMailer\PHPMailer->smtpConnect()
+#1 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1682): PHPMailer\PHPMailer\PHPMailer->smtpSend()
+#2 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1516): PHPMailer\PHPMailer\PHPMailer->postSend()
+#3 /home/submatec/public_html/endpoints/cronjobs/sendcancellationnotifications.php(239): PHPMailer\PHPMailer\PHPMailer->send()
+#4 {main}
+  thrown in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php on line 2223
+[31-Oct-2024 11:06:52 Australia/Sydney] PHP Fatal error:  Uncaught PHPMailer\PHPMailer\Exception: SMTP Error: Could not authenticate. in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php:2223
+Stack trace:
+#0 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(2023): PHPMailer\PHPMailer\PHPMailer->smtpConnect()
+#1 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1682): PHPMailer\PHPMailer\PHPMailer->smtpSend()
+#2 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1516): PHPMailer\PHPMailer\PHPMailer->postSend()
+#3 /home/submatec/public_html/endpoints/cronjobs/sendnotifications.php(290): PHPMailer\PHPMailer\PHPMailer->send()
+#4 {main}
+  thrown in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php on line 2223
+[31-Oct-2024 11:07:28 Australia/Sydney] PHP Fatal error:  Uncaught PHPMailer\PHPMailer\Exception: SMTP Error: Could not authenticate. in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php:2223
+Stack trace:
+#0 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(2023): PHPMailer\PHPMailer\PHPMailer->smtpConnect()
+#1 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1682): PHPMailer\PHPMailer\PHPMailer->smtpSend()
+#2 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1516): PHPMailer\PHPMailer\PHPMailer->postSend()
+#3 /home/submatec/public_html/endpoints/cronjobs/sendcancellationnotifications.php(239): PHPMailer\PHPMailer\PHPMailer->send()
+#4 {main}
+  thrown in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php on line 2223
+[31-Oct-2024 11:07:48 Australia/Sydney] PHP Fatal error:  Uncaught PHPMailer\PHPMailer\Exception: SMTP Error: Could not authenticate. in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php:2223
+Stack trace:
+#0 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(2023): PHPMailer\PHPMailer\PHPMailer->smtpConnect()
+#1 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1682): PHPMailer\PHPMailer\PHPMailer->smtpSend()
+#2 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1516): PHPMailer\PHPMailer\PHPMailer->postSend()
+#3 /home/submatec/public_html/endpoints/cronjobs/sendnotifications.php(290): PHPMailer\PHPMailer\PHPMailer->send()
+#4 {main}
+  thrown in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php on line 2223
+[31-Oct-2024 11:07:50 Australia/Sydney] PHP Fatal error:  Uncaught PHPMailer\PHPMailer\Exception: SMTP Error: Could not authenticate. in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php:2223
+Stack trace:
+#0 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(2023): PHPMailer\PHPMailer\PHPMailer->smtpConnect()
+#1 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1682): PHPMailer\PHPMailer\PHPMailer->smtpSend()
+#2 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1516): PHPMailer\PHPMailer\PHPMailer->postSend()
+#3 /home/submatec/public_html/endpoints/cronjobs/sendcancellationnotifications.php(239): PHPMailer\PHPMailer\PHPMailer->send()
+#4 {main}
+  thrown in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php on line 2223
+[31-Oct-2024 11:50:19 Australia/Sydney] PHP Fatal error:  Uncaught PHPMailer\PHPMailer\Exception: SMTP Error: Could not authenticate. in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php:2223
+Stack trace:
+#0 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(2023): PHPMailer\PHPMailer\PHPMailer->smtpConnect()
+#1 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1682): PHPMailer\PHPMailer\PHPMailer->smtpSend()
+#2 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1516): PHPMailer\PHPMailer\PHPMailer->postSend()
+#3 /home/submatec/public_html/endpoints/cronjobs/sendnotifications.php(290): PHPMailer\PHPMailer\PHPMailer->send()
+#4 {main}
+  thrown in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php on line 2223
+[31-Oct-2024 11:50:25 Australia/Sydney] PHP Fatal error:  Uncaught PHPMailer\PHPMailer\Exception: SMTP Error: Could not authenticate. in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php:2223
+Stack trace:
+#0 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(2023): PHPMailer\PHPMailer\PHPMailer->smtpConnect()
+#1 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1682): PHPMailer\PHPMailer\PHPMailer->smtpSend()
+#2 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1516): PHPMailer\PHPMailer\PHPMailer->postSend()
+#3 /home/submatec/public_html/endpoints/cronjobs/sendcancellationnotifications.php(239): PHPMailer\PHPMailer\PHPMailer->send()
+#4 {main}
+  thrown in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php on line 2223
+[01-Nov-2024 09:24:50 Australia/Sydney] PHP Fatal error:  Uncaught PHPMailer\PHPMailer\Exception: SMTP Error: Could not authenticate. in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php:2223
+Stack trace:
+#0 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(2023): PHPMailer\PHPMailer\PHPMailer->smtpConnect()
+#1 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1682): PHPMailer\PHPMailer\PHPMailer->smtpSend()
+#2 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1516): PHPMailer\PHPMailer\PHPMailer->postSend()
+#3 /home/submatec/public_html/endpoints/cronjobs/sendnotifications.php(290): PHPMailer\PHPMailer\PHPMailer->send()
+#4 {main}
+  thrown in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php on line 2223
+[01-Nov-2024 20:07:25 Australia/Sydney] PHP Fatal error:  Uncaught PHPMailer\PHPMailer\Exception: SMTP Error: Could not authenticate. in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php:2223
+Stack trace:
+#0 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(2023): PHPMailer\PHPMailer\PHPMailer->smtpConnect()
+#1 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1682): PHPMailer\PHPMailer\PHPMailer->smtpSend()
+#2 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1516): PHPMailer\PHPMailer\PHPMailer->postSend()
+#3 /home/submatec/public_html/endpoints/cronjobs/sendnotifications.php(290): PHPMailer\PHPMailer\PHPMailer->send()
+#4 {main}
+  thrown in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php on line 2223
+[02-Nov-2024 00:53:26 Australia/Sydney] PHP Fatal error:  Uncaught PHPMailer\PHPMailer\Exception: SMTP Error: Could not authenticate. in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php:2223
+Stack trace:
+#0 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(2023): PHPMailer\PHPMailer\PHPMailer->smtpConnect()
+#1 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1682): PHPMailer\PHPMailer\PHPMailer->smtpSend()
+#2 /home/submatec/public_html/libs/PHPMailer/PHPMailer.php(1516): PHPMailer\PHPMailer\PHPMailer->postSend()
+#3 /home/submatec/public_html/endpoints/cronjobs/sendnotifications.php(290): PHPMailer\PHPMailer\PHPMailer->send()
+#4 {main}
+  thrown in /home/submatec/public_html/libs/PHPMailer/PHPMailer.php on line 2223
+[05-Nov-2024 14:18:22 Australia/Sydney] PHP Fatal error:  Uncaught PHPMailer\PHPMailer\Exception: SMTP Error: Could not authenticate. in /home/submatec/public_html/app/libs/PHPMailer/PHPMailer.php:2223
+Stack trace:
+#0 /home/submatec/public_html/app/libs/PHPMailer/PHPMailer.php(2023): PHPMailer\PHPMailer\PHPMailer->smtpConnect()
+#1 /home/submatec/public_html/app/libs/PHPMailer/PHPMailer.php(1682): PHPMailer\PHPMailer\PHPMailer->smtpSend()
+#2 /home/submatec/public_html/app/libs/PHPMailer/PHPMailer.php(1516): PHPMailer\PHPMailer\PHPMailer->postSend()
+#3 /home/submatec/public_html/app/endpoints/cronjobs/sendnotifications.php(290): PHPMailer\PHPMailer\PHPMailer->send()
+#4 {main}
+  thrown in /home/submatec/public_html/app/libs/PHPMailer/PHPMailer.php on line 2223
+[05-Nov-2024 14:18:44 Australia/Sydney] PHP Fatal error:  Uncaught PHPMailer\PHPMailer\Exception: SMTP Error: Could not authenticate. in /home/submatec/public_html/app/libs/PHPMailer/PHPMailer.php:2223
+Stack trace:
+#0 /home/submatec/public_html/app/libs/PHPMailer/PHPMailer.php(2023): PHPMailer\PHPMailer\PHPMailer->smtpConnect()
+#1 /home/submatec/public_html/app/libs/PHPMailer/PHPMailer.php(1682): PHPMailer\PHPMailer\PHPMailer->smtpSend()
+#2 /home/submatec/public_html/app/libs/PHPMailer/PHPMailer.php(1516): PHPMailer\PHPMailer\PHPMailer->postSend()
+#3 /home/submatec/public_html/app/endpoints/cronjobs/sendnotifications.php(290): PHPMailer\PHPMailer\PHPMailer->send()
+#4 {main}
+  thrown in /home/submatec/public_html/app/libs/PHPMailer/PHPMailer.php on line 2223
+[06-Nov-2024 10:49:30 Australia/Sydney] PHP Fatal error:  Uncaught PHPMailer\PHPMailer\Exception: SMTP Error: Could not authenticate. in /home/submatec/public_html/app/libs/PHPMailer/PHPMailer.php:2223
+Stack trace:
+#0 /home/submatec/public_html/app/libs/PHPMailer/PHPMailer.php(2023): PHPMailer\PHPMailer\PHPMailer->smtpConnect()
+#1 /home/submatec/public_html/app/libs/PHPMailer/PHPMailer.php(1682): PHPMailer\PHPMailer\PHPMailer->smtpSend()
+#2 /home/submatec/public_html/app/libs/PHPMailer/PHPMailer.php(1516): PHPMailer\PHPMailer\PHPMailer->postSend()
+#3 /home/submatec/public_html/app/endpoints/cronjobs/sendnotifications.php(290): PHPMailer\PHPMailer\PHPMailer->send()
+#4 {main}
+  thrown in /home/submatec/public_html/app/libs/PHPMailer/PHPMailer.php on line 2223
+[08-Jan-2025 09:06:23 Australia/Sydney] PHP Fatal error:  Uncaught PHPMailer\PHPMailer\Exception: SMTP Error: Could not authenticate. in /home/submatec/public_html/app/libs/PHPMailer/PHPMailer.php:2223
+Stack trace:
+#0 /home/submatec/public_html/app/libs/PHPMailer/PHPMailer.php(2023): PHPMailer\PHPMailer\PHPMailer->smtpConnect()
+#1 /home/submatec/public_html/app/libs/PHPMailer/PHPMailer.php(1682): PHPMailer\PHPMailer\PHPMailer->smtpSend()
+#2 /home/submatec/public_html/app/libs/PHPMailer/PHPMailer.php(1516): PHPMailer\PHPMailer\PHPMailer->postSend()
+#3 /home/submatec/public_html/app/endpoints/cronjobs/sendnotifications.php(308): PHPMailer\PHPMailer\PHPMailer->send()
+#4 {main}
+  thrown in /home/submatec/public_html/app/libs/PHPMailer/PHPMailer.php on line 2223
+[20-Sep-2025 21:06:46 Australia/Sydney] PHP Warning:  Undefined variable $pushplusNotificationsEnabled in /home/submatec/public_html/app/endpoints/cronjobs/sendnotifications.php on line 186
+[20-Sep-2025 21:06:46 Australia/Sydney] PHP Warning:  Undefined variable $pushplusNotificationsEnabled in /home/submatec/public_html/app/endpoints/cronjobs/sendnotifications.php on line 186
+[20-Sep-2025 21:06:46 Australia/Sydney] PHP Warning:  Undefined variable $pushplusNotificationsEnabled in /home/submatec/public_html/app/endpoints/cronjobs/sendnotifications.php on line 186
+[20-Sep-2025 21:06:46 Australia/Sydney] PHP Warning:  Undefined variable $pushplusNotificationsEnabled in /home/submatec/public_html/app/endpoints/cronjobs/sendnotifications.php on line 186
+[20-Sep-2025 21:06:46 Australia/Sydney] PHP Warning:  Undefined variable $pushplusNotificationsEnabled in /home/submatec/public_html/app/endpoints/cronjobs/sendnotifications.php on line 186
+[20-Sep-2025 21:06:46 Australia/Sydney] PHP Warning:  Undefined variable $pushplusNotificationsEnabled in /home/submatec/public_html/app/endpoints/cronjobs/sendnotifications.php on line 186
+[20-Sep-2025 21:06:46 Australia/Sydney] PHP Warning:  Undefined variable $pushplusNotificationsEnabled in /home/submatec/public_html/app/endpoints/cronjobs/sendnotifications.php on line 186
+[20-Sep-2025 21:06:46 Australia/Sydney] PHP Warning:  Undefined variable $pushplusNotificationsEnabled in /home/submatec/public_html/app/endpoints/cronjobs/sendnotifications.php on line 186
+[20-Sep-2025 21:06:46 Australia/Sydney] PHP Warning:  Undefined variable $pushplusNotificationsEnabled in /home/submatec/public_html/app/endpoints/cronjobs/sendnotifications.php on line 186
+[20-Sep-2025 21:06:46 Australia/Sydney] PHP Warning:  Undefined variable $pushplusNotificationsEnabled in /home/submatec/public_html/app/endpoints/cronjobs/sendnotifications.php on line 186
+[20-Sep-2025 21:06:46 Australia/Sydney] PHP Warning:  Undefined variable $pushplusNotificationsEnabled in /home/submatec/public_html/app/endpoints/cronjobs/sendnotifications.php on line 186
+[20-Sep-2025 21:06:46 Australia/Sydney] PHP Warning:  Undefined variable $pushplusNotificationsEnabled in /home/submatec/public_html/app/endpoints/cronjobs/sendnotifications.php on line 186
+[20-Sep-2025 21:06:46 Australia/Sydney] PHP Warning:  Undefined variable $pushplusNotificationsEnabled in /home/submatec/public_html/app/endpoints/cronjobs/sendnotifications.php on line 186
+[20-Sep-2025 21:06:46 Australia/Sydney] PHP Warning:  Undefined variable $pushplusNotificationsEnabled in /home/submatec/public_html/app/endpoints/cronjobs/sendnotifications.php on line 186
+[20-Sep-2025 21:06:46 Australia/Sydney] PHP Warning:  Undefined variable $pushplusNotificationsEnabled in /home/submatec/public_html/app/endpoints/cronjobs/sendnotifications.php on line 186
+[20-Sep-2025 21:06:46 Australia/Sydney] PHP Warning:  Undefined variable $pushplusNotificationsEnabled in /home/submatec/public_html/app/endpoints/cronjobs/sendnotifications.php on line 186
+[20-Sep-2025 21:06:46 Australia/Sydney] PHP Warning:  Undefined variable $pushplusNotificationsEnabled in /home/submatec/public_html/app/endpoints/cronjobs/sendnotifications.php on line 186
+[20-Sep-2025 21:06:46 Australia/Sydney] PHP Warning:  Undefined variable $pushplusNotificationsEnabled in /home/submatec/public_html/app/endpoints/cronjobs/sendnotifications.php on line 186
+[20-Sep-2025 21:06:46 Australia/Sydney] PHP Warning:  Undefined variable $pushplusNotificationsEnabled in /home/submatec/public_html/app/endpoints/cronjobs/sendnotifications.php on line 186
+[20-Sep-2025 21:06:46 Australia/Sydney] PHP Warning:  Undefined variable $pushplusNotificationsEnabled in /home/submatec/public_html/app/endpoints/cronjobs/sendnotifications.php on line 186
+[20-Sep-2025 21:06:46 Australia/Sydney] PHP Warning:  Undefined variable $pushplusNotificationsEnabled in /home/submatec/public_html/app/endpoints/cronjobs/sendnotifications.php on line 186
+[20-Sep-2025 21:06:46 Australia/Sydney] PHP Warning:  Undefined variable $pushplusNotificationsEnabled in /home/submatec/public_html/app/endpoints/cronjobs/sendnotifications.php on line 186
+[20-Sep-2025 21:06:46 Australia/Sydney] PHP Warning:  Undefined variable $pushplusNotificationsEnabled in /home/submatec/public_html/app/endpoints/cronjobs/sendnotifications.php on line 186
+[20-Sep-2025 21:06:46 Australia/Sydney] PHP Warning:  Undefined variable $pushplusNotificationsEnabled in /home/submatec/public_html/app/endpoints/cronjobs/sendnotifications.php on line 186
+[20-Sep-2025 21:06:46 Australia/Sydney] PHP Warning:  Undefined variable $pushplusNotificationsEnabled in /home/submatec/public_html/app/endpoints/cronjobs/sendnotifications.php on line 186
+[20-Sep-2025 21:06:46 Australia/Sydney] PHP Warning:  Undefined variable $pushplusNotificationsEnabled in /home/submatec/public_html/app/endpoints/cronjobs/sendnotifications.php on line 186
+[20-Sep-2025 21:06:46 Australia/Sydney] PHP Warning:  Undefined variable $pushplusNotificationsEnabled in /home/submatec/public_html/app/endpoints/cronjobs/sendnotifications.php on line 186
+[20-Sep-2025 21:06:46 Australia/Sydney] PHP Warning:  Undefined variable $pushplusNotificationsEnabled in /home/submatec/public_html/app/endpoints/cronjobs/sendnotifications.php on line 186
+[20-Sep-2025 21:06:46 Australia/Sydney] PHP Warning:  Undefined variable $pushplusNotificationsEnabled in /home/submatec/public_html/app/endpoints/cronjobs/sendnotifications.php on line 186
+[20-Sep-2025 21:06:46 Australia/Sydney] PHP Warning:  Undefined variable $pushplusNotificationsEnabled in /home/submatec/public_html/app/endpoints/cronjobs/sendnotifications.php on line 186
+[20-Sep-2025 21:06:46 Australia/Sydney] PHP Warning:  Undefined variable $pushplusNotificationsEnabled in /home/submatec/public_html/app/endpoints/cronjobs/sendnotifications.php on line 186
+[20-Sep-2025 21:35:36 Australia/Sydney] PHP Parse error:  syntax error, unexpected token ":" in /home/submatec/public_html/app/endpoints/cronjobs/sendverificationemails.php on line 79
+[20-Sep-2025 21:35:43 Australia/Sydney] PHP Parse error:  syntax error, unexpected token ":" in /home/submatec/public_html/app/endpoints/cronjobs/sendverificationemails.php on line 79
+[20-Sep-2025 21:38:46 Australia/Sydney] PHP Parse error:  syntax error, unexpected token ":" in /home/submatec/public_html/app/endpoints/cronjobs/sendverificationemails.php on line 79
+[20-Sep-2025 21:38:50 Australia/Sydney] PHP Warning:  Undefined variable $pushplusNotificationsEnabled in /home/submatec/public_html/app/endpoints/cronjobs/sendnotifications.php on line 186
+[20-Sep-2025 21:38:50 Australia/Sydney] PHP Warning:  Undefined variable $pushplusNotificationsEnabled in /home/submatec/public_html/app/endpoints/cronjobs/sendnotifications.php on line 186
+[20-Sep-2025 21:38:50 Australia/Sydney] PHP Warning:  Undefined variable $pushplusNotificationsEnabled in /home/submatec/public_html/app/endpoints/cronjobs/sendnotifications.php on line 186
+[20-Sep-2025 21:38:50 Australia/Sydney] PHP Warning:  Undefined variable $pushplusNotificationsEnabled in /home/submatec/public_html/app/endpoints/cronjobs/sendnotifications.php on line 186
+[20-Sep-2025 21:38:50 Australia/Sydney] PHP Warning:  Undefined variable $pushplusNotificationsEnabled in /home/submatec/public_html/app/endpoints/cronjobs/sendnotifications.php on line 186
+[20-Sep-2025 21:38:50 Australia/Sydney] PHP Warning:  Undefined variable $pushplusNotificationsEnabled in /home/submatec/public_html/app/endpoints/cronjobs/sendnotifications.php on line 186
+[20-Sep-2025 21:38:50 Australia/Sydney] PHP Warning:  Undefined variable $pushplusNotificationsEnabled in /home/submatec/public_html/app/endpoints/cronjobs/sendnotifications.php on line 186
+[20-Sep-2025 21:38:50 Australia/Sydney] PHP Warning:  Undefined variable $pushplusNotificationsEnabled in /home/submatec/public_html/app/endpoints/cronjobs/sendnotifications.php on line 186
+[20-Sep-2025 21:38:50 Australia/Sydney] PHP Warning:  Undefined variable $pushplusNotificationsEnabled in /home/submatec/public_html/app/endpoints/cronjobs/sendnotifications.php on line 186
+[20-Sep-2025 21:38:50 Australia/Sydney] PHP Warning:  Undefined variable $pushplusNotificationsEnabled in /home/submatec/public_html/app/endpoints/cronjobs/sendnotifications.php on line 186
+[20-Sep-2025 21:38:50 Australia/Sydney] PHP Warning:  Undefined variable $pushplusNotificationsEnabled in /home/submatec/public_html/app/endpoints/cronjobs/sendnotifications.php on line 186
+[20-Sep-2025 21:38:50 Australia/Sydney] PHP Warning:  Undefined variable $pushplusNotificationsEnabled in /home/submatec/public_html/app/endpoints/cronjobs/sendnotifications.php on line 186
+[20-Sep-2025 21:38:50 Australia/Sydney] PHP Warning:  Undefined variable $pushplusNotificationsEnabled in /home/submatec/public_html/app/endpoints/cronjobs/sendnotifications.php on line 186
+[20-Sep-2025 21:38:50 Australia/Sydney] PHP Warning:  Undefined variable $pushplusNotificationsEnabled in /home/submatec/public_html/app/endpoints/cronjobs/sendnotifications.php on line 186
+[20-Sep-2025 21:38:50 Australia/Sydney] PHP Warning:  Undefined variable $pushplusNotificationsEnabled in /home/submatec/public_html/app/endpoints/cronjobs/sendnotifications.php on line 186
+[20-Sep-2025 21:38:50 Australia/Sydney] PHP Warning:  Undefined variable $pushplusNotificationsEnabled in /home/submatec/public_html/app/endpoints/cronjobs/sendnotifications.php on line 186
+[20-Sep-2025 21:38:50 Australia/Sydney] PHP Warning:  Undefined variable $pushplusNotificationsEnabled in /home/submatec/public_html/app/endpoints/cronjobs/sendnotifications.php on line 186
+[20-Sep-2025 21:38:50 Australia/Sydney] PHP Warning:  Undefined variable $pushplusNotificationsEnabled in /home/submatec/public_html/app/endpoints/cronjobs/sendnotifications.php on line 186
+[20-Sep-2025 21:38:50 Australia/Sydney] PHP Warning:  Undefined variable $pushplusNotificationsEnabled in /home/submatec/public_html/app/endpoints/cronjobs/sendnotifications.php on line 186
+[20-Sep-2025 21:38:50 Australia/Sydney] PHP Warning:  Undefined variable $pushplusNotificationsEnabled in /home/submatec/public_html/app/endpoints/cronjobs/sendnotifications.php on line 186
+[20-Sep-2025 21:38:50 Australia/Sydney] PHP Warning:  Undefined variable $pushplusNotificationsEnabled in /home/submatec/public_html/app/endpoints/cronjobs/sendnotifications.php on line 186
+[20-Sep-2025 21:38:50 Australia/Sydney] PHP Warning:  Undefined variable $pushplusNotificationsEnabled in /home/submatec/public_html/app/endpoints/cronjobs/sendnotifications.php on line 186
+[20-Sep-2025 21:38:50 Australia/Sydney] PHP Warning:  Undefined variable $pushplusNotificationsEnabled in /home/submatec/public_html/app/endpoints/cronjobs/sendnotifications.php on line 186
+[20-Sep-2025 21:38:50 Australia/Sydney] PHP Warning:  Undefined variable $pushplusNotificationsEnabled in /home/submatec/public_html/app/endpoints/cronjobs/sendnotifications.php on line 186
+[20-Sep-2025 21:38:50 Australia/Sydney] PHP Warning:  Undefined variable $pushplusNotificationsEnabled in /home/submatec/public_html/app/endpoints/cronjobs/sendnotifications.php on line 186
+[20-Sep-2025 21:38:50 Australia/Sydney] PHP Warning:  Undefined variable $pushplusNotificationsEnabled in /home/submatec/public_html/app/endpoints/cronjobs/sendnotifications.php on line 186
+[20-Sep-2025 21:38:50 Australia/Sydney] PHP Warning:  Undefined variable $pushplusNotificationsEnabled in /home/submatec/public_html/app/endpoints/cronjobs/sendnotifications.php on line 186
+[20-Sep-2025 21:38:50 Australia/Sydney] PHP Warning:  Undefined variable $pushplusNotificationsEnabled in /home/submatec/public_html/app/endpoints/cronjobs/sendnotifications.php on line 186
+[20-Sep-2025 21:38:50 Australia/Sydney] PHP Warning:  Undefined variable $pushplusNotificationsEnabled in /home/submatec/public_html/app/endpoints/cronjobs/sendnotifications.php on line 186
+[20-Sep-2025 21:38:50 Australia/Sydney] PHP Warning:  Undefined variable $pushplusNotificationsEnabled in /home/submatec/public_html/app/endpoints/cronjobs/sendnotifications.php on line 186
+[20-Sep-2025 21:38:50 Australia/Sydney] PHP Warning:  Undefined variable $pushplusNotificationsEnabled in /home/submatec/public_html/app/endpoints/cronjobs/sendnotifications.php on line 186
+[20-Sep-2025 21:38:50 Australia/Sydney] PHP Warning:  Undefined variable $pushplusNotificationsEnabled in /home/submatec/public_html/app/endpoints/cronjobs/sendnotifications.php on line 186
+[20-Sep-2025 21:38:51 Australia/Sydney] PHP Parse error:  syntax error, unexpected token ":" in /home/submatec/public_html/app/endpoints/cronjobs/sendverificationemails.php on line 79
+[20-Sep-2025 21:38:52 Australia/Sydney] PHP Parse error:  syntax error, unexpected token ":" in /home/submatec/public_html/app/endpoints/cronjobs/sendverificationemails.php on line 79
+[20-Sep-2025 21:38:52 Australia/Sydney] PHP Parse error:  syntax error, unexpected token ":" in /home/submatec/public_html/app/endpoints/cronjobs/sendverificationemails.php on line 79
+[20-Sep-2025 21:38:56 Australia/Sydney] PHP Parse error:  syntax error, unexpected token ":" in /home/submatec/public_html/app/endpoints/cronjobs/sendverificationemails.php on line 79
+[20-Sep-2025 21:38:57 Australia/Sydney] PHP Parse error:  syntax error, unexpected token ":" in /home/submatec/public_html/app/endpoints/cronjobs/sendverificationemails.php on line 79
+[20-Sep-2025 21:38:58 Australia/Sydney] PHP Warning:  Undefined variable $pushplusNotificationsEnabled in /home/submatec/public_html/app/endpoints/cronjobs/sendnotifications.php on line 186
+[20-Sep-2025 21:38:58 Australia/Sydney] PHP Warning:  Undefined variable $pushplusNotificationsEnabled in /home/submatec/public_html/app/endpoints/cronjobs/sendnotifications.php on line 186
+[20-Sep-2025 21:38:58 Australia/Sydney] PHP Warning:  Undefined variable $pushplusNotificationsEnabled in /home/submatec/public_html/app/endpoints/cronjobs/sendnotifications.php on line 186
+[20-Sep-2025 21:38:58 Australia/Sydney] PHP Warning:  Undefined variable $pushplusNotificationsEnabled in /home/submatec/public_html/app/endpoints/cronjobs/sendnotifications.php on line 186
+[20-Sep-2025 21:38:58 Australia/Sydney] PHP Warning:  Undefined variable $pushplusNotificationsEnabled in /home/submatec/public_html/app/endpoints/cronjobs/sendnotifications.php on line 186
+[20-Sep-2025 21:38:58 Australia/Sydney] PHP Warning:  Undefined variable $pushplusNotificationsEnabled in /home/submatec/public_html/app/endpoints/cronjobs/sendnotifications.php on line 186
+[20-Sep-2025 21:38:58 Australia/Sydney] PHP Warning:  Undefined variable $pushplusNotificationsEnabled in /home/submatec/public_html/app/endpoints/cronjobs/sendnotifications.php on line 186
+[20-Sep-2025 21:38:58 Australia/Sydney] PHP Warning:  Undefined variable $pushplusNotificationsEnabled in /home/submatec/public_html/app/endpoints/cronjobs/sendnotifications.php on line 186
+[20-Sep-2025 21:38:58 Australia/Sydney] PHP Warning:  Undefined variable $pushplusNotificationsEnabled in /home/submatec/public_html/app/endpoints/cronjobs/sendnotifications.php on line 186
+[20-Sep-2025 21:38:58 Australia/Sydney] PHP Warning:  Undefined variable $pushplusNotificationsEnabled in /home/submatec/public_html/app/endpoints/cronjobs/sendnotifications.php on line 186
+[20-Sep-2025 21:38:58 Australia/Sydney] PHP Warning:  Undefined variable $pushplusNotificationsEnabled in /home/submatec/public_html/app/endpoints/cronjobs/sendnotifications.php on line 186
+[20-Sep-2025 21:38:58 Australia/Sydney] PHP Warning:  Undefined variable $pushplusNotificationsEnabled in /home/submatec/public_html/app/endpoints/cronjobs/sendnotifications.php on line 186
+[20-Sep-2025 21:38:58 Australia/Sydney] PHP Warning:  Undefined variable $pushplusNotificationsEnabled in /home/submatec/public_html/app/endpoints/cronjobs/sendnotifications.php on line 186
+[20-Sep-2025 21:38:58 Australia/Sydney] PHP Warning:  Undefined variable $pushplusNotificationsEnabled in /home/submatec/public_html/app/endpoints/cronjobs/sendnotifications.php on line 186
+[20-Sep-2025 21:38:58 Australia/Sydney] PHP Warning:  Undefined variable $pushplusNotificationsEnabled in /home/submatec/public_html/app/endpoints/cronjobs/sendnotifications.php on line 186
+[20-Sep-2025 21:38:58 Australia/Sydney] PHP Warning:  Undefined variable $pushplusNotificationsEnabled in /home/submatec/public_html/app/endpoints/cronjobs/sendnotifications.php on line 186
+[20-Sep-2025 21:38:58 Australia/Sydney] PHP Warning:  Undefined variable $pushplusNotificationsEnabled in /home/submatec/public_html/app/endpoints/cronjobs/sendnotifications.php on line 186
+[20-Sep-2025 21:38:58 Australia/Sydney] PHP Warning:  Undefined variable $pushplusNotificationsEnabled in /home/submatec/public_html/app/endpoints/cronjobs/sendnotifications.php on line 186
+[20-Sep-2025 21:38:58 Australia/Sydney] PHP Warning:  Undefined variable $pushplusNotificationsEnabled in /home/submatec/public_html/app/endpoints/cronjobs/sendnotifications.php on line 186
+[20-Sep-2025 21:38:58 Australia/Sydney] PHP Warning:  Undefined variable $pushplusNotificationsEnabled in /home/submatec/public_html/app/endpoints/cronjobs/sendnotifications.php on line 186
+[20-Sep-2025 21:38:58 Australia/Sydney] PHP Warning:  Undefined variable $pushplusNotificationsEnabled in /home/submatec/public_html/app/endpoints/cronjobs/sendnotifications.php on line 186
+[20-Sep-2025 21:38:58 Australia/Sydney] PHP Warning:  Undefined variable $pushplusNotificationsEnabled in /home/submatec/public_html/app/endpoints/cronjobs/sendnotifications.php on line 186
+[20-Sep-2025 21:38:58 Australia/Sydney] PHP Warning:  Undefined variable $pushplusNotificationsEnabled in /home/submatec/public_html/app/endpoints/cronjobs/sendnotifications.php on line 186
+[20-Sep-2025 21:38:58 Australia/Sydney] PHP Warning:  Undefined variable $pushplusNotificationsEnabled in /home/submatec/public_html/app/endpoints/cronjobs/sendnotifications.php on line 186
+[20-Sep-2025 21:38:58 Australia/Sydney] PHP Warning:  Undefined variable $pushplusNotificationsEnabled in /home/submatec/public_html/app/endpoints/cronjobs/sendnotifications.php on line 186
+[20-Sep-2025 21:38:58 Australia/Sydney] PHP Warning:  Undefined variable $pushplusNotificationsEnabled in /home/submatec/public_html/app/endpoints/cronjobs/sendnotifications.php on line 186
+[20-Sep-2025 21:38:58 Australia/Sydney] PHP Warning:  Undefined variable $pushplusNotificationsEnabled in /home/submatec/public_html/app/endpoints/cronjobs/sendnotifications.php on line 186
+[20-Sep-2025 21:38:58 Australia/Sydney] PHP Warning:  Undefined variable $pushplusNotificationsEnabled in /home/submatec/public_html/app/endpoints/cronjobs/sendnotifications.php on line 186
+[20-Sep-2025 21:38:58 Australia/Sydney] PHP Warning:  Undefined variable $pushplusNotificationsEnabled in /home/submatec/public_html/app/endpoints/cronjobs/sendnotifications.php on line 186
+[20-Sep-2025 21:38:58 Australia/Sydney] PHP Warning:  Undefined variable $pushplusNotificationsEnabled in /home/submatec/public_html/app/endpoints/cronjobs/sendnotifications.php on line 186
+[20-Sep-2025 21:38:58 Australia/Sydney] PHP Warning:  Undefined variable $pushplusNotificationsEnabled in /home/submatec/public_html/app/endpoints/cronjobs/sendnotifications.php on line 186
+[20-Sep-2025 21:38:58 Australia/Sydney] PHP Warning:  Undefined variable $pushplusNotificationsEnabled in /home/submatec/public_html/app/endpoints/cronjobs/sendnotifications.php on line 186
+[20-Sep-2025 21:39:12 Australia/Sydney] PHP Parse error:  syntax error, unexpected token ":" in /home/submatec/public_html/app/endpoints/cronjobs/sendverificationemails.php on line 79
+[20-Sep-2025 21:39:13 Australia/Sydney] PHP Parse error:  syntax error, unexpected token ":" in /home/submatec/public_html/app/endpoints/cronjobs/sendverificationemails.php on line 79
+[20-Sep-2025 21:39:13 Australia/Sydney] PHP Parse error:  syntax error, unexpected token ":" in /home/submatec/public_html/app/endpoints/cronjobs/sendverificationemails.php on line 79
+[20-Sep-2025 21:39:15 Australia/Sydney] PHP Parse error:  syntax error, unexpected token ":" in /home/submatec/public_html/app/endpoints/cronjobs/sendverificationemails.php on line 79
+[20-Sep-2025 21:39:15 Australia/Sydney] PHP Parse error:  syntax error, unexpected token ":" in /home/submatec/public_html/app/endpoints/cronjobs/sendverificationemails.php on line 79
+[20-Sep-2025 21:39:15 Australia/Sydney] PHP Parse error:  syntax error, unexpected token ":" in /home/submatec/public_html/app/endpoints/cronjobs/sendverificationemails.php on line 79
+[20-Sep-2025 21:39:15 Australia/Sydney] PHP Parse error:  syntax error, unexpected token ":" in /home/submatec/public_html/app/endpoints/cronjobs/sendverificationemails.php on line 79
