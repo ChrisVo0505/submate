@@ -1,9 +1,10 @@
 <?php
 require_once '../../includes/connect_endpoint.php';
+require_once '../../includes/validate_endpoint.php';
 
 $shouldUpdate = true;
 
-if (isset($_GET['force']) && $_GET['force'] === "true") {
+if (isset($_POST['force']) && $_POST['force'] === "true") {
     $shouldUpdate = true;
 } else {
     $query = "SELECT date FROM last_exchange_update WHERE user_id = :userId";
@@ -25,8 +26,10 @@ if (isset($_GET['force']) && $_GET['force'] === "true") {
     }
 }
 
-$query = "SELECT api_key, provider FROM fixer";
-$result = $db->query($query);
+$query = "SELECT api_key, provider FROM fixer WHERE user_id = :userId";
+$stmt = $db->prepare($query);
+$stmt->bindParam(':userId', $userId, SQLITE3_INTEGER);
+$result = $stmt->execute();
 
 if ($result) {
     $row = $result->fetchArray(SQLITE3_ASSOC);
@@ -108,4 +111,3 @@ if ($result) {
     echo "Exchange rates update skipped. No fixer.io api key provided";
     $apiKey = null;
 }
-?>

@@ -56,22 +56,12 @@ if ($rows) {
             foreach ($rows as $user) {
                 $mail->addAddress($user['email']);
                 $mail->isHTML(true);
-                $mail->Subject = 'Submate - Reset Password';
-                $link = $server_url . '/app/passwordreset.php?email=' . $user['email'] . '&token=' . $user['token'];
-                
-                $mail->Body = '
-                    <html>
-                    <body style="font-family: Arial, sans-serif; font-size:14px; color:#333;">
+                $mail->Subject = 'Wallos - Reset Password';
+                $mail->Body = '<img src="' . $server_url . '/images/siteicons/wallos.png" alt="Logo" />
                     <br>
-                    Registration on Submate was successful.
+                    A password reset was requested for your account.
                     <br>
-                    Please copy the following link and paste to your browser to reset your password:
-                    <br>
-                    <br>
-                    ' . $link . '
-                    </body>
-                    </html>
-                ';
+                    Please click the following link to reset your password: <a href="' . $server_url . '/passwordreset.php?email=' . $user['email'] . '&token=' . $user['token'] . '">Reset Password</a>';
 
                 $mail->send();
 

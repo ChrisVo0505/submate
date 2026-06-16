@@ -1,5 +1,16 @@
 <?php
 require_once 'includes/header.php';
+
+// Fetch the avatars belonging to the logged-in user
+$uploadedAvatars = [];
+
+$stmt = $db->prepare("SELECT path FROM uploaded_avatars WHERE user_id = :user_id");
+$stmt->bindValue(':user_id', $userId, SQLITE3_INTEGER);
+$result = $stmt->execute();
+
+while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
+    $uploadedAvatars[] = $row['path'];
+}
 ?>
 
 <script src="scripts/libs/sortable.min.js"></script>
@@ -29,29 +40,34 @@ require_once 'includes/header.php';
                         <input type="hidden" name="avatar" value="<?= htmlspecialchars($userData['avatar'], ENT_QUOTES, 'UTF-8') ?>" id="avatarUser" />
                         <div class="avatar-select" id="avatarSelect">
                             <div class="avatar-list">
-                                <?php foreach (scandir('images/avatars') as $index => $image): ?>
+                                <?php foreach (scandir('images/avatars') as $image): ?>
                                     <?php if (!str_starts_with($image, '.')): ?>
-                                        <img src="images/avatars/<?= $image ?>" alt="<?= $image ?>" class="avatar-option"
-                                            data-src="images/avatars/<?= $image ?>">
+                                        <img src="images/avatars/<?= htmlspecialchars($image) ?>" alt="<?= htmlspecialchars($image) ?>" class="avatar-option"
+                                            data-src="images/avatars/<?= htmlspecialchars($image) ?>">
                                     <?php endif ?>
                                 <?php endforeach ?>
-                                <?php foreach (scandir('images/uploads/logos/avatars') as $index => $image): ?>
-                                    <?php if (!str_starts_with($image, '.')): ?>
-                                        <div class="avatar-container" data-src="<?= $image ?>">
-                                            <img src="images/uploads/logos/avatars/<?= $image ?>" alt="<?= $image ?>"
-                                                class="avatar-option" data-src="images/uploads/logos/avatars/<?= $image ?>">
-                                            <div class="remove-avatar" onclick="deleteAvatar('<?= $image ?>')"
-                                                title="Delete avatar">
-                                                <i class="fa-solid fa-xmark"></i>
-                                            </div>
+
+                                <?php foreach ($uploadedAvatars as $path): ?>
+                                    <?php
+                                        $filename = basename($path);
+                                    ?>
+                                    <div class="avatar-container" data-src="<?= htmlspecialchars($filename) ?>">
+                                        <img src="<?= htmlspecialchars($path) ?>" alt="<?= htmlspecialchars($filename) ?>"
+                                            class="avatar-option" data-src="<?= htmlspecialchars($path) ?>">
+
+                                        <div class="remove-avatar" onclick="deleteAvatar(<?= json_encode($filename, JSON_HEX_APOS | JSON_HEX_QUOT) ?>)"
+                                            title="Delete avatar">
+                                            <i class="fa-solid fa-xmark"></i>
                                         </div>
-                                    <?php endif ?>
+                                    </div>
                                 <?php endforeach ?>
+
                                 <label for="profile_pic" class="add-avatar"
                                     title="<?= translate('upload_avatar', $i18n) ?>">
                                     <i class="fa-solid fa-arrow-up-from-bracket"></i>
                                 </label>
                             </div>
+                            
                             <input type="file" id="profile_pic" class="hidden-input" name="profile_pic"
                                 accept="image/jpeg, image/png, image/gif, image/webp"
                                 onChange="successfulUpload(this, '<?= addslashes(translate('file_type_error', $i18n)) ?>')" />
@@ -60,28 +76,33 @@ require_once 'includes/header.php';
                     <div class="grow">
                         <div class="form-group">
                             <label for="username"><?= translate('username', $i18n) ?>:</label>
-                            <input type="text" id="username" name="username" value="<?= $userData['username'] ?>"
+                            <input type="text" id="username" name="username" value="<?= htmlspecialchars($userData['username']) ?>"
                                 disabled>
                         </div>
                         <div class="form-group">
                             <label for="firstname"><?= translate('firstname', $i18n) ?>:</label>
-                            <input type="text" id="firstname" name="firstname" value="<?= $userData['firstname'] ?>">
+                            <input type="text" id="firstname" name="firstname" autocomplete="given-name"
+                                value="<?= htmlspecialchars($userData['firstname']) ?>">
                         </div>
                         <div class="form-group">
                             <label for="lastname"><?= translate('lastname', $i18n) ?>:</label>
-                            <input type="text" id="lastname" name="lastname" value="<?= $userData['lastname'] ?>">
+                            <input type="text" id="lastname" name="lastname" autocomplete="family-name"
+                                value="<?= htmlspecialchars($userData['lastname']) ?>">
                         </div>
                         <div class="form-group">
                             <label for="email"><?= translate('email', $i18n) ?>:</label>
-                            <input type="email" id="email" name="email" value="<?= $userData['email'] ?>" required>
+                            <input type="email" id="email" name="email" autocomplete="email"
+                                value="<?= htmlspecialchars($userData['email']) ?>" required>
                         </div>
                         <div class="form-group">
                             <label for="password"><?= translate('password', $i18n) ?>:</label>
-                            <input type="password" id="password" name="password" <?= $demoMode ? 'disabled title="Not available on Demo Mode"' : '' ?>>
+                            <input type="password" id="password" name="password" autocomplete="new-password"
+                                <?= $demoMode ? 'disabled title="Not available on Demo Mode"' : '' ?>>
                         </div>
                         <div class="form-group">
                             <label for="confirm_password"><?= translate('confirm_password', $i18n) ?>:</label>
-                            <input type="password" id="confirm_password" name="confirm_password" <?= $demoMode ? 'disabled title="Not available on Demo Mode"' : '' ?>>
+                            <input type="password" id="confirm_password" name="confirm_password" autocomplete="new-password"
+                                <?= $demoMode ? 'disabled title="Not available on Demo Mode"' : '' ?>>
                         </div>
                         <?php
                         $currencies = array();
@@ -106,7 +127,7 @@ require_once 'includes/header.php';
                                         $userData['currency_symbol'] = $currency['symbol'];
                                     }
                                     ?>
-                                    <option value="<?= $currency['id'] ?>" <?= $selected ?>><?= $currency['name'] ?></option>
+                                    <option value="<?= $currency['id'] ?>" <?= $selected ?>><?= htmlspecialchars($currency['name']) ?></option>
                                     <?php
                                 }
                                 ?>
@@ -173,7 +194,7 @@ require_once 'includes/header.php';
                                     <p class="totp-secret" id="totp-secret-code"></p>
                                     <div class="form-group-inline">
                                         <input type="hidden" name="totp-secret" id="totp-secret" value="" />
-                                        <input type="text" id="totp" name="totp"
+                                        <input type="text" id="totp" name="totp" autocomplete="one-time-code"
                                             placeholder="<?= translate("totp_code", $i18n) ?>" />
                                         <input type="button" value="<?= translate('enable', $i18n) ?>" id="enableTotpButton"
                                             onClick="submitTotp()" />
@@ -212,7 +233,8 @@ require_once 'includes/header.php';
                             </header>
                             <div class="totp-popup-content">
                                 <div class="form-group-inline">
-                                    <input type="text" id="totp-disable" name="totp-disable" placeholder="totp" />
+                                    <input type="text" id="totp-disable" name="totp-disable" autocomplete="one-time-code"
+                                        placeholder="totp" />
                                     <input type="button" value="<?= translate('disable', $i18n) ?>" id="disableTotpButton"
                                         onClick="submitDisableTotp()" />
                                 </div>
@@ -247,7 +269,7 @@ require_once 'includes/header.php';
         </header>
         <div class="account-api-key">
             <div class="form-group-inline">
-                <input type="text" id="apikey" name="apikey" value="<?= $userData['api_key'] ?>" placeholder="API Key" readonly>
+                <input type="text" id="apikey" name="apikey" value="<?= htmlspecialchars($userData['api_key'] ?? '') ?>" placeholder="API Key" readonly>
                 <input type="submit" value="<?= translate('regenerate', $i18n) ?>" id="regenerateApiKey" onClick="regenerateApiKey()" />
             </div>
             <div class="settings-notes">

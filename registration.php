@@ -1,6 +1,9 @@
 <?php
 require_once 'includes/connect.php';
 require_once 'includes/checkuser.php';
+ob_start();
+require_once 'includes/run_migrations.php';
+ob_end_clean();
 
 require_once 'includes/i18n/languages.php';
 require_once 'includes/i18n/getlang.php';
@@ -28,6 +31,13 @@ $stmt = $db->prepare('SELECT COUNT(*) as userCount FROM user');
 $result = $stmt->execute();
 $userCountResult = $result->fetchArray(SQLITE3_ASSOC);
 $userCount = $userCountResult['userCount'];
+
+if ($userCount == 0) {
+    $setupTokenFile = __DIR__ . '/db/setup_token.db';
+    if (!file_exists($setupTokenFile)) {
+        file_put_contents($setupTokenFile, bin2hex(random_bytes(32)));
+    }
+}
 
 if ($userCount > 0) {
     $stmt = $db->prepare('SELECT * FROM admin');
@@ -199,7 +209,7 @@ if (isset($_POST['username'])) {
     $requireValidation = false;
 
     if ($hasErrors == false) {
-        $query = "INSERT INTO user (username, firstname, lastname, email, password, main_currency, avatar, language, budget) VALUES (:username, :firstname, :lastname, :email, :password, :main_currency, :avatar, :language, :budget)";
+        $query = "INSERT INTO user (username, firstname, lastname, email, password, main_currency, avatar, language, budget, api_key) VALUES (:username, :firstname, :lastname, :email, :password, :main_currency, :avatar, :language, :budget, :api_key)";
         $stmt = $db->prepare($query);
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
         $stmt->bindValue(':username', $username, SQLITE3_TEXT);
@@ -211,6 +221,7 @@ if (isset($_POST['username'])) {
         $stmt->bindValue(':avatar', $avatar, SQLITE3_TEXT);
         $stmt->bindValue(':language', $language, SQLITE3_TEXT);
         $stmt->bindValue(':budget', 0, SQLITE3_INTEGER);
+        $stmt->bindValue(':api_key', bin2hex(random_bytes(32)), SQLITE3_TEXT);
         $result = $stmt->execute();
 
         if ($result) {
@@ -355,27 +366,27 @@ if (isset($_POST['username'])) {
             <form action="registration.php" method="post">
                 <div class="form-group">
                     <label for="username"><?= translate('username', $i18n) ?>:</label>
-                    <input type="text" id="username" name="username" required>
+                    <input type="text" id="username" name="username" autocomplete="username" required>
                 </div>
                 <div class="form-group">
                     <label for="firstname"><?= translate('firstname', $i18n) ?>:</label>
-                    <input type="text" id="firstname" name="firstname">
+                    <input type="text" id="firstname" name="firstname" autocomplete="given-name">
                 </div>
                 <div class="form-group">
                     <label for="lastname"><?= translate('lastname', $i18n) ?>:</label>
-                    <input type="text" id="lastname" name="lastname">
+                    <input type="text" id="lastname" name="lastname" autocomplete="family-name">
                 </div>
                 <div class="form-group">
                     <label for="email"><?= translate('email', $i18n) ?>:</label>
-                    <input type="email" id="email" name="email" required>
+                    <input type="email" id="email" name="email" autocomplete="email" required>
                 </div>
                 <div class="form-group">
                     <label for="password"><?= translate('password', $i18n) ?>:</label>
-                    <input type="password" id="password" name="password" required>
+                    <input type="password" id="password" name="password" autocomplete="new-password" required>
                 </div>
                 <div class="form-group">
                     <label for="confirm_password"><?= translate('confirm_password', $i18n) ?>:</label>
-                    <input type="password" id="confirm_password" name="confirm_password" required>
+                    <input type="password" id="confirm_password" name="confirm_password" autocomplete="new-password" required>
                 </div>
                 <div class="form-group">
                     <label for="currency"><?= translate('main_currency', $i18n) ?>:</label>
@@ -452,9 +463,7 @@ if (isset($_POST['username'])) {
                 ?>
                 <div class="separator">
                     <input type="button" class="secondary-button" value="<?= translate('restore_database', $i18n) ?>"
-                        id="restoreDB" onClick="openRestoreDBFileSelect()" />
-                    <input type="file" name="restoreDBFile" id="restoreDBFile" style="display: none;" onChange="restoreDB()"
-                        accept=".zip">
+                        onClick="openRestoreModal()" />
                 </div>
                 <?php
             } else {
@@ -467,6 +476,35 @@ if (isset($_POST['username'])) {
             ?>
         </section>
     </div>
+    <?php if ($userCount == 0) { ?>
+    <div id="restoreModalBackdrop" class="modal-backdrop" onclick="closeRestoreModal()">
+        <div id="restoreModal" class="subscription-modal" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <h3><?= translate('restore_database', $i18n) ?></h3>
+                <span class="fa-solid fa-xmark close-modal" onclick="closeRestoreModal()"></span>
+            </div>
+            <div class="modal-body">
+                <p><?= translate('restore_database_info', $i18n) ?></p>
+                <ul>
+                    <li><?= translate('setup_token_docker', $i18n) ?></li>
+                    <li><?= translate('setup_token_file', $i18n) ?></li>
+                </ul>
+                <div class="form-group">
+                    <input type="text" id="setupToken" placeholder="<?= translate('setup_token', $i18n) ?>" autocomplete="off">
+                </div>
+                <div class="form-group">
+                    <input type="button" class="secondary-button" value="<?= translate('select_backup_file', $i18n) ?>"
+                        onClick="openRestoreDBFileSelect()" />
+                    <input type="file" name="restoreDBFile" id="restoreDBFile" style="display: none;" onChange="onRestoreFileSelected()" accept=".zip">
+                    <span id="restoreFileName" style="font-size: 14px; margin-left: 8px;"></span>
+                </div>
+                <div class="form-group">
+                    <input type="button" value="<?= translate('restore_database', $i18n) ?>" onClick="restoreDB()" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <?php } ?>
     <?php
     require_once 'includes/footer.php';
     ?>

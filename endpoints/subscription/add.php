@@ -1,8 +1,10 @@
 <?php
 error_reporting(E_ERROR | E_PARSE);
 require_once '../../includes/connect_endpoint.php';
+require_once '../../includes/validate_endpoint.php';
 require_once '../../includes/inputvalidation.php';
 require_once '../../includes/getsettings.php';
+require_once '../../includes/ssrf_helper.php';
 
 if (!file_exists('../../images/uploads/logos')) {
     mkdir('../../images/uploads/logos', 0777, true);
@@ -25,89 +27,110 @@ function validateFileExtension($fileExtension)
 
 function getLogoFromUrl($url, $uploadDir, $name, $settings, $i18n)
 {
-    if (!filter_var($url, FILTER_VALIDATE_URL) || !preg_match('/^https?:\/\//i', $url)) {
-        $response = [
-            "success" => false,
-            "errorMessage" => "Invalid URL format."
-        ];
-        echo json_encode($response);
-        exit();
-    }
+    $maxRedirects = 3;
+    $currentUrl = $url;
 
-    $host = parse_url($url, PHP_URL_HOST);
-    $ip = gethostbyname($host);
-    if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE) === false) {
-        $response = [
-            "success" => false,
-            "errorMessage" => "Invalid IP Address."
-        ];
-        echo json_encode($response);
-        exit();
-    }
-
-    $ch = curl_init($url);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    curl_setopt($ch, CURLOPT_TIMEOUT, 5);
-    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-    curl_setopt($ch, CURLOPT_MAXREDIRS, 3);
-
-    $imageData = curl_exec($ch);
-
-    if ($imageData !== false) {
-        $timestamp = time();
-        $fileName = $timestamp . '-' . sanitizeFilename($name) . '.png';
-        $uploadDir = '../../images/uploads/logos/';
-        $uploadFile = $uploadDir . $fileName;
-
-        if (saveLogo($imageData, $uploadFile, $name, $settings)) {
-            curl_close($ch);
-            return $fileName;
-        } else {
-            echo translate('error_fetching_image', $i18n) . ": " . curl_error($ch);
-            curl_close($ch);
-            return "";
+    for ($i = 0; $i <= $maxRedirects; $i++) {
+        if (!filter_var($currentUrl, FILTER_VALIDATE_URL) || !preg_match('/^https?:\/\//i', $currentUrl)) {
+            return ['success' => false, 'message' => 'Invalid URL format.'];
         }
 
-    } else {
-        echo translate('error_fetching_image', $i18n) . ": " . curl_error($ch);
-        curl_close($ch);
-        return "";
-    }
-}
+        $parts = parse_url($currentUrl);
+        $host = $parts['host'];
+        $port = $parts['port'] ?? ($parts['scheme'] === 'https' ? 443 : 80);
+        
+        $ip = gethostbyname($host);
 
+        if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE) === false 
+            || is_cgnat_ip($ip)) {
+            return ['success' => false, 'message' => 'Invalid IP Address.'];
+        }
+
+        $ch = curl_init($currentUrl);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 5);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, false); // Manual handling to re-validate IPs
+        
+        curl_setopt($ch, CURLOPT_RESOLVE, ["$host:$port:$ip"]);
+
+        $imageData = curl_exec($ch);
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+        if ($httpCode >= 300 && $httpCode < 400) {
+            $redirectUrl = curl_getinfo($ch, CURLINFO_REDIRECT_URL);
+            unset($ch);
+
+            if (!$redirectUrl) {
+                break;
+            }
+
+            $currentUrl = $redirectUrl;
+            continue; 
+        }
+
+        if ($imageData !== false && $httpCode === 200) {
+            $timestamp = time();
+            $fileName = $timestamp . '-' . sanitizeFilename($name) . '.png';
+            $uploadFile = $uploadDir . $fileName; // Note: Use the provided $uploadDir variable
+
+            if (saveLogo($imageData, $uploadFile, $name, $settings)) {
+                unset($ch);
+                return ['success' => true, 'filename' => $fileName];
+            }
+        }
+
+        $error = curl_error($ch);
+        unset($ch);
+        return ['success' => false, 'message' => translate('error_fetching_image', $i18n) . ': ' . $error];
+    }
+
+    return ['success' => false, 'message' => translate('error_fetching_image', $i18n)];
+}
 
 function saveLogo($imageData, $uploadFile, $name, $settings)
 {
     $image = imagecreatefromstring($imageData);
     $removeBackground = isset($settings['removeBackground']) && $settings['removeBackground'] === 'true';
+
     if ($image !== false) {
         $tempFile = tempnam(sys_get_temp_dir(), 'logo');
+
+        imagealphablending($image, false);
+        imagesavealpha($image, true);
         imagepng($image, $tempFile);
         imagedestroy($image);
 
         if (extension_loaded('imagick')) {
             $imagick = new Imagick($tempFile);
+
             if ($removeBackground) {
-                $fuzz = Imagick::getQuantum() * 0.1; // 10%
-                $imagick->transparentPaintImage("rgb(247, 247, 247)", 0, $fuzz, false);
+                $imagick->setImageAlphaChannel(Imagick::ALPHACHANNEL_ACTIVATE);
+
+                $pixel = $imagick->getImagePixelColor(0, 0);
+                $color = $pixel->getColor();
+                if ($color['a'] > 0) {
+                    $bgColor = "rgb({$color['r']},{$color['g']},{$color['b']})";
+                    $fuzz = Imagick::getQuantum() * 0.1;
+                    $imagick->transparentPaintImage($bgColor, 0, $fuzz, false);
+                }
             }
+
             $imagick->setImageFormat('png');
             $imagick->writeImage($uploadFile);
-
             $imagick->clear();
             $imagick->destroy();
+
         } else {
-            // Alternative method if Imagick is not available
             $newImage = imagecreatefrompng($tempFile);
             if ($newImage !== false) {
+                imagealphablending($newImage, false);
+                imagesavealpha($newImage, true);
+
                 if ($removeBackground) {
-                    imagealphablending($newImage, false);
-                    imagesavealpha($newImage, true);
                     $transparent = imagecolorallocatealpha($newImage, 0, 0, 0, 127);
-                    imagefill($newImage, 0, 0, $transparent);  // Fill the entire image with transparency
-                    imagepng($newImage, $uploadFile);
-                    imagedestroy($newImage);
+                    imagefill($newImage, 0, 0, $transparent);
                 }
+
                 imagepng($newImage, $uploadFile);
                 imagedestroy($newImage);
             } else {
@@ -115,12 +138,12 @@ function saveLogo($imageData, $uploadFile, $name, $settings)
                 return false;
             }
         }
-        unlink($tempFile);
 
+        unlink($tempFile);
         return true;
-    } else {
-        return false;
     }
+
+    return false;
 }
 
 function resizeAndUploadLogo($uploadedFile, $uploadDir, $name, $settings)
@@ -142,7 +165,6 @@ function resizeAndUploadLogo($uploadedFile, $uploadDir, $name, $settings)
             $width = $fileInfo[0];
             $height = $fileInfo[1];
 
-            // Load the image based on its format
             if ($fileExtension === 'png') {
                 $image = imagecreatefrompng($uploadFile);
             } elseif ($fileExtension === 'jpg' || $fileExtension === 'jpeg') {
@@ -152,11 +174,9 @@ function resizeAndUploadLogo($uploadedFile, $uploadDir, $name, $settings)
             } elseif ($fileExtension === 'webp') {
                 $image = imagecreatefromwebp($uploadFile);
             } else {
-                // Handle other image formats as needed
                 return "";
             }
 
-            // Enable alpha channel (transparency) for PNG images
             if ($fileExtension === 'png') {
                 imagesavealpha($image, true);
             }
@@ -202,49 +222,63 @@ function resizeAndUploadLogo($uploadedFile, $uploadDir, $name, $settings)
     return "";
 }
 
-if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
-    if ($_SERVER["REQUEST_METHOD"] === "POST") {
-        $isEdit = isset($_POST['id']) && $_POST['id'] != "";
-        $name = validate($_POST["name"]);
-        $price = $_POST['price'];
-        $currencyId = $_POST["currency_id"];
-        $frequency = $_POST["frequency"];
-        $cycle = $_POST["cycle"];
-        $nextPayment = $_POST["next_payment"];
-        $autoRenew = isset($_POST['auto_renew']) ? true : false;
-        $startDate = $_POST["start_date"];
-        $paymentMethodId = $_POST["payment_method_id"];
-        $payerUserId = $_POST["payer_user_id"];
-        $categoryId = $_POST['category_id'];
-        $notes = validate($_POST["notes"]);
-        $url = validate($_POST['url']);
-        $logoUrl = validate($_POST['logo-url']);
-        $logo = "";
-        $notify = isset($_POST['notifications']) ? true : false;
-        $notifyDaysBefore = $_POST['notify_days_before'];
-        $inactive = isset($_POST['inactive']) ? true : false;
-        $cancellationDate = $_POST['cancellation_date'] ?? null;
-        $replacementSubscriptionId = $_POST['replacement_subscription_id'];
+$isEdit = isset($_POST['id']) && $_POST['id'] != "";
+$name = validate($_POST["name"]);
+$price = $_POST['price'];
+$currencyId = $_POST["currency_id"];
+$frequency = $_POST["frequency"];
+$cycle = $_POST["cycle"];
+$nextPayment = $_POST["next_payment"];
+$autoRenew = isset($_POST['auto_renew']) ? true : false;
+$startDate = $_POST["start_date"];
+$paymentMethodId = $_POST["payment_method_id"];
+$payerUserId = $_POST["payer_user_id"];
+$categoryId = $_POST['category_id'];
+$notes = validate($_POST["notes"]);
+$url = validate($_POST['url']);
+$logoUrl = validate($_POST['logo-url']);
+$logo = "";
+$logoError = "";
+$notify = isset($_POST['notifications']) ? true : false;
+$notifyDaysBefore = $_POST['notify_days_before'];
+$inactive = isset($_POST['inactive']) ? true : false;
+$cancellationDate = $_POST['cancellation_date'] ?? null;
+$replacementSubscriptionId = $_POST['replacement_subscription_id'];
 
-        if ($replacementSubscriptionId == 0 || $inactive == 0) {
-            $replacementSubscriptionId = null;
+if ($replacementSubscriptionId == 0 || $inactive == 0) {
+    $replacementSubscriptionId = null;
+}
+
+if ($replacementSubscriptionId !== null) {
+    $ownerCheck = $db->prepare("SELECT id FROM subscriptions WHERE id = :id AND user_id = :userId");
+    $ownerCheck->bindParam(':id', $replacementSubscriptionId, SQLITE3_INTEGER);
+    $ownerCheck->bindParam(':userId', $userId, SQLITE3_INTEGER);
+    $ownerResult = $ownerCheck->execute();
+    if (!$ownerResult || !$ownerResult->fetchArray()) {
+        $replacementSubscriptionId = null;
+    }
+}
+
+if ($logoUrl !== "") {
+    $result = getLogoFromUrl($logoUrl, '../../images/uploads/logos/', $name, $settings, $i18n);
+    if ($result['success']) {
+        $logo = $result['filename'];
+    } else {
+        $logoError = $result['message'];
+    }
+} else {
+    if (!empty($_FILES['logo']['name'])) {
+        $fileType = mime_content_type($_FILES['logo']['tmp_name']);
+        if (strpos($fileType, 'image') === false) {
+            echo translate("fill_all_fields", $i18n);
+            exit();
         }
+        $logo = resizeAndUploadLogo($_FILES['logo'], '../../images/uploads/logos/', $name, $settings);
+    }
+}
 
-        if ($logoUrl !== "") {
-            $logo = getLogoFromUrl($logoUrl, '../../images/uploads/logos/', $name, $settings, $i18n);
-        } else {
-            if (!empty($_FILES['logo']['name'])) {
-                $fileType = mime_content_type($_FILES['logo']['tmp_name']);
-                if (strpos($fileType, 'image') === false) {
-                    echo translate("fill_all_fields", $i18n);
-                    exit();
-                }
-                $logo = resizeAndUploadLogo($_FILES['logo'], '../../images/uploads/logos/', $name, $settings);
-            }
-        }
-
-        if (!$isEdit) {
-            $sql = "INSERT INTO subscriptions (
+if (!$isEdit) {
+    $sql = "INSERT INTO subscriptions (
                         name, logo, price, currency_id, next_payment, cycle, frequency, notes, 
                         payment_method_id, payer_user_id, category_id, notify, inactive, url, 
                         notify_days_before, user_id, cancellation_date, replacement_subscription_id,
@@ -255,9 +289,9 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
                         :notifyDaysBefore, :userId, :cancellationDate, :replacement_subscription_id,
                         :autoRenew, :startDate
                     )";
-        } else {
-            $id = $_POST['id'];
-            $sql = "UPDATE subscriptions SET 
+} else {
+    $id = $_POST['id'];
+    $sql = "UPDATE subscriptions SET 
                         name = :name, 
                         price = :price, 
                         currency_id = :currencyId,
@@ -277,52 +311,52 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
                         cancellation_date = :cancellationDate, 
                         replacement_subscription_id = :replacement_subscription_id";
 
-            if ($logo != "") {
-                $sql .= ", logo = :logo";
-            }
-
-            $sql .= " WHERE id = :id AND user_id = :userId";
-        }
-
-        $stmt = $db->prepare($sql);
-        $stmt->bindParam(':name', $name, SQLITE3_TEXT);
-        if ($logo != "") {
-            $stmt->bindParam(':logo', $logo, SQLITE3_TEXT);
-        }
-        $stmt->bindParam(':price', $price, SQLITE3_FLOAT);
-        $stmt->bindParam(':currencyId', $currencyId, SQLITE3_INTEGER);
-        $stmt->bindParam(':nextPayment', $nextPayment, SQLITE3_TEXT);
-        $stmt->bindParam(':autoRenew', $autoRenew, SQLITE3_INTEGER);
-        $stmt->bindParam(':startDate', $startDate, SQLITE3_TEXT);
-        $stmt->bindParam(':cycle', $cycle, SQLITE3_INTEGER);
-        $stmt->bindParam(':frequency', $frequency, SQLITE3_INTEGER);
-        $stmt->bindParam(':notes', $notes, SQLITE3_TEXT);
-        $stmt->bindParam(':paymentMethodId', $paymentMethodId, SQLITE3_INTEGER);
-        $stmt->bindParam(':payerUserId', $payerUserId, SQLITE3_INTEGER);
-        $stmt->bindParam(':categoryId', $categoryId, SQLITE3_INTEGER);
-        $stmt->bindParam(':notify', $notify, SQLITE3_INTEGER);
-        $stmt->bindParam(':inactive', $inactive, SQLITE3_INTEGER);
-        $stmt->bindParam(':url', $url, SQLITE3_TEXT);
-        $stmt->bindParam(':notifyDaysBefore', $notifyDaysBefore, SQLITE3_INTEGER);
-        $stmt->bindParam(':cancellationDate', $cancellationDate, SQLITE3_TEXT);
-        if ($isEdit) {
-            $stmt->bindParam(':id', $id, SQLITE3_INTEGER);
-        }
-        $stmt->bindParam(':userId', $userId, SQLITE3_INTEGER);
-        $stmt->bindParam(':replacement_subscription_id', $replacementSubscriptionId, SQLITE3_INTEGER);
-
-        if ($stmt->execute()) {
-            $success['status'] = "Success";
-            $text = $isEdit ? "updated" : "added";
-            $success['message'] = translate('subscription_' . $text . '_successfuly', $i18n);
-            $json = json_encode($success);
-            header('Content-Type: application/json');
-            echo $json;
-            exit();
-        } else {
-            echo translate('error', $i18n) . ": " . $db->lastErrorMsg();
-        }
+    if ($logo != "") {
+        $sql .= ", logo = :logo";
     }
+
+    $sql .= " WHERE id = :id AND user_id = :userId";
+}
+
+$stmt = $db->prepare($sql);
+$stmt->bindParam(':name', $name, SQLITE3_TEXT);
+if ($logo != "") {
+    $stmt->bindParam(':logo', $logo, SQLITE3_TEXT);
+}
+$stmt->bindParam(':price', $price, SQLITE3_FLOAT);
+$stmt->bindParam(':currencyId', $currencyId, SQLITE3_INTEGER);
+$stmt->bindParam(':nextPayment', $nextPayment, SQLITE3_TEXT);
+$stmt->bindParam(':autoRenew', $autoRenew, SQLITE3_INTEGER);
+$stmt->bindParam(':startDate', $startDate, SQLITE3_TEXT);
+$stmt->bindParam(':cycle', $cycle, SQLITE3_INTEGER);
+$stmt->bindParam(':frequency', $frequency, SQLITE3_INTEGER);
+$stmt->bindParam(':notes', $notes, SQLITE3_TEXT);
+$stmt->bindParam(':paymentMethodId', $paymentMethodId, SQLITE3_INTEGER);
+$stmt->bindParam(':payerUserId', $payerUserId, SQLITE3_INTEGER);
+$stmt->bindParam(':categoryId', $categoryId, SQLITE3_INTEGER);
+$stmt->bindParam(':notify', $notify, SQLITE3_INTEGER);
+$stmt->bindParam(':inactive', $inactive, SQLITE3_INTEGER);
+$stmt->bindParam(':url', $url, SQLITE3_TEXT);
+$stmt->bindParam(':notifyDaysBefore', $notifyDaysBefore, SQLITE3_INTEGER);
+$stmt->bindParam(':cancellationDate', $cancellationDate, SQLITE3_TEXT);
+if ($isEdit) {
+    $stmt->bindParam(':id', $id, SQLITE3_INTEGER);
+}
+$stmt->bindParam(':userId', $userId, SQLITE3_INTEGER);
+$stmt->bindParam(':replacement_subscription_id', $replacementSubscriptionId, SQLITE3_INTEGER);
+
+if ($stmt->execute()) {
+    $success['status'] = "Success";
+    $text = $isEdit ? "updated" : "added";
+    $success['message'] = translate('subscription_' . $text . '_successfuly', $i18n);
+    if ($logoError !== "") {
+        $success['logo_warning'] = $logoError;
+    }
+    header('Content-Type: application/json');
+    echo json_encode($success);
+    exit();
+} else {
+    echo translate('error', $i18n) . ": " . $db->lastErrorMsg();
 }
 $db->close();
 ?>

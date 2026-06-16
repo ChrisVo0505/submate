@@ -1,12 +1,13 @@
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="./images/siteicons/walloswhite.png">
-  <source media="(prefers-color-scheme: light)" srcset="./images/siteicons/wallos.png">
-  <img alt="Wallos" src="./images/siteicons/wallos.png">
-</picture>
+<div align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="./images/siteicons/walloswhite.png">
+    <source media="(prefers-color-scheme: light)" srcset="./images/siteicons/wallos.png">
+    <img alt="Wallos" src="./images/siteicons/wallos.png">
+  </picture>
 
 Submate: Manage Subscriptions
 
-## Table of Contentss
+## Table of Contents
 
 - [Introduction](#introduction)
 - [Features](#features)
@@ -71,7 +72,7 @@ See instructions to run Wallos below.
 #### Baremetal
 
 - NGINX or APACHE websever running
-- PHP 8.2 with the following modules enabled:
+- PHP 8.3 with the following modules enabled:
     - curl
     - dom
     - gd
@@ -80,6 +81,8 @@ See instructions to run Wallos below.
     - openssl
     - sqlite3
     - zip
+    - mbstring
+    - fpm
 
 #### Docker
 
@@ -91,7 +94,7 @@ See instructions to run Wallos below.
 
 1. Download or clone this repo and move the files into your web root - usually `/var/www/html`
 2. Rename `/db/wallos.empty.db` to `/db/wallos.db`
-3. Run `http://domain.example/endpoints/db/migrate.php` on your browser
+3. Open the app in your browser — migrations run automatically on the registration page
 4. Add the following scripts to your cronjobs with `crontab -e`
 
 ```bash
@@ -103,6 +106,8 @@ See instructions to run Wallos below.
 */2 * * * * php /var/www/html/endpoints/cronjobs/sendresetpasswordemails.php >> /var/log/cron/sendresetpasswordemails.log 2>&1
 0 */6 * * * php /var/www/html/endpoints/cronjobs/checkforupdates.php >> /var/log/cron/checkforupdates.log 2>&1
 30 1 * * 1 php /var/www/html/endpoints/cronjobs/storetotalyearlycost.php >> /var/log/cron/storetotalyearlycost.log 2>&1
+30 3 * * 1 php /var/www/html/endpoints/cronjobs/generaterecommendations.php weekly >> /var/log/cron/generaterecommendations.log 2>&1
+0 4 1 * * php /var/www/html/endpoints/cronjobs/generaterecommendations.php monthly >> /var/log/cron/generaterecommendations.log 2>&1
 ```
 
 5. If your web root is not `/var/www/html/` adjust the cronjobs above accordingly.
@@ -111,7 +116,10 @@ See instructions to run Wallos below.
 
 1. Re-download the repo and move the files into the correct folder or do `git pull` (if you used git clone before)
 2. Check the [Prerequisites](#baremetal) and install / enable the missing ones, if any.
-3. Run `http://domain.example/endpoints/db/migrate.php`
+3. Run http://domain.example/endpoints/db/migrate.php if you are logged in, or via CLI run:
+```bash
+php /var/www/html/endpoints/db/migrate.php
+```
 
 #### Docker
 
@@ -179,9 +187,9 @@ If you want to trigger an Update of the exchange rates, change your main currenc
 
 ## Screenshots
 
-![Screenshot](screenshots/wallos-dashboard-light.png)
+![Screenshot](screenshots/wallos-subscriptions-light.png)
 
-![Screenshot](screenshots/wallos-dashboard-dark.png)
+![Screenshot](screenshots/wallos-subscriptions-dark.png)
 
 ![Screenshot](screenshots/wallos-stats.png)
 

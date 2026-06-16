@@ -13,7 +13,15 @@ if ($userCount == 0) {
     exit();
 }
 
-session_start();
+$secondsInMonth = 30 * 24 * 60 * 60;
+if (session_status() === PHP_SESSION_NONE) {
+    session_set_cookie_params([
+        'lifetime' => $secondsInMonth,             
+        'httponly' => true,          
+        'samesite' => 'Lax'          
+    ]);
+    session_start();
+}
 if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
     $db->close();
     header("Location: .");
@@ -56,13 +64,13 @@ if ($adminRow['login_disabled'] == 1) {
         $_SESSION['userId'] = $userId;
         setcookie('language', $language, [
             'expires' => $cookieExpire,
-            'samesite' => 'Strict'
+            'samesite' => 'Lax'
         ]);
 
         if (!isset($_COOKIE['sortOrder'])) {
             setcookie('sortOrder', 'next_payment', [
                 'expires' => $cookieExpire,
-                'samesite' => 'Strict'
+                'samesite' => 'Lax'
             ]);
         }
 
@@ -72,13 +80,14 @@ if ($adminRow['login_disabled'] == 1) {
         $settings = $result->fetchArray(SQLITE3_ASSOC);
         setcookie('colorTheme', $settings['color_theme'], [
             'expires' => $cookieExpire,
-            'samesite' => 'Strict'
+            'samesite' => 'Lax',
         ]);
 
         $cookieValue = $username . "|" . "abc123ABC" . "|" . $main_currency;
         setcookie('wallos_login', $cookieValue, [
             'expires' => $cookieExpire,
-            'samesite' => 'Strict'
+            'samesite' => 'Lax',
+            'httponly' => true,
         ]);
 
         $db->close();
@@ -128,7 +137,13 @@ if ($oidcRow) {
             $password_login_disabled = $oidcSettings['password_login_disabled'] == 1;
 
             // Generate a CSRF-protecting state string
+            $secondsInMonth = 30 * 24 * 60 * 60;
             if (session_status() === PHP_SESSION_NONE) {
+                session_set_cookie_params([
+                    'lifetime' => $secondsInMonth,             
+                    'httponly' => true,          
+                    'samesite' => 'Lax'          
+                ]);
                 session_start();
             }
             $state = bin2hex(random_bytes(16));
@@ -187,6 +202,17 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
                 $userEmailWaitingVerification = true;
                 $loginFailed = true;
             } else {
+                if ($totpEnabled['totp_enabled'] == 1) {
+                    $_SESSION['totp_user_id'] = $userId;
+                    if ($rememberMe) {
+                        $_SESSION['pending_remember_me'] = true; // defer cookie until TOTP done
+                    }
+                    $db->close();
+                    header("Location: totp.php");
+                    exit();
+                }
+
+                // No TOTP — safe to create remember-me token now
                 if ($rememberMe) {
                     $token = bin2hex(random_bytes(32));
                     $addLoginTokens = "INSERT INTO login_tokens (user_id, token) VALUES (:userId, :token)";
@@ -198,16 +224,9 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
                     $cookieValue = $username . "|" . $token . "|" . $main_currency;
                     setcookie('wallos_login', $cookieValue, [
                         'expires' => $cookieExpire,
-                        'samesite' => 'Strict'
+                        'samesite' => 'Lax',
+                        'httponly' => true,
                     ]);
-                }
-
-                // Send to totp page if 2fa is enabled
-                if ($totpEnabled['totp_enabled'] == 1) {
-                    $_SESSION['totp_user_id'] = $userId;
-                    $db->close();
-                    header("Location: totp.php");
-                    exit();
                 }
 
                 $_SESSION['username'] = $username;
@@ -216,13 +235,13 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
                 $_SESSION['userId'] = $userId;
                 setcookie('language', $language, [
                     'expires' => $cookieExpire,
-                    'samesite' => 'Strict'
+                    'samesite' => 'Lax'
                 ]);
 
                 if (!isset($_COOKIE['sortOrder'])) {
                     setcookie('sortOrder', 'next_payment', [
                         'expires' => $cookieExpire,
-                        'samesite' => 'Strict'
+                        'samesite' => 'Lax'
                     ]);
                 }
 
@@ -233,7 +252,7 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
                 $settings = $result->fetchArray(SQLITE3_ASSOC);
                 setcookie('colorTheme', $settings['color_theme'], [
                     'expires' => $cookieExpire,
-                    'samesite' => 'Strict'
+                    'samesite' => 'Lax'
                 ]);
 
                 $db->close();
@@ -286,12 +305,6 @@ if (isset($_GET['error']) && $_GET['error'] == "oidc_user_not_found") {
 <html dir="<?= $languages[$lang]['dir'] ?>">
 
 <head>
-    
-    <!-- Google AdSense -->
-      <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1928729044569054"
-crossorigin="anonymous"></script>
-<meta name="google-adsense-account" content="ca-pub-1928729044569054">
-     
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="<?= $theme == "light" ? "#FFFFFF" : "#222222" ?>" id="theme-color" />
@@ -334,11 +347,11 @@ crossorigin="anonymous"></script>
                 <?php if (!$password_login_disabled) { ?>
                     <div class="form-group">
                         <label for="username"><?= translate('username', $i18n) ?>:</label>
-                        <input type="text" id="username" name="username" required>
+                        <input type="text" id="username" name="username" autocomplete="username" required>
                     </div>
                     <div class="form-group">
                         <label for="password"><?= translate('password', $i18n) ?>:</label>
-                        <input type="password" id="password" name="password" required>
+                        <input type="password" id="password" name="password" autocomplete="current-password" required>
                     </div>
                     <?php
                     if (!$demoMode) {

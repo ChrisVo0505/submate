@@ -30,7 +30,8 @@ $userData['currency_symbol'] = $currencies[$main_currency]['symbol'];
         <div class="account-budget">
             <div class="form-group-inline">
                 <label for="budget"><?= $userData['currency_symbol'] ?></label>
-                <input type="number" id="budget" name="budget" value="<?= $userData['budget'] ?>" placeholder="Budget">
+                <input type="number" id="budget" name="budget" autocomplete="off" value="<?= $userData['budget'] ?>"
+                    placeholder="Budget">
                 <input type="submit" value="<?= translate('save', $i18n) ?>" id="saveBudget" onClick="saveBudget()" />
             </div>
             <div class="settings-notes">
@@ -65,31 +66,32 @@ $userData['currency_symbol'] = $currencies[$main_currency]['symbol'];
                 foreach ($household as $index => $member) {
                     ?>
                     <div class="form-group-inline" data-memberid="<?= $member['id'] ?>">
-                        <input type="text" name="member" value="<?= $member['name'] ?>" placeholder="Member">
+                        <input type="text" name="member" autocomplete="off" value="<?= htmlspecialchars($member['name']) ?>"
+                            placeholder="Member">
                         <?php
                         if ($index !== 0) {
                             ?>
-                            <input type="text" name="email" value="<?= $member['email'] ?? "" ?>"
+                            <input type="text" name="email" autocomplete="off" value="<?= htmlspecialchars($member['email'] ?? "") ?>"
                                 placeholder="<?= translate("email", $i18n) ?>">
                             <?php
                         }
                         ?>
                         <button class="image-button medium" onClick="editMember(<?= $member['id'] ?>)" name="save"
                             title="<?= translate('save_member', $i18n) ?>">
-                            <?php include "images/siteicons/svg/save.php"; ?>
+                            <i class="fa-solid fa-check"></i>
                         </button>
                         <?php
                         if ($index !== 0) {
                             ?>
                             <button class="image-button medium" onClick="removeMember(<?= $member['id'] ?>)"
                                 title="<?= translate('delete_member', $i18n) ?>">
-                                <?php include "images/siteicons/svg/delete.php"; ?>
+                                <i class="fa-solid fa-trash-can"></i>
                             </button>
                             <?php
                         } else {
                             ?>
                             <button class="image-button medium disabled" title="<?= translate('cant_delete_member', $i18n) ?>">
-                                <?php include "images/siteicons/svg/delete.php"; ?>
+                                <i class="fa-solid fa-trash-can"></i>
                             </button>
                             <?php
                         }
@@ -251,6 +253,46 @@ $userData['currency_symbol'] = $currencies[$main_currency]['symbol'];
         $notificationsPushPlus['token'] = "";
     }
 
+    // Mattermost notifications
+    $sql = "SELECT * FROM mattermost_notifications WHERE user_id = :userID LIMIT 1";
+    $stmt = $db->prepare($sql);
+    $stmt->bindValue(':userID', $userId, SQLITE3_INTEGER);
+    $result = $stmt->execute();
+
+    $rowCount = 0;
+    while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
+        $notificationsMattermost['enabled'] = $row['enabled'];
+        $notificationsMattermost['webhook_url'] = $row['webhook_url'];
+        $notificationsMattermost['bot_username'] = $row['bot_username'];
+        $notificationsMattermost['bot_icon_emoji'] = $row['bot_icon_emoji'];
+        $rowCount++;
+    }
+
+    if ($rowCount == 0) {
+        $notificationsMattermost['enabled'] = 0;
+        $notificationsMattermost['webhook_url'] = "";
+        $notificationsMattermost['bot_username'] = "";
+        $notificationsMattermost['bot_icon_emoji'] = "";
+    }
+
+    // Serverchan notifications
+    $sql = "SELECT * FROM serverchan_notifications WHERE user_id = :userId LIMIT 1";
+    $stmt = $db->prepare($sql);
+    $stmt->bindValue(':userId', $userId, SQLITE3_INTEGER);
+    $result = $stmt->execute();
+
+    $rowCount = 0;
+    while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
+        $notificationsServerchan['enabled'] = $row['enabled'];
+        $notificationsServerchan['sendkey'] = $row['sendkey'];
+        $rowCount++;
+    }
+
+    if ($rowCount == 0) {
+        $notificationsServerchan['enabled'] = 0;
+        $notificationsServerchan['sendkey'] = "";
+    }
+
     // Ntfy notifications
     $sql = "SELECT * FROM ntfy_notifications WHERE user_id = :userId LIMIT 1";
     $stmt = $db->prepare($sql);
@@ -383,11 +425,12 @@ if ($isAdmin == 1) {
                         <label for="emailenabled" class="capitalize"><?= translate('enabled', $i18n) ?></label>
                     </div>
                     <div class="form-group-inline">
-                        <input type="text" name="smtpaddress" id="smtpaddress"
+                        <input type="text" name="smtpaddress" id="smtpaddress" autocomplete="off"
                             placeholder="<?= translate('smtp_address', $i18n) ?>"
-                            value="<?= $notificationsEmail['smtp_address'] ?>" />
-                        <input type="text" name="smtpport" id="smtpport" placeholder="<?= translate('port', $i18n) ?>"
-                            class="one-third" value="<?= $notificationsEmail['smtp_port'] ?>" />
+                            value="<?= htmlspecialchars($notificationsEmail['smtp_address']) ?>" />
+                        <input type="text" name="smtpport" id="smtpport" autocomplete="off"
+                            placeholder="<?= translate('port', $i18n) ?>" class="one-third"
+                            value="<?= htmlspecialchars($notificationsEmail['smtp_port']) ?>" />
                     </div>
                     <div class="form-group-inline">
                         <div>
@@ -409,25 +452,25 @@ if ($isAdmin == 1) {
 
                     </div>
                     <div class="form-group-inline">
-                        <input type="text" name="smtpusername" id="smtpusername"
+                        <input type="text" name="smtpusername" id="smtpusername" autocomplete="off"
                             placeholder="<?= translate('smtp_username', $i18n) ?>"
-                            value="<?= $notificationsEmail['smtp_username'] ?>" />
+                            value="<?= htmlspecialchars($notificationsEmail['smtp_username']) ?>" />
                     </div>
                     <div class="form-group-inline">
-                        <input type="password" name="smtppassword" id="smtppassword"
+                        <input type="password" name="smtppassword" id="smtppassword" autocomplete="off"
                             placeholder="<?= translate('smtp_password', $i18n) ?>"
-                            value="<?= $notificationsEmail['smtp_password'] ?>" />
+                            value="<?= htmlspecialchars($notificationsEmail['smtp_password']) ?>" />
                     </div>
                     <div class="form-group-inline">
-                        <input type="text" name="fromemail" id="fromemail"
+                        <input type="text" name="fromemail" id="fromemail" autocomplete="off"
                             placeholder="<?= translate('from_email', $i18n) ?>"
-                            value="<?= $notificationsEmail['from_email'] ?>" />
+                            value="<?= htmlspecialchars($notificationsEmail['from_email']) ?>" />
                     </div>
                     <label for="otheremails"><?= translate('send_to_other_emails', $i18n) ?></label>
                     <div class="form-group-inline">
-                        <input type="text" name="otheremails" id="otheremails"
+                        <input type="text" name="otheremails" id="otheremails" autocomplete="off"
                             placeholder="<?= translate('other_emails_placeholder', $i18n) ?>"
-                            value="<?= $notificationsEmail['other_emails'] ?>" />
+                            value="<?= htmlspecialchars($notificationsEmail['other_emails']) ?>" />
                     </div>
                     <div class="buttons">
                         <input type="button" class="secondary-button thin mobile-grow"
@@ -458,19 +501,19 @@ if ($isAdmin == 1) {
                         <label for="discordenabled" class="capitalize"><?= translate('enabled', $i18n) ?></label>
                     </div>
                     <div class="form-group-inline">
-                        <input type="text" name="discordurl" id="discordurl"
+                        <input type="text" name="discordurl" id="discordurl" autocomplete="off"
                             placeholder="<?= translate('webhook_url', $i18n) ?>"
-                            value="<?= $notificationsDiscord['webhook_url'] ?>" />
+                            value="<?= htmlspecialchars($notificationsDiscord['webhook_url']) ?>" />
                     </div>
                     <div class="form-group-inline">
-                        <input type="text" name="discordbotusername" id="discordbotusername"
+                        <input type="text" name="discordbotusername" id="discordbotusername" autocomplete="off"
                             placeholder="<?= translate('discord_bot_username', $i18n) ?>"
-                            value="<?= $notificationsDiscord['bot_username'] ?>" />
+                            value="<?= htmlspecialchars($notificationsDiscord['bot_username']) ?>" />
                     </div>
                     <div class="form-group-inline">
-                        <input type="text" name="discordbotavatar" id="discordbotavatar"
+                        <input type="text" name="discordbotavatar" id="discordbotavatar" autocomplete="off"
                             placeholder="<?= translate('discord_bot_avatar_url', $i18n) ?>"
-                            value="<?= $notificationsDiscord['bot_avatar'] ?>" />
+                            value="<?= htmlspecialchars($notificationsDiscord['bot_avatar']) ?>" />
                     </div>
                     <div class="buttons">
                         <input type="button" class="secondary-button thin mobile-grow"
@@ -495,13 +538,13 @@ if ($isAdmin == 1) {
                         <label for="gotifyenabled" class="capitalize"><?= translate('enabled', $i18n) ?></label>
                     </div>
                     <div class="form-group-inline">
-                        <input type="text" name="gotifyurl" id="gotifyurl" placeholder="<?= translate('url', $i18n) ?>"
-                            value="<?= $notificationsGotify['url'] ?>" />
+                        <input type="text" name="gotifyurl" id="gotifyurl" autocomplete="off"
+                            placeholder="<?= translate('url', $i18n) ?>" value="<?= htmlspecialchars($notificationsGotify['url']) ?>" />
                     </div>
                     <div class="form-group-inline">
-                        <input type="text" name="gotifytoken" id="gotifytoken"
+                        <input type="text" name="gotifytoken" id="gotifytoken" autocomplete="off"
                             placeholder="<?= translate('token', $i18n) ?>"
-                            value="<?= $notificationsGotify['token'] ?>" />
+                            value="<?= htmlspecialchars($notificationsGotify['token']) ?>" />
                     </div>
                     <div class="form-group-inline">
                         <input type="checkbox" id="gotifyignoressl" name="gotifyignoressl"
@@ -531,14 +574,14 @@ if ($isAdmin == 1) {
                         <label for="pushoverenabled" class="capitalize"><?= translate('enabled', $i18n) ?></label>
                     </div>
                     <div class="form-group-inline">
-                        <input type="text" name="pushoveruserkey" id="pushoveruserkey"
+                        <input type="text" name="pushoveruserkey" id="pushoveruserkey" autocomplete="off"
                             placeholder="<?= translate('pushover_user_key', $i18n) ?>"
-                            value="<?= $notificationsPushover['user_key'] ?>" />
+                            value="<?= htmlspecialchars($notificationsPushover['user_key']) ?>" />
                     </div>
                     <div class="form-group-inline">
-                        <input type="text" name="pushovertoken" id="pushovertoken"
+                        <input type="text" name="pushovertoken" id="pushovertoken" autocomplete="off"
                             placeholder="<?= translate('token', $i18n) ?>"
-                            value="<?= $notificationsPushover['token'] ?>" />
+                            value="<?= htmlspecialchars($notificationsPushover['token']) ?>" />
                     </div>
 
                     <div class="buttons">
@@ -564,14 +607,14 @@ if ($isAdmin == 1) {
                         <label for="telegramenabled" class="capitalize"><?= translate('enabled', $i18n) ?></label>
                     </div>
                     <div class="form-group-inline">
-                        <input type="text" name="telegrambottoken" id="telegrambottoken"
+                        <input type="text" name="telegrambottoken" id="telegrambottoken" autocomplete="off"
                             placeholder="<?= translate('telegram_bot_token', $i18n) ?>"
-                            value="<?= $notificationsTelegram['bot_token'] ? $notificationsTelegram['bot_token'] : "" ?>" />
+                            value="<?= htmlspecialchars($notificationsTelegram['bot_token'] ? $notificationsTelegram['bot_token'] : "") ?>" />
                     </div>
                     <div class="form-group-inline">
-                        <input type="text" name="telegramchatid" id="telegramchatid"
+                        <input type="text" name="telegramchatid" id="telegramchatid" autocomplete="off"
                             placeholder="<?= translate('telegram_chat_id', $i18n) ?>"
-                            value="<?= $notificationsTelegram['chat_id'] ?>" />
+                            value="<?= htmlspecialchars($notificationsTelegram['chat_id']) ?>" />
                     </div>
                     <div class="buttons">
                         <input type="button" class="secondary-button thin mobile-grow"
@@ -584,32 +627,70 @@ if ($isAdmin == 1) {
             </section>
 
             <section class="account-notifications-section">
-    <header class="account-notification-section-header" onclick="openNotificationsSettings('pushplus');">
-        <h3>
-            <i class="fa-solid fa-bell"></i>
-            <?= translate('pushplus', $i18n) ?>
-        </h3>
-    </header>
-    <div class="account-notification-section-settings" data-type="pushplus">
-        <div class="form-group-inline">
-            <input type="checkbox" id="pushplusenabled" name="pushplusenabled"
-                <?= $notificationsPushPlus['enabled'] ? "checked" : "" ?>>
-            <label for="pushplusenabled" class="capitalize"><?= translate('enabled', $i18n) ?></label>
-        </div>
-        <div class="form-group-inline">
-            <input type="text" name="pushplustoken" id="pushplustoken"
-                placeholder="<?= translate('pushplus_token', $i18n) ?>"
-                value="<?= $notificationsPushPlus['token'] ? $notificationsPushPlus['token'] : '' ?>" />
-        </div>
-        <div class="buttons">
-            <input type="button" class="secondary-button thin mobile-grow"
-                value="<?= translate('test', $i18n) ?>" id="testNotificationsPushPlus"
-                onClick="testNotificationsPushPlusButton()" />
-            <input type="submit" class="thin mobile-grow" value="<?= translate('save', $i18n) ?>"
-                id="saveNotificationsPushPlus" onClick="saveNotificationsPushPlusButton()" />
-        </div>
-    </div>
-</section>
+                <header class="account-notification-section-header" onclick="openNotificationsSettings('pushplus');">
+                    <h3>
+                        <i class="fa-solid fa-bell"></i>
+                        <?= translate('pushplus', $i18n) ?>
+                    </h3>
+                </header>
+                <div class="account-notification-section-settings" data-type="pushplus">
+                    <div class="form-group-inline">
+                        <input type="checkbox" id="pushplusenabled" name="pushplusenabled"
+                            <?= $notificationsPushPlus['enabled'] ? "checked" : "" ?>>
+                        <label for="pushplusenabled" class="capitalize"><?= translate('enabled', $i18n) ?></label>
+                    </div>
+                    <div class="form-group-inline">
+                        <input type="text" name="pushplustoken" id="pushplustoken" autocomplete="off"
+                            placeholder="<?= translate('pushplus_token', $i18n) ?>"
+                            value="<?= htmlspecialchars($notificationsPushPlus['token'] ? $notificationsPushPlus['token'] : '') ?>" />
+                    </div>
+                    <div class="buttons">
+                        <input type="button" class="secondary-button thin mobile-grow"
+                            value="<?= translate('test', $i18n) ?>" id="testNotificationsPushPlus"
+                            onClick="testNotificationsPushPlusButton()" />
+                        <input type="submit" class="thin mobile-grow" value="<?= translate('save', $i18n) ?>"
+                            id="saveNotificationsPushPlus" onClick="saveNotificationsPushPlusButton()" />
+                    </div>
+                </div>
+            </section>
+
+            <section class="account-notifications-section">
+                <header class="account-notification-section-header" onclick="openNotificationsSettings('mattermost');">
+                    <h3>
+                        <i class="fa-solid fa-gauge-simple-high"></i>
+                        <?= translate('mattermost', $i18n) ?>
+                    </h3>
+                </header>
+                <div class="account-notification-section-settings" data-type="mattermost">
+                    <div class="form-group-inline">
+                        <input type="checkbox" id="mattermostenabled" name="mattermostenabled"
+                            <?= $notificationsMattermost['enabled'] ? "checked" : "" ?>>
+                        <label for="mattermostenabled" class="capitalize"><?= translate('enabled', $i18n) ?></label>
+                    </div>
+                    <div class="form-group-inline">
+                        <input type="text" name="mattermostwebhookurl" id="mattermostwebhookurl"
+                            placeholder="<?= translate('mattermost_webhook_url', $i18n) ?>"
+                            value="<?= htmlspecialchars($notificationsMattermost['webhook_url'] ? $notificationsMattermost['webhook_url'] : '') ?>" />
+                    </div>
+                    <div class="form-group-inline">
+                        <input type="text" name="mattermostbotusername" id="mattermostbotusername"
+                            placeholder="<?= translate('mattermost_bot_username', $i18n) ?>"
+                            value="<?= htmlspecialchars($notificationsMattermost['bot_username'] ? $notificationsMattermost['bot_username'] : '') ?>" />
+                    </div>
+                    <div class="form-group-inline">
+                        <input type="text" name="mattermostboticonemoji" id="mattermostboticonemoji"
+                            placeholder="<?= translate('mattermost_bot_icon_emoji', $i18n) ?>"
+                            value="<?= htmlspecialchars($notificationsMattermost['bot_icon_emoji'] ? $notificationsMattermost['bot_icon_emoji'] : '') ?>" />
+                    </div>
+                    <div class="buttons">
+                        <input type="button" class="secondary-button thin mobile-grow"
+                            value="<?= translate('test', $i18n) ?>" id="testNotificationsMattermost"
+                            onClick="testNotificationsMattermostButton()" />
+                        <input type="submit" class="thin mobile-grow" value="<?= translate('save', $i18n) ?>"
+                            id="saveNotificationsMattermost" onClick="saveNotificationsMattermostButton()" />
+                    </div>
+                </div>
+            </section>
 
             <section class="account-notifications-section">
                 <header class="account-notification-section-header" onclick="openNotificationsSettings('ntfy');">
@@ -623,16 +704,16 @@ if ($isAdmin == 1) {
                         <label for="ntfyenabled" class="capitalize"><?= translate('enabled', $i18n) ?></label>
                     </div>
                     <div class="form-group-inline">
-                        <input type="text" name="ntfyhost" id="ntfyhost" placeholder="<?= translate('host', $i18n) ?>"
-                            value="<?= $notificationsNtfy['host'] ?>" />
+                        <input type="text" name="ntfyhost" id="ntfyhost" autocomplete="off"
+                            placeholder="<?= translate('host', $i18n) ?>" value="<?= htmlspecialchars($notificationsNtfy['host']) ?>" />
                     </div>
                     <div class="form-group-inline">
-                        <input type="text" name="ntfytopic" id="ntfytopic"
-                            placeholder="<?= translate('topic', $i18n) ?>" value="<?= $notificationsNtfy['topic'] ?>" />
+                        <input type="text" name="ntfytopic" id="ntfytopic" autocomplete="off"
+                            placeholder="<?= translate('topic', $i18n) ?>" value="<?= htmlspecialchars($notificationsNtfy['topic']) ?>" />
                     </div>
                     <div class="form-group-inline">
                         <textarea class="thin" name="ntfyheaders" id="ntfyheaders"
-                            placeholder="<?= translate('custom_headers', $i18n) ?>"><?= $notificationsNtfy['headers'] ?></textarea>
+                            placeholder="<?= translate('custom_headers', $i18n) ?>"><?= htmlspecialchars($notificationsNtfy['headers']) ?></textarea>
                     </div>
                     <div class="form-grpup-inline">
                         <input type="checkbox" id="ntfyignoressl" name="ntfyignoressl"
@@ -647,6 +728,35 @@ if ($isAdmin == 1) {
                             id="saveNotificationsNtfy" onClick="saveNotificationsNtfyButton()" />
                     </div>
             </section>
+
+            <section class="account-notifications-section">
+                <header class="account-notification-section-header" onclick="openNotificationsSettings('serverchan');">
+                    <h3>
+                        <i class="fa-solid fa-code"></i>
+                        <?= translate('serverchan', $i18n) ?>
+                    </h3>
+                </header>
+                <div class="account-notification-section-settings" data-type="serverchan">
+                    <div class="form-group-inline">
+                        <input type="checkbox" id="serverchanenabled" name="serverchanenabled"
+                            <?= $notificationsServerchan['enabled'] ? "checked" : "" ?>>
+                        <label for="serverchanenabled" class="capitalize"><?= translate('enabled', $i18n) ?></label>
+                    </div>
+                    <div class="form-group-inline">
+                        <input type="text" name="serverchansendkey" id="serverchansendkey" autocomplete="off"
+                            placeholder="<?= translate('serverchan_sendkey', $i18n) ?>"
+                            value="<?= htmlspecialchars($notificationsServerchan['sendkey'] ? $notificationsServerchan['sendkey'] : '') ?>" />
+                    </div>
+                    <div class="buttons">
+                        <input type="button" class="secondary-button thin mobile-grow"
+                            value="<?= translate('test', $i18n) ?>" id="testNotificationsServerchan"
+                            onClick="testNotificationsServerchanButton()" />
+                        <input type="submit" class="thin mobile-grow" value="<?= translate('save', $i18n) ?>"
+                            id="saveNotificationsServerchan" onClick="saveNotificationsServerchanButton()" />
+                    </div>
+                </div>
+            </section>
+
             <section class="account-notifications-section">
                 <header class="account-notification-section-header" onclick="openNotificationsSettings('webhook');">
                     <h3>
@@ -672,21 +782,21 @@ if ($isAdmin == 1) {
                         </div>
                     </div>
                     <div class="form-group-inline">
-                        <input type="text" name="webhookurl" id="webhookurl"
+                        <input type="text" name="webhookurl" id="webhookurl" autocomplete="off"
                             placeholder="<?= translate('webhook_url', $i18n) ?>"
-                            value="<?= $notificationsWebhook['url'] ?>" />
+                            value="<?= htmlspecialchars($notificationsWebhook['url']) ?>" />
                     </div>
                     <div class="form-group-inline">
                         <textarea class="thin" name="webhookcustomheaders" id="webhookcustomheaders"
-                            placeholder="<?= translate('custom_headers', $i18n) ?>"><?= $notificationsWebhook['headers'] ?></textarea>
+                            placeholder="<?= translate('custom_headers', $i18n) ?>"><?= htmlspecialchars($notificationsWebhook['headers']) ?></textarea>
                     </div>
                     <div class="form-group-inline">
                         <textarea name="webhookpayload" id="webhookpayload"
-                            placeholder="<?= translate('payment_notifications_payload', $i18n) ?>"><?= $notificationsWebhook['payload'] ?></textarea>
+                            placeholder="<?= translate('payment_notifications_payload', $i18n) ?>"><?= htmlspecialchars($notificationsWebhook['payload']) ?></textarea>
                     </div>
                     <div class="form-group-inline">
                         <textarea name="webhookcancelationpayload" id="webhookcancelationpayload"
-                            placeholder="<?= translate('cancelation_notification_payload', $i18n) ?>"><?= $notificationsWebhook['cancelation_payload'] ?></textarea>
+                            placeholder="<?= translate('cancelation_notification_payload', $i18n) ?>"><?= htmlspecialchars($notificationsWebhook['cancelation_payload']) ?></textarea>
                     </div>
                     <div class="form-group-inline">
                         <input type="checkbox" id="webhookignoressl" name="webhookignoressl"
@@ -756,24 +866,25 @@ if ($isAdmin == 1) {
                         ?>
                         <div class="form-group-inline" data-categoryid="<?= $category['id'] ?>">
                             <div class=" drag-icon"><i class="fa-solid fa-grip-vertical"></i></div>
-                            <input type="text" name="category" value="<?= $category['name'] ?>" placeholder="Category">
+                            <input type="text" name="category" autocomplete="off" value="<?= htmlspecialchars($category['name']) ?>"
+                                placeholder="Category">
                             <button class="image-button medium" onClick="editCategory(<?= $category['id'] ?>)" name="save"
                                 title="<?= translate('save_category', $i18n) ?>">
-                                <?php include "images/siteicons/svg/save.php"; ?>
+                                <i class="fa-solid fa-check"></i>
                             </button>
                             <?php
                             if ($canDelete) {
                                 ?>
                                 <button class="image-button medium" onClick="removeCategory(<?= $category['id'] ?>)"
                                     title="<?= translate('delete_category', $i18n) ?>">
-                                    <?php include "images/siteicons/svg/delete.php"; ?>
+                                    <i class="fa-solid fa-trash-can"></i>
                                 </button>
                                 <?php
                             } else {
                                 ?>
                                 <button class="image-button medium disabled"
                                     title="<?= translate('cant_delete_category_in_use', $i18n) ?>">
-                                    <?php include "images/siteicons/svg/delete.php"; ?>
+                                    <i class="fa-solid fa-trash-can"></i>
                                 </button>
                                 <?php
                             }
@@ -844,27 +955,29 @@ if ($isAdmin == 1) {
                     ?>
 
                     <div class="form-group-inline" data-currencyid="<?= $currency['id'] ?>">
-                        <input type="text" class="short" name="symbol" value="<?= $currency['symbol'] ?>" placeholder="$">
-                        <input type="text" name="currency" value="<?= $currency['name'] ?>" placeholder="Currency Name">
-                        <input type="text" name="code" value="<?= $currency['code'] ?>" placeholder="Currency Code"
-                            <?= !$canDelete ? 'disabled' : '' ?>>
+                        <input type="text" class="short" name="symbol" autocomplete="off" value="<?= htmlspecialchars($currency['symbol']) ?>"
+                            placeholder="$">
+                        <input type="text" name="currency" autocomplete="off" value="<?= htmlspecialchars($currency['name']) ?>"
+                            placeholder="Currency Name">
+                        <input type="text" name="code" autocomplete="off" value="<?= htmlspecialchars($currency['code']) ?>"
+                            placeholder="Currency Code" <?= !$canDelete ? 'disabled' : '' ?>>
                         <button class="image-button medium" onClick="editCurrency(<?= $currency['id'] ?>)" name="save"
                             title="<?= translate('save_currency', $i18n) ?>">
-                            <?php include "images/siteicons/svg/save.php"; ?>
+                            <i class="fa-solid fa-check"></i>
                         </button>
                         <?php
                         if ($canDelete) {
                             ?>
                             <button class="image-button medium" onClick="removeCurrency(<?= $currency['id'] ?>)"
                                 title="<?= translate('delete_currency', $i18n) ?>">
-                                <?php include "images/siteicons/svg/delete.php"; ?>
+                                <i class="fa-solid fa-trash-can"></i>
                             </button>
                             <?php
                         } else {
                             $cantDeleteMessage = $isMainCurrency ? translate('cant_delete_main_currency', $i18n) : translate('cant_delete_currency_in_use', $i18n);
                             ?>
                             <button class="image-button medium disabled" title="<?= $cantDeleteMessage ?>">
-                                <?php include "images/siteicons/svg/delete.php"; ?>
+                                <i class="fa-solid fa-trash-can"></i>
                             </button>
                             <?php
                         }
@@ -930,7 +1043,7 @@ if ($isAdmin == 1) {
         </header>
         <div class="account-fixer">
             <div class="form-group">
-                <input type="text" name="fixer-key" id="fixerKey" value="<?= $apiKey ?>"
+                <input type="text" name="fixer-key" id="fixerKey" autocomplete="off" value="<?= htmlspecialchars($apiKey) ?>"
                     placeholder="<?= translate('api_key', $i18n) ?>" <?= $demoMode ? 'disabled title="Not available on Demo Mode"' : '' ?>>
             </div>
             <div class="form-group">
@@ -998,19 +1111,30 @@ if ($isAdmin == 1) {
                 <select id="ai_type" name="ai_type" onchange="toggleAiInputs()">
                     <option value="chatgpt" <?= (isset($aiSettings['type']) && $aiSettings['type'] == 'chatgpt') ? 'selected' : '' ?>>ChatGPT</option>
                     <option value="gemini" <?= (isset($aiSettings['type']) && $aiSettings['type'] == 'gemini') ? 'selected' : '' ?>>Gemini</option>
+                    <option value="openrouter" <?= (isset($aiSettings['type']) && $aiSettings['type'] == 'openrouter') ? 'selected' : '' ?>>OpenRouter</option>
                     <option value="ollama" <?= (isset($aiSettings['type']) && $aiSettings['type'] == 'ollama') ? 'selected' : '' ?>>Local Ollama</option>
+                    <option value="openai-compatible" <?= (isset($aiSettings['type']) && $aiSettings['type'] == 'openai-compatible') ? 'selected' : '' ?>>OpenAI Compatible</option>
                 </select>
             </div>
+            <div class="form-group-inline" id="ai_url_group" 
+                <?= (!isset($aiSettings['type']) || !in_array($aiSettings['type'], ['ollama', 'openai-compatible'])) ? 'style="display:none"' : '' ?>>
+                <input type="text" id="ai_ollama_host" name="ai_ollama_host" autocomplete="off"
+                    placeholder="<?= (isset($aiSettings['type']) && $aiSettings['type'] == 'openai-compatible') ? 'http://localhost:11434/v1' : 'http://localhost:11434' ?>"
+                    value="<?= isset($aiSettings['url']) ? htmlspecialchars($aiSettings['url']) : '' ?>" />
+                    <button type="button" id="fetchModelsButton2" 
+                        class="button thin <?= (!isset($aiSettings['type']) || $aiSettings['type'] != 'ollama') ? 'hidden' : '' ?>" 
+                        onclick="fetch_ai_models()">
+                        <?= translate('test', $i18n) ?>
+                    </button>
+            </div>
             <div class="form-group-inline">
-                <input type="text" id="ai_api_key" name="ai_api_key"
+                <input type="password" id="ai_api_key" name="ai_api_key" autocomplete="off"
                     class="<?= (isset($aiSettings['type']) && $aiSettings['type'] == 'ollama') ? 'hidden' : '' ?>"
                     placeholder="<?= translate('api_key', $i18n) ?>"
                     value="<?= isset($aiSettings['api_key']) ? htmlspecialchars($aiSettings['api_key']) : '' ?>" />
-                <input type="text" id="ai_ollama_host" name="ai_ollama_host"
-                    class="<?= (!isset($aiSettings['type']) || $aiSettings['type'] != 'ollama') ? 'hidden' : '' ?>"
-                    placeholder="<?= translate('host', $i18n) ?>"
-                    value="<?= isset($aiSettings['url']) ? htmlspecialchars($aiSettings['url']) : '' ?>" />
-
+                <button type="button" id="toggleAiApiKey" class="button secondary-button icon-button <?= (isset($aiSettings['type']) && $aiSettings['type'] == 'ollama') ? 'hidden' : '' ?>" onclick="toggleAiApiKeyVisibility()" aria-label="Toggle API key visibility">
+                    <i class="fa-solid fa-eye"></i>
+                </button>
                 <button type="button" id="fetchModelsButton" class="button thin" onclick="fetch_ai_models()">
                     <?= translate('test', $i18n) ?>
                 </button>
@@ -1021,14 +1145,14 @@ if ($isAdmin == 1) {
                     <option value=""><?= translate('select_ai_model', $i18n) ?></option>
                     <?php if (!empty($aiSettings['model'])): ?>
                         <option value="<?= htmlspecialchars($aiSettings['model']) ?>" selected>
-                            <?= htmlspecialchars($aiSettings['model']) ?></option>
+                            <?= htmlspecialchars($aiSettings['model']) ?>
+                        </option>
                     <?php endif; ?>
                 </select>
             </div>
             <div class="form-group">
-                <label for="ai_run_schedule" class="flex"><?= translate('run_schedule', $i18n) ?>: <span
-                        class="info-badge"><?= translate("coming_soon", $i18n) ?></span></span></label>
-                <select id="ai_run_schedule" name="ai_run_schedule" disabled>
+                <label for="ai_run_schedule" class="flex"><?= translate('run_schedule', $i18n) ?>:</label>
+                <select id="ai_run_schedule" name="ai_run_schedule">
                     <option value="manual" <?= (isset($aiSettings['run_schedule']) && $aiSettings['run_schedule'] == 'manual') ? 'selected' : '' ?>><?= translate('manually', $i18n) ?>
                     </option>
                     <option value="weekly" <?= (isset($aiSettings['run_schedule']) && $aiSettings['run_schedule'] == 'weekly') ? 'selected' : '' ?>><?= translate('Weekly', $i18n) ?>
@@ -1052,7 +1176,9 @@ if ($isAdmin == 1) {
             <div class="settings-notes">
                 <p><i class="fa-solid fa-circle-info"></i><?= translate('ai_recommendations_info', $i18n) ?></p>
                 <p><i class="fa-solid fa-circle-info"></i><?= translate('may_take_time', $i18n) ?></p>
-                <p><i class="fa-solid fa-circle-info"></i><?= translate('recommendations_visible_on_dashboard', $i18n) ?></p>
+                <p><i
+                        class="fa-solid fa-circle-info"></i><?= translate('recommendations_visible_on_dashboard', $i18n) ?>
+                </p>
             </div>
         </div>
     </section>
@@ -1099,7 +1225,7 @@ if ($isAdmin == 1) {
                     </div>
                     <img src="<?= $paymentIconFolder . $payment['icon'] ?>" alt="Logo" />
                     <span class="payment-name" contenteditable="true"
-                        title="<?= translate("rename_payment_method", $i18n) ?>"><?= $payment['name'] ?></span>
+                        title="<?= translate("rename_payment_method", $i18n) ?>"><?= htmlspecialchars($payment['name']) ?></span>
                     <?php
                     if (!$inUse) {
                         ?>
@@ -1129,7 +1255,7 @@ if ($isAdmin == 1) {
         <div>
             <form id="payments-form">
                 <div class="form-group-inline">
-                    <input type="text" name="paymentname" id="paymentname"
+                    <input type="text" name="paymentname" id="paymentname" autocomplete="off"
                         placeholder="<?= translate('payment_method_name', $i18n) ?>" onchange="setSearchButtonStatus()"
                         onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();" />
                     <label for="paymenticon" class="icon-preview">
@@ -1142,7 +1268,7 @@ if ($isAdmin == 1) {
                         <input type="hidden" id="icon-url" name="icon-url">
                         <div id="icon-search-button" class="image-button medium disabled"
                             title="<?= translate('search_logo', $i18n) ?>" onClick="searchPaymentIcon()">
-                            <?php include "images/siteicons/svg/websearch.php"; ?>
+                            <i class="fa-solid fa-magnifying-glass"></i>
                         </div>
                         <div id="icon-search-results" class="icon-search">
                             <header>

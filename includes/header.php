@@ -5,6 +5,8 @@ require_once 'checksession.php';
 require_once 'checkredirect.php';
 require_once 'currency_formatter.php';
 
+require_once 'libs/csrf.php';
+
 require_once 'i18n/languages.php';
 require_once 'i18n/getlang.php';
 require_once 'i18n/' . $lang . '.php';
@@ -45,7 +47,7 @@ if (isset($themeValue)) {
   $cookieExpire = time() + (30 * 24 * 60 * 60);
   setcookie('theme', $themeValue, [
     'expires' => $cookieExpire,
-    'samesite' => 'Strict'
+    'samesite' => 'Lax'
   ]);
 }
 
@@ -79,33 +81,9 @@ $mobileNavigation = $settings['mobile_nav'] ? "mobile-navigation" : "";
 <!DOCTYPE html>
 <html dir="<?= $languages[$lang]['dir'] ?>">
 <head>
-    
-    <!-- Google AdSense -->
-      <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1928729044569054"
-crossorigin="anonymous"></script>
-<meta name="google-adsense-account" content="ca-pub-1928729044569054">
-
-    <!-- Meta Pixel Code -->
-        <script>
-        !function(f,b,e,v,n,t,s)
-        {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-        n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-        n.queue=[];t=b.createElement(e);t.async=!0;
-        t.src=v;s=b.getElementsByTagName(e)[0];
-        s.parentNode.insertBefore(t,s)}(window, document,'script',
-        'https://connect.facebook.net/en_US/fbevents.js');
-        fbq('init', '3072167409629939');
-        fbq('track', 'PageView');
-        </script>
-        <noscript><img height="1" width="1" style="display:none"
-        src="https://www.facebook.com/tr?id=3072167409629939&ev=PageView&noscript=1"
-        /></noscript>
-    <!-- End Meta Pixel Code -->
-
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Submate - Manage Subscriptions</title>
+  <title>Wallos - Subscription Tracker</title>
   <meta name="apple-mobile-web-app-title" content="Wallos">
   <meta name="theme-color" content="<?= $theme == "light" ? "#FFFFFF" : "#222222" ?>" id="theme-color" />
   <meta name="referrer" content="no-referrer">
@@ -132,6 +110,7 @@ crossorigin="anonymous"></script>
     window.lang = "<?= $lang ?>";
     window.colorTheme = "<?= $colorTheme ?>";
     window.mobileNavigation = "<?= $settings['mobileNavigation'] == "true" ?>";
+    window.csrfToken = "<?= htmlspecialchars(generate_csrf_token()) ?>";
   </script>
   <style>
     <?= htmlspecialchars($customCss, ENT_QUOTES, 'UTF-8') ?>
@@ -172,6 +151,14 @@ crossorigin="anonymous"></script>
   ?>
   <script type="text/javascript" src="scripts/i18n/<?= $lang ?>.js?<?= $version ?>"></script>
   <script type="text/javascript" src="scripts/i18n/getlang.js?<?= $version ?>"></script>
+  <script>
+    if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
+      if (!sessionStorage.getItem('sw_prefetched')) {
+        navigator.serviceWorker.controller.postMessage({ type: 'PREFETCH_PAGES' });
+        sessionStorage.setItem('sw_prefetched', '1');
+      }
+    }
+  </script>
 </head>
 
 <body class="<?= $theme ?> <?= $languages[$lang]['dir'] ?> <?= $mobileNavigation ?>">
@@ -179,12 +166,8 @@ crossorigin="anonymous"></script>
     <div class="contain">
       <div class="logo">
         <a href=".">
-          <!-- <div class="logo-image" title="Wallos - Subscription Tracker">
+          <div class="logo-image" title="Wallos - Subscription Tracker">
             <?php include "images/siteicons/svg/logo.php"; ?>
-          </div> -->
-
-          <div class="logo-image" title="Submate - Manage Subscriptions">
-            <img src="images/icon/logo-submate.png" style="width:80px;height:80px;margin-top: -15px;">
           </div>
         </a>
       </div>
@@ -192,12 +175,9 @@ crossorigin="anonymous"></script>
         <div class="dropdown">
           <button class="dropbtn" onClick="toggleDropdown()">
             <img src="<?= htmlspecialchars($userData['avatar'], ENT_QUOTES, 'UTF-8') ?>" alt="me" id="avatar">
-            <span id="user" class="mobileNavigationHideOnMobile"><?= $username ?></span>
+            <span id="user" class="mobileNavigationHideOnMobile"><?= $userData['username'] ?></span>
           </button>
           <div class="dropdown-content">
-            <a href="profile.php" class="mobileNavigationHideOnMobile">
-              <?php include "images/siteicons/svg/mobile-menu/profile.php"; ?>
-              <?= translate('profile', $i18n) ?></a>
             <a href="." class="mobileNavigationHideOnMobile">
               <?php include "images/siteicons/svg/mobile-menu/home.php"; ?>
               <?= translate('dashboard', $i18n) ?></a>
@@ -275,10 +255,6 @@ crossorigin="anonymous"></script>
         <a href="settings.php" class="nav-link <?= $settingsClass ?>" title="<?= translate('settings', $i18n) ?>">
           <?php include "images/siteicons/svg/mobile-menu/settings.php"; ?>
           <?= translate('settings', $i18n) ?>
-        </a>
-        <a href="profile.php" class="nav-link <?= $profileClass ?>" title="<?= translate('profile', $i18n) ?>">
-          <?php include "images/siteicons/svg/mobile-menu/profile.php"; ?>
-          <?= translate('profile', $i18n) ?>
         </a>
     </nav>
     <?php

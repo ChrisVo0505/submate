@@ -61,7 +61,7 @@ $loginDisabledAllowed = $userCount == 1 && $settings['registrations_open'] == 0;
             </div>
             <div class="form-group">
                 <label for="maxUsers"><?= translate('maximum_number_users', $i18n) ?></label>
-                <input type="number" id="maxUsers" value="<?= $settings['max_users'] ?>" />
+                <input type="number" id="maxUsers" autocomplete="off" value="<?= $settings['max_users'] ?>" />
             </div>
             <div class="settings-notes">
                 <p>
@@ -94,7 +94,7 @@ $loginDisabledAllowed = $userCount == 1 && $settings['registrations_open'] == 0;
             ?>
             <div class="form-group">
                 <label for="serverUrl"><?= translate('server_url', $i18n) ?></label>
-                <input type="text" id="serverUrl" value="<?= $settings['server_url'] ?>" />
+                <input type="text" id="serverUrl" autocomplete="off" value="<?= htmlspecialchars($settings['server_url']) ?>" />
             </div>
             <div class="settings-notes">
                 <p>
@@ -140,7 +140,7 @@ $loginDisabledAllowed = $userCount == 1 && $settings['registrations_open'] == 0;
             <div class="user-list">
                 <?php
                 foreach ($users as $user) {
-                    $userIcon = $user['id'] == 1 ? 'fa-user-tie' : 'fa-id-badge';
+                    $userIcon = $user['id'] == 1 ? 'fa-user-shield' : 'fa-user';
                     ?>
                     <div class="form-group-inline" data-userid="<?= $user['id'] ?>">
                         <div class="user-list-row">
@@ -148,13 +148,13 @@ $loginDisabledAllowed = $userCount == 1 && $settings['registrations_open'] == 0;
                                 <div class="user-list-icon">
                                     <i class="fa-solid <?= $userIcon ?>"></i>
                                 </div>
-                                <?= $user['username'] ?>
+                                <?= htmlspecialchars($user['username']) ?>
                             </div>
                             <div title="<?= translate('email', $i18n) ?>">
                                 <div class="user-list-icon">
-                                    <i class="fa-solid fa-envelope"></i>
+                                    <i class="fa-solid fa-at"></i>
                                 </div>
-                                <a href="mailto:<?= $user['email'] ?>"><?= $user['email'] ?></a>
+                                <a href="mailto:<?= htmlspecialchars($user['email']) ?>"><?= htmlspecialchars($user['email']) ?></a>
                             </div>
                         </div>
                         <div>
@@ -163,14 +163,14 @@ $loginDisabledAllowed = $userCount == 1 && $settings['registrations_open'] == 0;
                                 ?>
                                 <button class="image-button medium" onClick="removeUser(<?= $user['id'] ?>)"
                                     title="<?= translate('delete_user', $i18n) ?>">
-                                    <?php include "images/siteicons/svg/delete.php"; ?>
+                                    <i class="fa-solid fa-trash-can"></i>
                                 </button>
                                 <?php
                             } else {
                                 ?>
                                 <button class="image-button medium disabled" disabled
                                     title="<?= translate('delete_user', $i18n) ?>">
-                                    <?php include "images/siteicons/svg/delete.php"; ?>
+                                    <i class="fa-solid fa-trash-can"></i>
                                 </button>
                                 <?php
                             }
@@ -190,13 +190,16 @@ $loginDisabledAllowed = $userCount == 1 && $settings['registrations_open'] == 0;
             </div>
             <h2><?= translate('create_user', $i18n) ?></h2>
             <div class="form-group">
-                <input type="text" id="newUsername" placeholder="<?= translate('username', $i18n) ?>" />
+                <input type="text" id="newUsername" autocomplete="off"
+                    placeholder="<?= translate('username', $i18n) ?>" />
             </div>
             <div class="form-group">
-                <input type="email" id="newEmail" placeholder="<?= translate('email', $i18n) ?>" />
+                <input type="email" id="newEmail" autocomplete="off"
+                    placeholder="<?= translate('email', $i18n) ?>" />
             </div>
             <div class="form-group-inline">
-                <input type="password" id="newPassword" placeholder="<?= translate('password', $i18n) ?>" />
+                <input type="password" id="newPassword" autocomplete="off"
+                    placeholder="<?= translate('password', $i18n) ?>" />
                 <input type="submit" class="thin" value="<?= translate('add', $i18n) ?>" id="addUserButton"
                     onClick="addUserButton()" />
             </div>
@@ -217,42 +220,48 @@ $loginDisabledAllowed = $userCount == 1 && $settings['registrations_open'] == 0;
                 <label for="oidcEnabled"><?= translate('oidc_oauth_enabled', $i18n) ?></label>
             </div>
             <div class="form-group">
-                <input type="text" id="oidcName" placeholder="Provider Name" value="<?= $oidcSettings['name'] ?>" />
+                <input type="text" id="oidcName" placeholder="Provider Name" autocomplete="off"
+                    value="<?= htmlspecialchars($oidcSettings['name']) ?>" />
             </div>
             <div class="form-group">
-                <input type="text" id="oidcClientId" placeholder="Client ID" value="<?= $oidcSettings['client_id'] ?>" />
+                <input type="text" id="oidcClientId" placeholder="Client ID" autocomplete="off"
+                    value="<?= htmlspecialchars($oidcSettings['client_id']) ?>" />
             </div>
             <div class="form-group">
-                <input type="text" id="oidcClientSecret" placeholder="Client Secret" value="<?= $oidcSettings['client_secret'] ?>" />
+                <input type="text" id="oidcClientSecret" placeholder="Client Secret" autocomplete="off"
+                    value="<?= htmlspecialchars($oidcSettings['client_secret']) ?>" />
             </div>
             <div class="form-group">
-                <input type="text" id="oidcAuthUrl" placeholder="Auth URL" value="<?= $oidcSettings['authorization_url'] ?>" />
+                <input type="text" id="oidcAuthUrl" placeholder="Auth URL" autocomplete="off"
+                    value="<?= htmlspecialchars($oidcSettings['authorization_url']) ?>" />
             </div>
             <div class="form-group">
-                <input type="text" id="oidcTokenUrl" placeholder="Token URL" value="<?= $oidcSettings['token_url'] ?>" />
+                <input type="text" id="oidcTokenUrl" placeholder="Token URL" autocomplete="off"
+                    value="<?= htmlspecialchars($oidcSettings['token_url']) ?>" />
             </div>
             <div class="form-group">
-                <input type="text" id="oidcUserInfoUrl" placeholder="User Info URL"
-                    value="<?= $oidcSettings['user_info_url'] ?>" />
+                <input type="text" id="oidcUserInfoUrl" placeholder="User Info URL" autocomplete="off"
+                    value="<?= htmlspecialchars($oidcSettings['user_info_url']) ?>" />
             </div>
             <div class="form-group">
-                <input type="text" id="oidcRedirectUrl" placeholder="Redirect URL"
-                    value="<?= $oidcSettings['redirect_url'] ?>" />
+                <input type="text" id="oidcRedirectUrl" placeholder="Redirect URL" autocomplete="off"
+                    value="<?= htmlspecialchars($oidcSettings['redirect_url']) ?>" />
             </div>
             <div class="form-group">
-                <input type="text" id="oidcLogoutUrl" placeholder="Logout URL"
-                    value="<?= $oidcSettings['logout_url'] ?>" />
+                <input type="text" id="oidcLogoutUrl" placeholder="Logout URL" autocomplete="off"
+                    value="<?= htmlspecialchars($oidcSettings['logout_url']) ?>" />
             </div>
             <div class="form-group">
-                <input type="text" id="oidcUserIdentifierField" placeholder="User Identifier Field"
-                    value="<?= $oidcSettings['user_identifier_field'] ?>" />
+                <input type="text" id="oidcUserIdentifierField" placeholder="User Identifier Field" autocomplete="off"
+                    value="<?= htmlspecialchars($oidcSettings['user_identifier_field']) ?>" />
             </div>
             <div class="form-group">
-                <input type="text" id="oidcScopes" placeholder="Scopes" value="<?= $oidcSettings['scopes'] ?>" />
+                <input type="text" id="oidcScopes" placeholder="Scopes" autocomplete="off"
+                    value="<?= htmlspecialchars($oidcSettings['scopes']) ?>" />
             </div>
             <div class="form-group">
-                <input type="hidden" id="oidcAuthStyle" placeholder="Auth Style"
-                    value="<?= $oidcSettings['auth_style'] ?>" />
+                <input type="hidden" id="oidcAuthStyle" placeholder="Auth Style" autocomplete="off"
+                    value="<?= htmlspecialchars($oidcSettings['auth_style']) ?>" />
             </div>
             <div class="form-group-inline">
                 <input type="checkbox" id="oidcAutoCreateUser" <?= $oidcSettings['auto_create_user'] ? 'checked' : '' ?> />
@@ -277,10 +286,10 @@ $loginDisabledAllowed = $userCount == 1 && $settings['registrations_open'] == 0;
         </header>
         <div class="admin-form">
             <div class="form-group-inline">
-                <input type="text" name="smtpaddress" id="smtpaddress"
-                    placeholder="<?= translate('smtp_address', $i18n) ?>" value="<?= $settings['smtp_address'] ?>" />
-                <input type="text" name="smtpport" id="smtpport" placeholder="<?= translate('port', $i18n) ?>"
-                    class="one-third" value="<?= $settings['smtp_port'] ?>" />
+                <input type="text" name="smtpaddress" id="smtpaddress" autocomplete="off"
+                    placeholder="<?= translate('smtp_address', $i18n) ?>" value="<?= htmlspecialchars($settings['smtp_address']) ?>" />
+                <input type="text" name="smtpport" id="smtpport" autocomplete="off"
+                    placeholder="<?= translate('port', $i18n) ?>" class="one-third" value="<?= htmlspecialchars($settings['smtp_port']) ?>" />
             </div>
             <div class="form-group-inline">
                 <div>
@@ -300,16 +309,16 @@ $loginDisabledAllowed = $userCount == 1 && $settings['registrations_open'] == 0;
                 </div>
             </div>
             <div class="form-group-inline">
-                <input type="text" name="smtpusername" id="smtpusername"
-                    placeholder="<?= translate('smtp_username', $i18n) ?>" value="<?= $settings['smtp_username'] ?>" />
+                <input type="text" name="smtpusername" id="smtpusername" autocomplete="off"
+                    placeholder="<?= translate('smtp_username', $i18n) ?>" value="<?= htmlspecialchars($settings['smtp_username']) ?>" />
             </div>
             <div class="form-group-inline">
-                <input type="password" name="smtppassword" id="smtppassword"
-                    placeholder="<?= translate('smtp_password', $i18n) ?>" value="<?= $settings['smtp_password'] ?>" />
+                <input type="password" name="smtppassword" id="smtppassword" autocomplete="off"
+                    placeholder="<?= translate('smtp_password', $i18n) ?>" value="<?= htmlspecialchars($settings['smtp_password']) ?>" />
             </div>
             <div class="form-group-inline">
-                <input type="text" name="fromemail" id="fromemail" placeholder="<?= translate('from_email', $i18n) ?>"
-                    value="<?= $settings['from_email'] ?>" />
+                <input type="text" name="fromemail" id="fromemail" autocomplete="off"
+                    placeholder="<?= translate('from_email', $i18n) ?>" value="<?= htmlspecialchars($settings['from_email']) ?>" />
             </div>
             <div class="buttons">
                 <input type="button" class="secondary-button thin mobile-grow" value="<?= translate('test', $i18n) ?>"
@@ -328,6 +337,33 @@ $loginDisabledAllowed = $userCount == 1 && $settings['registrations_open'] == 0;
             </div>
         </div>
     </section>
+
+    <section class="account-section">
+    <header>
+        <h2><?= translate('security_settings', $i18n) ?></h2> </header>
+    <div class="admin-form">
+        <div class="form-group-inline">
+            <input type="text" name="local_webhook_notifications_allowlist" id="local_webhook_notifications_allowlist" autocomplete="off"
+                placeholder="e.g., 192.168.1.5:8123, homeassistant.local" value="<?= htmlspecialchars($settings['local_webhook_notifications_allowlist'] ?? '', ENT_QUOTES, 'UTF-8') ?>" />
+        </div>
+        
+        <div class="buttons">
+            <input type="submit" class="thin mobile-grow" value="<?= translate('save', $i18n) ?>"
+                id="saveSecuritySettingsButton" onClick="saveSecuritySettingsButton()" />
+        </div>
+        
+        <div class="settings-notes">
+            <p>
+                <i class="fa-solid fa-circle-info"></i> 
+                <?= translate('ssrf_protection_info', $i18n) ?>
+            </p>
+            <p>
+                <i class="fa-solid fa-circle-info"></i>
+                <?= translate('local_webhook_info', $i18n) ?>
+            </p>
+        </div>
+    </div>
+</section>
 
     <?php
     // Get latest version from admin table
@@ -466,6 +502,8 @@ $loginDisabledAllowed = $userCount == 1 && $settings['registrations_open'] == 0;
                         onclick="executeCronJob('updatenextpayment')">
                     <input type="button" value="Store Total Yearly Cost" class="button tiny mobile-grow"
                         onclick="executeCronJob('storetotalyearlycost')">
+                    <input type="button" value="Generate AI Recommendations" class="button tiny mobile-grow"
+                        onclick="executeCronJob('generaterecommendations')">    
                 </div>
                 <div class="inline-row">
                     <textarea id="cronjobResult" class="thin" readonly></textarea>

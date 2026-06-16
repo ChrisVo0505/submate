@@ -21,6 +21,13 @@ if (!is_null($settings['latest_version'])) {
                 <h3>
                     Submate <?= $version ?> <?= $demoMode ? "Demo" : "" ?>
                 </h3>
+                <span>
+                    <?= translate('release_notes', $i18n) ?>
+                    <a href="https://github.com/ellite/Wallos/releases/tag/<?= $version ?>" target="_blank"
+                        title="<?= translate('external_url', $i18n) ?>" rel="noreferrer">
+                        <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                    </a>
+                </span>
             </div>
             <?php if (!$wallosIsUpToDate): ?>
                 <div class="update-available">

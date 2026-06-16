@@ -154,34 +154,6 @@ $headerClass = count($subscriptions) > 0 ? "main-actions" : "main-actions hidden
 </style>
 
 <section class="contain">
-  <?php
-  if ($isAdmin && $settings['update_notification']) {
-    if (!is_null($settings['latest_version'])) {
-      $latestVersion = $settings['latest_version'];
-      if (version_compare($version, $latestVersion) == -1) {
-        ?>
-        <div class="update-banner">
-          <?= translate('new_version_available', $i18n) ?>:
-          <span><a href="https://github.com/ellite/Wallos/releases/tag/<?= htmlspecialchars($latestVersion) ?>"
-              target="_blank" rel="noreferer">
-              <?= htmlspecialchars($latestVersion) ?>
-            </a></span>
-        </div>
-        <?php
-      }
-    }
-  }
-
-  if ($demoMode) {
-    ?>
-    <div class="demo-banner">
-      Running in <b>Demo Mode</b>, certain actions and settings are disabled.<br>
-      The database will be reset every 120 minutes.
-    </div>
-    <?php
-  }
-  ?>
-
   <header class="<?= $headerClass ?>" id="main-actions">
     <button class="button" onClick="addSubscription()">
       <i class="fa-solid fa-circle-plus"></i>
@@ -222,6 +194,7 @@ $headerClass = count($subscriptions) > 0 ? "main-actions" : "main-actions hidden
       'MMM d, yyyy'
     );
 
+    $print = [];
     foreach ($subscriptions as $subscription) {
       if ($subscription['inactive'] == 1 && isset($settings['hideDisabledSubscriptions']) && $settings['hideDisabledSubscriptions'] === 'true') {
         continue;
@@ -233,6 +206,7 @@ $headerClass = count($subscriptions) > 0 ? "main-actions" : "main-actions hidden
       $cycle = $subscription['cycle'];
       $frequency = $subscription['frequency'];
       $print[$id]['billing_cycle'] = getBillingCycle($cycle, $frequency, $i18n);
+      $print[$id]['one_time'] = ($cycle == 5);
       $paymentMethodId = $subscription['payment_method_id'];
       $print[$id]['currency_code'] = $currencies[$subscription['currency_id']]['code'];
       $currencyId = $subscription['currency_id'];
@@ -307,7 +281,8 @@ $headerClass = count($subscriptions) > 0 ? "main-actions" : "main-actions hidden
   <form action="endpoints/subscription/add.php" method="post" id="subs-form">
 
     <div class="form-group-inline">
-      <input type="text" id="name" name="name" placeholder="<?= translate('subscription_name', $i18n) ?>"
+      <input type="text" id="name" name="name" autocomplete="off"
+        placeholder="<?= translate('subscription_name', $i18n) ?>"
         onchange="setSearchButtonStatus()" onkeypress="this.onchange();" onpaste="this.onchange();"
         oninput="this.onchange();" required>
       <label for="logo" class="logo-preview">
@@ -318,7 +293,7 @@ $headerClass = count($subscriptions) > 0 ? "main-actions" : "main-actions hidden
       <input type="hidden" id="logo-url" name="logo-url">
       <div id="logo-search-button" class="image-button medium disabled" title="<?= translate('search_logo', $i18n) ?>"
         onClick="searchLogo()">
-        <?php include "images/siteicons/svg/websearch.php"; ?>
+        <i class="fa-solid fa-magnifying-glass"></i>
       </div>
       <input type="hidden" id="id" name="id">
       <div id="logo-search-results" class="logo-search">
@@ -331,7 +306,8 @@ $headerClass = count($subscriptions) > 0 ? "main-actions" : "main-actions hidden
     </div>
 
     <div class="form-group-inline">
-      <input type="number" step="0.01" id="price" name="price" placeholder="<?= translate('price', $i18n) ?>" required>
+      <input type="number" step="0.01" id="price" name="price" autocomplete="off"
+        placeholder="<?= translate('price', $i18n) ?>" required>
       <select id="currency" name="currency_id" placeholder="<?= translate('add_subscription', $i18n) ?>">
         <?php
         foreach ($currencies as $currency) {
@@ -371,7 +347,7 @@ $headerClass = count($subscriptions) > 0 ? "main-actions" : "main-actions hidden
             </select>
           </div>
         </div>
-        <div class="split33">
+        <div class="split33" id="auto-renew-group">
           <label><?= translate('auto_renewal', $i18n) ?></label>
           <div class="inline height50">
             <input type="checkbox" id="auto_renew" name="auto_renew" checked>
@@ -386,7 +362,7 @@ $headerClass = count($subscriptions) > 0 ? "main-actions" : "main-actions hidden
         <div class="split50">
           <label for="start_date"><?= translate('start_date', $i18n) ?></label>
           <div class="date-wrapper">
-            <input type="date" id="start_date" name="start_date">
+            <input type="date" id="start_date" name="start_date" autocomplete="off">
           </div>
         </div>
         <button type="button" id="autofill-next-payment-button"
@@ -396,14 +372,15 @@ $headerClass = count($subscriptions) > 0 ? "main-actions" : "main-actions hidden
         </button>
         <div class="split50">
           <label for="next_payment" class="split-label">
-            <?= translate('next_payment', $i18n) ?>
+            <span id="next-payment-label-recurring"><?= translate('next_payment', $i18n) ?></span>
+            <span id="next-payment-label-onetime" style="display:none"><?= translate('payment_date', $i18n) ?></span>
             <div id="autofill-next-payment-button" class="autofill-next-payment hideOnDesktop"
               title="<?= translate('calculate_next_payment_date', $i18n) ?>" onClick="autoFillNextPaymentDate(event)">
               <i class="fa-solid fa-wand-magic-sparkles"></i>
             </div>
           </label>
           <div class="date-wrapper">
-            <input type="date" id="next_payment" name="next_payment" required>
+            <input type="date" id="next_payment" name="next_payment" autocomplete="off" required>
           </div>
         </div>
       </div>
@@ -455,12 +432,12 @@ $headerClass = count($subscriptions) > 0 ? "main-actions" : "main-actions hidden
       </select>
     </div>
 
-    <div class="form-group-inline grow">
+    <div class="form-group-inline grow" id="notifications-group">
       <input type="checkbox" id="notifications" name="notifications" onchange="toggleNotificationDays()">
       <label for="notifications" class="grow"><?= translate('enable_notifications', $i18n) ?></label>
     </div>
 
-    <div class="form-group">
+    <div class="form-group" id="notify-days-cancellation-group">
       <div class="inline">
         <div class="split66 mobile-split-50">
           <label for="notify_days_before"><?= translate('notify_me', $i18n) ?></label>
@@ -469,7 +446,7 @@ $headerClass = count($subscriptions) > 0 ? "main-actions" : "main-actions hidden
             <option value="0"><?= translate('on_due_date', $i18n) ?></option>
             <option value="1">1 <?= translate('day_before', $i18n) ?></option>
             <?php
-            for ($i = 2; $i <= 90; $i++) {
+            for ($i = 2; $i <= 180; $i++) {
               ?>
               <option value="<?= $i ?>"><?= $i ?>   <?= translate('days_before', $i18n) ?></option>
               <?php
@@ -480,18 +457,18 @@ $headerClass = count($subscriptions) > 0 ? "main-actions" : "main-actions hidden
         <div class="split33 mobile-split-50">
           <label for="cancellation_date"><?= translate('cancellation_notification', $i18n) ?></label>
           <div class="date-wrapper">
-            <input type="date" id="cancellation_date" name="cancellation_date">
+            <input type="date" id="cancellation_date" name="cancellation_date" autocomplete="off">
           </div>
         </div>
       </div>
     </div>
 
     <div class="form-group">
-      <input type="text" id="url" name="url" placeholder="<?= translate('url', $i18n) ?>">
+      <input type="text" id="url" name="url" autocomplete="off" placeholder="<?= translate('url', $i18n) ?>">
     </div>
 
     <div class="form-group">
-      <input type="text" id="notes" name="notes" placeholder="<?= translate('notes', $i18n) ?>">
+      <input type="text" id="notes" name="notes" autocomplete="off" placeholder="<?= translate('notes', $i18n) ?>">
     </div>
 
     <div class="form-group">

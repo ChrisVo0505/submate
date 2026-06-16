@@ -45,6 +45,7 @@ function resetForm() {
   replacementSubscription.classList.add("hide");
   const form = document.querySelector("#subs-form");
   form.reset();
+  toggleOneTimeCycleUI(false);
   closeLogoSearch();
   const deleteButton = document.querySelector("#deletesub");
   deleteButton.style = 'display: none';
@@ -75,6 +76,7 @@ function fillEditFormFields(subscription) {
   frequencySelect.value = subscription.frequency;
   const cycleSelect = document.querySelector("#cycle");
   cycleSelect.value = subscription.cycle;
+  toggleOneTimeCycleUI(subscription.cycle == 5);
   const paymentSelect = document.querySelector("#payment_method");
   paymentSelect.value = subscription.payment_method_id;
   const categorySelect = document.querySelector("#category");
@@ -203,78 +205,101 @@ function handleFileSelect(event) {
 function deleteSubscription(event, id) {
   event.stopPropagation();
   event.preventDefault();
-  if (confirm(translate('confirm_delete_subscription'))) {
-    fetch(`endpoints/subscription/delete.php?id=${id}`, {
-      method: 'DELETE',
-    })
-      .then(response => {
-        if (response.ok) {
-          showSuccessMessage(translate('subscription_deleted'));
-          fetchSubscriptions(null, null, "delete");
-          closeAddSubscription();
-        } else {
-          showErrorMessage(translate('error_deleting_subscription'));
-        }
-      })
-      .catch(error => {
-        console.error('Error:', error);
-      });
+
+  if (!confirm(translate('confirm_delete_subscription'))) {
+    return;
   }
+
+  fetch("endpoints/subscription/delete.php", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRF-Token": window.csrfToken,
+    },
+    body: JSON.stringify({ id: id }),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.success) {
+        showSuccessMessage(translate('subscription_deleted'));
+        fetchSubscriptions(null, null, "delete");
+        closeAddSubscription();
+      } else {
+        showErrorMessage(data.message || translate('error_deleting_subscription'));
+      }
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+      showErrorMessage(translate('error_deleting_subscription'));
+    });
 }
+
 
 function cloneSubscription(event, id) {
   event.stopPropagation();
   event.preventDefault();
 
-  const url = `endpoints/subscription/clone.php?id=${id}`;
-
-  fetch(url)
-    .then(response => {
+  fetch("endpoints/subscription/clone.php", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRF-Token": window.csrfToken,
+    },
+    body: JSON.stringify({ id: id }),
+  })
+    .then((response) => {
       if (!response.ok) {
-        throw new Error(translate('network_response_error'));
+        throw new Error(translate("network_response_error"));
       }
       return response.json();
     })
-    .then(data => {
+    .then((data) => {
       if (data.success) {
-        const id = data.id;
-        fetchSubscriptions(id, event, "clone");
+        const newId = data.id;
+        fetchSubscriptions(newId, event, "clone");
         showSuccessMessage(decodeURI(data.message));
       } else {
-        showErrorMessage(data.message || translate('error'));
+        showErrorMessage(data.message || translate("error"));
       }
     })
-    .catch(error => {
-      showErrorMessage(error.message || translate('error'));
+    .catch((error) => {
+      showErrorMessage(error.message || translate("error"));
     });
 }
+
 
 function renewSubscription(event, id) {
   event.stopPropagation();
   event.preventDefault();
 
-  const url = `endpoints/subscription/renew.php?id=${id}`;
-
-  fetch(url)
-    .then(response => {
+  fetch("endpoints/subscription/renew.php", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRF-Token": window.csrfToken,
+    },
+    body: JSON.stringify({ id: id }),
+  })
+    .then((response) => {
       if (!response.ok) {
-        throw new Error(translate('network_response_error'));
+        throw new Error(translate("network_response_error"));
       }
       return response.json();
     })
-    .then(data => {
+    .then((data) => {
       if (data.success) {
-        const id = data.id;
-        fetchSubscriptions(id, event, "renew");
+        const newId = data.id;
+        fetchSubscriptions(newId, event, "renew");
         showSuccessMessage(decodeURI(data.message));
       } else {
-        showErrorMessage(data.message || translate('error'));
+        showErrorMessage(data.message || translate("error"));
       }
     })
-    .catch(error => {
-      showErrorMessage(error.message || translate('error'));
+    .catch((error) => {
+      showErrorMessage(error.message || translate("error"));
     });
 }
+
 
 function setSearchButtonStatus() {
 
@@ -299,8 +324,8 @@ function searchLogo() {
     fetch(imageSearchUrl)
       .then(response => response.json())
       .then(data => {
-        if (data.imageUrls) {
-          displayImageResults(data.imageUrls);
+        if (data.results) {
+          displayImageResults(data.results);
         } else if (data.error) {
           console.error(data.error);
         }
@@ -319,9 +344,9 @@ function displayImageResults(imageSources) {
 
   imageSources.forEach(src => {
     const img = document.createElement("img");
-    img.src = src;
+    img.src = src.thumbnail || src.image;
     img.onclick = function () {
-      selectWebLogo(src);
+      selectWebLogo(src.thumbnail || src.image);
     };
     img.onerror = function () {
       this.parentNode.removeChild(this);
@@ -364,6 +389,9 @@ function fetchSubscriptions(id, event, initiator) {
   }
   if (activeFilters['renewalType'] !== "") {
     getSubscriptions += getSubscriptions.includes("?") ? `&renewalType=${activeFilters['renewalType']}` : `?renewalType=${activeFilters['renewalType']}`;
+  }
+  if (activeFilters['notifications'].length > 0) {
+    getSubscriptions += getSubscriptions.includes("?") ? `&notifications=${activeFilters['notifications']}` : `?notifications=${activeFilters['notifications']}`;
   }
 
   fetch(getSubscriptions)
@@ -411,7 +439,7 @@ function setSortOption(sortOption) {
   const expirationDate = new Date();
   expirationDate.setDate(expirationDate.getDate() + daysToExpire);
   const cookieValue = encodeURIComponent(sortOption) + '; expires=' + expirationDate.toUTCString();
-  document.cookie = 'sortOrder=' + cookieValue + '; SameSite=Strict';
+  document.cookie = 'sortOrder=' + cookieValue + '; SameSite=Lax';
   fetchSubscriptions(null, null, "sort");
   toggleSortOptions();
 }
@@ -454,6 +482,9 @@ function dataURLtoFile(dataurl, filename) {
 function submitFormData(formData, submitButton, endpoint) {
   fetch(endpoint, {
     method: "POST",
+    headers: {
+      "X-CSRF-Token": window.csrfToken,
+    },
     body: formData,
   })
     .then((response) => response.json())
@@ -462,14 +493,27 @@ function submitFormData(formData, submitButton, endpoint) {
         showSuccessMessage(data.message);
         fetchSubscriptions(null, null, "add");
         closeAddSubscription();
-
+      } else {
+        showErrorMessage(data.message || translate("unknown_error"));
       }
     })
     .catch((error) => {
-      showErrorMessage(error);
+      console.error(error);
+      showErrorMessage(translate("unknown_error"));
+    })
+    .finally(() => {
       submitButton.disabled = false;
     });
 }
+
+document.addEventListener('DOMContentLoaded', function () {
+  const cycleSelectEl = document.querySelector("#cycle");
+  if (cycleSelectEl) {
+    cycleSelectEl.addEventListener("change", function () {
+      toggleOneTimeCycleUI(this.value === "5");
+    });
+  }
+});
 
 document.addEventListener('DOMContentLoaded', function () {
   const subscriptionForm = document.querySelector("#subs-form");
@@ -480,6 +524,17 @@ document.addEventListener('DOMContentLoaded', function () {
     e.preventDefault();
 
     submitButton.disabled = true;
+
+    const cycleVal = document.querySelector("#cycle")?.value;
+    if (cycleVal === "5") {
+      const freq = document.querySelector("#frequency");
+      if (freq) freq.value = 1;
+      const cancellationDate = document.querySelector("#cancellation_date");
+      if (cancellationDate) cancellationDate.value = "";
+      const notifyDays = document.querySelector("#notify_days_before");
+      if (notifyDays) notifyDays.value = -1;
+    }
+
     const formData = new FormData(subscriptionForm);
 
     const fileInput = document.querySelector("#logo");
@@ -608,6 +663,7 @@ activeFilters['members'] = [];
 activeFilters['payments'] = [];
 activeFilters['state'] = "";
 activeFilters['renewalType'] = "";
+activeFilters['notifications'] = [];
 
 document.addEventListener("DOMContentLoaded", function () {
   var filtermenu = document.querySelector('#filtermenu-button');
@@ -713,11 +769,21 @@ document.querySelectorAll('.filter-item').forEach(function (item) {
         });
         this.classList.add('selected');
       }
+    } else if (this.hasAttribute('data-notificationtype')) {
+      const notifType = this.getAttribute('data-notificationtype');
+      if (activeFilters['notifications'].includes(notifType)) {
+        const idx = activeFilters['notifications'].indexOf(notifType);
+        activeFilters['notifications'].splice(idx, 1);
+        this.classList.remove('selected');
+      } else {
+        activeFilters['notifications'].push(notifType);
+        this.classList.add('selected');
+      }
     }
 
     if (activeFilters['categories'].length > 0 || activeFilters['members'].length > 0 ||
-       activeFilters['payments'].length > 0 || activeFilters['state'] !== "" || 
-       activeFilters['renewalType'] !== "") {
+       activeFilters['payments'].length > 0 || activeFilters['state'] !== "" ||
+       activeFilters['renewalType'] !== "" || activeFilters['notifications'].length > 0) {
       document.querySelector('#clear-filters').classList.remove('hide');
     } else {
       document.querySelector('#clear-filters').classList.add('hide');
@@ -735,7 +801,8 @@ function clearFilters() {
   activeFilters['payments'] = [];
   activeFilters['state'] = "";
   activeFilters['renewalType'] = "";
-  
+  activeFilters['notifications'] = [];
+
   document.querySelectorAll('.filter-item').forEach(function (item) {
     item.classList.remove('selected');
   });
@@ -765,16 +832,22 @@ function expandActions(event, subscriptionId) {
   allActions.forEach((openAction) => {
     if (openAction !== actions) {
       openAction.classList.remove('is-open');
+      openAction.classList.remove('open-above');
     }
   });
 
   // Toggle the clicked actions
   actions.classList.toggle('is-open');
 
-  // Update currentActions
   if (actions.classList.contains('is-open')) {
+    actions.classList.remove('open-above');
+    const rect = actions.getBoundingClientRect();
+    if (rect.bottom > window.innerHeight) {
+      actions.classList.add('open-above');
+    }
     currentActions = actions;
   } else {
+    actions.classList.remove('open-above');
     currentActions = null;
   }
 }
@@ -798,8 +871,42 @@ function swipeHintAnimation() {
       }
 
       count++;
-      document.cookie = `${cookieName}=${count}; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/; SameSite=Strict`;
+      document.cookie = `${cookieName}=${count}; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/; SameSite=Lax`;
     }
+  }
+}
+
+function toggleOneTimeCycleUI(isOneTime) {
+  const frequencySelect = document.querySelector("#frequency");
+  const autoRenewGroup = document.querySelector("#auto-renew-group");
+  const autoRenewCheckbox = document.querySelector("#auto_renew");
+  const autofillDesktop = document.querySelector("#autofill-next-payment-button.hideOnMobile");
+  const labelRecurring = document.querySelector("#next-payment-label-recurring");
+  const labelOnetime = document.querySelector("#next-payment-label-onetime");
+  const notificationsGroup = document.querySelector("#notifications-group");
+  const notifyDaysCancellationGroup = document.querySelector("#notify-days-cancellation-group");
+  const notificationsCheckbox = document.querySelector("#notifications");
+
+  if (isOneTime) {
+    if (frequencySelect) frequencySelect.style.display = 'none';
+    if (autoRenewGroup) autoRenewGroup.style.display = 'none';
+    if (autoRenewCheckbox) { autoRenewCheckbox.checked = false; autoRenewCheckbox.disabled = true; }
+    if (autofillDesktop) autofillDesktop.style.display = 'none';
+    if (labelRecurring) labelRecurring.style.display = 'none';
+    if (labelOnetime) labelOnetime.style.display = '';
+    if (notificationsGroup) notificationsGroup.style.display = 'none';
+    if (notifyDaysCancellationGroup) notifyDaysCancellationGroup.style.display = 'none';
+    if (notificationsCheckbox) { notificationsCheckbox.checked = false; notificationsCheckbox.disabled = true; }
+  } else {
+    if (frequencySelect) frequencySelect.style.display = '';
+    if (autoRenewGroup) autoRenewGroup.style.display = '';
+    if (autoRenewCheckbox) autoRenewCheckbox.disabled = false;
+    if (autofillDesktop) autofillDesktop.style.display = '';
+    if (labelRecurring) labelRecurring.style.display = '';
+    if (labelOnetime) labelOnetime.style.display = 'none';
+    if (notificationsGroup) notificationsGroup.style.display = '';
+    if (notifyDaysCancellationGroup) notifyDaysCancellationGroup.style.display = '';
+    if (notificationsCheckbox) notificationsCheckbox.disabled = false;
   }
 }
 
